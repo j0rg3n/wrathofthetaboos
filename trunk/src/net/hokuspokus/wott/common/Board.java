@@ -1,7 +1,8 @@
 package net.hokuspokus.wott.common;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,12 +17,14 @@ import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.common.TabooSelector.TABOO;
 import net.hokuspokus.wott.utils.TextureUtil;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Box;
+import com.jme.util.export.binary.BinaryImporter;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jme.util.resource.ResourceLocatorTool;
 import com.jme.util.resource.SimpleResourceLocator;
@@ -181,7 +184,7 @@ public class Board {
 				new Vector3f( 0, -0.2f, 0), 
 				new Vector3f( TILESIZE,  0.0f,  TILESIZE));
 		tile.setLocalTranslation(getTilePos(x, y));
-		TextureUtil.getInstance().setTexture(tile, "/2d gfx/tile1.jpg");
+		TextureUtil.getInstance().setTexture(tile, "/ressources/2d gfx/tile1.jpg");
 		return tile;
 	}
 	
@@ -287,14 +290,15 @@ public class Board {
 	{
 		return living;
 	}
-
+	
 	public void killViolators() {
-		for (Person p : violators) {
+		for (Person p : violators) {           
+
 			living.remove(p);
 			
             try
 			{
-            	File file = new File("ressources/2d gfx/death3.jme");
+            	File file = new File("/ressources/2d gfx/death3.jme");
             	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
                 ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
 				Spatial obj = (Spatial) BinaryImporter.getInstance().load(file);
