@@ -242,10 +242,10 @@ public class TextureUtil
 		return instance;
 	}
 
-	public void disableZBuffer(Spatial foo) {
+	public void disableZBuffer(Spatial foo, boolean enabled, boolean writable) {
 		ZBufferState zState = DisplaySystem.getDisplaySystem().getRenderer().createZBufferState();
-		zState.setEnabled(false);
-		zState.setWritable(false);
+		zState.setEnabled(enabled);
+		zState.setWritable(writable);
 		foo.setRenderState(zState);
 	}
 
@@ -256,14 +256,32 @@ public class TextureUtil
 		Quad foo = new Quad(name, sWidth, sHeight);
 		foo.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 		foo.setLightCombineMode(LightState.OFF);
-		foo.setLocalTranslation(sWidth / 2.0f, sHeight / 2.0f, 0);
+		foo.setLocalTranslation(sWidth / 2.0f, sHeight / 2.0f, 0.0f);
 		foo.setLocalRotation(new Quaternion(new float[]{ FastMath.PI, 0, 0 }));
-		getInstance().disableZBuffer(foo);
+		getInstance().disableZBuffer(foo, false, false);
 		getInstance().setTexture(foo, path);
 		
 		return foo;
 	}
 
+	public static Quad getQuad(String name, String path, int tWidth, int tHeight) {
+		Quad foo = new Quad(name, tWidth, tHeight);
+		foo.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		foo.setLightCombineMode(LightState.OFF);
+		foo.setLocalRotation(new Quaternion(new float[]{ FastMath.PI, 0, 0 }));
+		getInstance().disableZBuffer(foo, false, false);
+		getInstance().setTexture(foo, path);
+		
+		return foo;
+	}
+
+	public static Quad getTransparentQuad(String name, String path, int tWidth, int tHeight) {
+		Quad foo = TextureUtil.getQuad(name, path, tWidth, tHeight);
+		TextureUtil.getInstance().setAlphaBlending(foo);
+		foo.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		
+		return foo;
+	}
 
 	/*
 	public TextureState createTextureState(String img1, String img2, CombineMethod method)
