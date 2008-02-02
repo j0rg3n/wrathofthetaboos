@@ -29,8 +29,8 @@ import net.hokuspokus.wott.common.Person.PersonType;
 
 public class Player
 {
-	private static final int MANCOUNT = 15;
-	private static final int WOMANCOUNT = 15;
+	private static final int MANCOUNT = 5;
+	private static final int WOMANCOUNT = 5;
 	
 	private ColorRGBA color;
 	List<Person> people = new ArrayList<Person>();

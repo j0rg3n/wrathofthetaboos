@@ -22,6 +22,7 @@ public class PukInputHandler extends InputHandler
 	}
 	
 	static Vector2f _screenPos = new Vector2f();
+	static Vector2f _repulsionVector = new Vector2f();
 	static Vector3f _store = new Vector3f();
 	
 	@Override
@@ -46,15 +47,13 @@ public class PukInputHandler extends InputHandler
 		{
 			if(p1.getOwner() == game.p1)
 			{
-				float repulsion = Person.ZONE + PUK_RADIUS - p1.getPos().subtract(_screenPos).length();
+				_repulsionVector.set(p1.getPos()).subtractLocal(_screenPos);
+				float repulsion = Person.ZONE + PUK_RADIUS - _repulsionVector.length();
 				if (repulsion > 0) {
-					Vector2f repulsionVector = 
-						p1.getPos()
-						.subtract(_screenPos)
-						.normalize()
-						.mult(repulsion);
+					_repulsionVector.normalizeLocal().multLocal(repulsion);
 					//p1.setPos(p1.getPos().add(repulsionVector));
-					p1.setVelocity(repulsionVector);
+					System.out.println("_repulsionVector:"+_repulsionVector+", "+p1.getPos()+").subtractLocal("+_screenPos);
+					p1.setVelocity(_repulsionVector);
 				}
 			}
 		}

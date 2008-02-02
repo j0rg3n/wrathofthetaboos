@@ -39,7 +39,7 @@ public class Person
 	}
 
 	public void setPos(Vector2f pos) {
-		this.pos = pos;
+		this.pos.set(pos);
 	}
 
 	public Vector2f getVelocity() {
@@ -47,7 +47,7 @@ public class Person
 	}
 
 	public void setVelocity(Vector2f velocity) {
-		this.velocity = velocity;
+		this.velocity.set(velocity);
 	}
 
 	/**
