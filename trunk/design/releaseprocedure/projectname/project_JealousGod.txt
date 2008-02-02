@@ -1,0 +1,88 @@
+Nordic Game Jam 2008 Release form - <30th January 2008>
+
+0) Name of the group.
+Hokus Pokus
+
+1) Name of the project:
+Hokus Pokus - JEALOUS GODS, How to trim your flock
+
+2) A version number:
+Revision xxx
+
+3) A written abstract on the project. Max 100 words:
+You are God! However your dysfunctional cousin is also a God and apparently gaining new religious followers too swiftly for your liking. Use taboos to burn your colleague's followers while keeping your own minions out of temptation and harms way. 
+Players shuffle their own people about simultaneously trying to avoid compromising social combinations that could be used against them by a wicked god. After 5-20 seconds of frantic movement one predestinated player will select a taboo. The taboo will hit all people gathering in a specific combination of males and females. Repeat till one side is dead.
+
+
+4) Name, E-mail and Group Role of every group member.
+
+Alphabetically:
+<Anton Andersson, antonandersson16@hotmail.com, 3D artist>
+<Emanuel Greisen, eg@gamalocus.com, Programmer>
+<Jorgen Havsberg, jorgen@fabeljet.net, Programmer>
+<Lars Peter Nielsen, lars@gamalocus.com, 2D artist and text>
+<Mikkel, Game Audio Denmark, me@gameaudiodenmark.dk, Sound effects>
+<Paul Fluegel Usul, paulusul@gmail.com, Programmer and coffee>
+<Thorbjørn Vinther Christensen, vintor.dk@gmail.com, 3D artist>
+
+5) The platform requirements.
+<Windows, Linux and Mac and two Logitec Controllers or keyboard.>
+<Minimum resolution of 1024x768>
+<3D enabled graphics card>
+
+6) The folders must contain:
+/src/: The full sourcecode, with all assets of the project.
+/release/: The distributable files.
+/press/: One hi-res image called press.jpg, to be used for PR, Hires 1024x768 or better.
+Other media can also be put here. E.g: Videos etc.
+
+7) A install description on how to try the release out.
+<Go to the release folder and unzip rel.zip to c:\>
+<Connect the joystick and run c:\coolgame\main.exe>
+
+8) A brief play description if nescesary.
+<You are the brown pea. You have to use the arrowkeys to control gravity to make it roll towards its goal.>
+
+9) Copyright notes.
+This game is released under the MIT license. http://en.wikipedia.org/wiki/MIT_license
+
+Copyright (c) 2008 NGJ08-HokusPokus contact lars@gamalocus.com
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+10) A reference to a project homepage or repository where possible further development can continue from.(Optional)
+
+11) A link to the zipfile should be sent in an email to: submissions@nordicgamejam.com, alongside possible login information, projectname, teamname and membernames  (please note .com instead of .org in the email address).
+
+Everything must be available for download from the public internet for at least one week, no later than Sunday the 2nd of February 2008 at 15:00!
+
+Teams will be notified through an email reply when NGJ has received the data. 
+
+You can use any service available on the internet, but Nordic Game Jam recommend www.assembla.com. 
+They provide a full project management system, repository and file upload space (Public or private). 
+500MB space available for free.
+
+Alternatively you could use: http://code.google.com/hosting/
+
+If you find a better deal please notify the NGJ staff.
