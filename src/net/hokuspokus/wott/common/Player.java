@@ -3,6 +3,7 @@ package net.hokuspokus.wott.common;
 import java.io.File;
 import java.io.IOException;
 import net.hokuspokus.wott.common.Person.PersonType;
+import net.hokuspokus.wott.utils.NodeUtils;
 import net.hokuspokus.wott.utils.TextureUtil;
 import com.jme.animation.SpatialTransformer;
 import com.jme.scene.Controller;
@@ -44,8 +45,6 @@ public class Player
 			return r1;
 		} else {
 			Node r1 = null;
-			try
-			{
 				if(type == PersonType.MAN)
 				{
 					/*
@@ -62,19 +61,23 @@ public class Player
 						r1.getLocalScale().set(Vector3f.UNIT_XYZ);
 					*/
 					//r1 = new Node();
-	            	File file = new File("ressources/3d gfx/Bobbing2.jme");
-	            	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
-	                ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
-					r1 = (Node) BinaryImporter.getInstance().load(file);
+	            	//File file = new File("ressources/3d gfx/Bobbing2.jme");
+	            	//SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
+	                //ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
+					//r1 = (Node) BinaryImporter.getInstance().load(file);
+					r1 = (Node) NodeUtils.loadNode("ressources/3d gfx/Bobbing2.jme");
 					r1.getLocalScale().set(0.02f, 0.02f, 0.02f);
 				}
 				else
 				{
-	            	File file = new File("ressources/3d gfx/mini_negerkvinde03.jme");
-	            	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
-	                ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
-					r1 = (Node) BinaryImporter.getInstance().load(file);
+	            	//File file = new File("ressources/3d gfx/mini_negerkvinde03.jme");
+	            	//SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
+	                //ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
+					//r1 = (Node) BinaryImporter.getInstance().load(file);
+					
+					r1 = (Node) NodeUtils.loadNode("ressources/3d gfx/neger_test_collada.jme");
 					r1.getLocalScale().set(0.22f, 0.22f, 0.22f);
+					//r1 = new Node();
 				}
 				
 				//TextureUtil.getInstance().setTexture(r1, "/ressources/2d gfx/player_"+color+".jpg");
@@ -105,30 +108,14 @@ public class Player
 					}
 				}
 */
-				SpatialTransformer kc;
-				if (r1 != null && r1.getControllerCount() >= 1 && r1.getController(0) != null)
-				{
-					kc = (SpatialTransformer) r1.getController(0);
-					kc.setSpeed(10);
-					kc.setRepeatType(Controller.RT_WRAP);
-				}
-	/*			System.out.println(r1.getLightCombineMode());
-				System.out.println(r1.getRenderState(RenderState.RS_ALPHA));
-				System.out.println(r1.getRenderState(RenderState.RS_ATTRIBUTE));
-				System.out.println(r1.getRenderState(RenderState.RS_CLIP));
-				System.out.println(r1.getRenderState(RenderState.RS_COLORMASK_STATE));
-				System.out.println(r1.getRenderState(RenderState.RS_CULL));
-				System.out.println(r1.getRenderState(RenderState.RS_DITHER));
-				System.out.println(r1.getRenderState(RenderState.RS_FOG));
-				System.out.println(r1.getRenderState(RenderState.RS_LIGHT));
-				System.out.println(r1.getRenderState(RenderState.RS_MATERIAL));
-				System.out.println(r1.getRenderState(RenderState.RS_TEXTURE));
-				System.out.println(r1.getRenderState(RenderState.RS_ZBUFFER));*/
-			}
-			catch (IOException e)
+			SpatialTransformer kc;
+			if (r1 != null && r1.getControllerCount() >= 1 && r1.getController(0) != null)
 			{
-				System.err.println("Failed to load Max file");
+				kc = (SpatialTransformer) r1.getController(0);
+				kc.setSpeed(10);
+				kc.setRepeatType(Controller.RT_WRAP);
 			}
+
 			return r1;
 		}
 	}

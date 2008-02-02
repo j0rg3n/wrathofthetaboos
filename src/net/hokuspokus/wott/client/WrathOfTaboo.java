@@ -1,5 +1,8 @@
 package net.hokuspokus.wott.client;
 
+import java.io.IOException;
+import java.util.logging.LogManager;
+
 import net.hokuspokus.wott.common.GameMode;
 import net.hokuspokus.wott.common.IntroMode;
 import net.hokuspokus.wott.common.PlayingMode;
@@ -23,6 +26,24 @@ public class WrathOfTaboo extends SimpleGame
 	private static WrathOfTaboo singleton;
 	
 	GameMode currentMode;
+	SoundCenter soundCenter;
+	
+	static {
+		try
+		{
+			LogManager.getLogManager().readConfiguration(WrathOfTaboo.class.getClassLoader().getResourceAsStream("logging.properties"));
+		}
+		catch (SecurityException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public static void main(String[] args)
 	{
@@ -34,12 +55,13 @@ public class WrathOfTaboo extends SimpleGame
 	@Override
 	protected void simpleInitGame()
 	{
+		soundCenter = new SoundCenter(cam);
     	MouseInput.get().setCursorVisible(false);
 
     	setMode(new IntroMode(this));
         //setMode(new HighscoreMode(this));
         //setMode(new PlayingMode(this));
-
+    	
         KeyBindingManager.getKeyBindingManager().set( "toggle_input_handler", KeyInput.KEY_F12 );
         KeyBindingManager.getKeyBindingManager().set( NEXT_TABOO_BINDING, KeyInput.KEY_F11 );
         KeyBindingManager.getKeyBindingManager().set( START_GAME_BINDING, KeyInput.KEY_SPACE );
@@ -142,8 +164,11 @@ public class WrathOfTaboo extends SimpleGame
         	}
         }
         
+        // we must have sound
+        soundCenter.updateSounds(cam);
+        
+        
         // Switch game mode on death.
-
         currentMode.update();
 	}
 
@@ -164,5 +189,10 @@ public class WrathOfTaboo extends SimpleGame
 	public Camera getCamera()
 	{
 		return cam;
+	}
+	
+	public SoundCenter getSoundCenter()
+	{
+		return soundCenter;
 	}
 }

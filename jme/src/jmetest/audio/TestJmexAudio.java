@@ -151,6 +151,15 @@ public class TestJmexAudio extends SimpleGame {
         // update our audio system here:
         audio.update();
         
+        try
+		{
+			Thread.sleep(10);
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+        
         for (int x = trackers.size(); --x >= 0; ) {
             RangedAudioTracker t = trackers .get(x);
             t.checkTrackAudible(cam.getLocation());

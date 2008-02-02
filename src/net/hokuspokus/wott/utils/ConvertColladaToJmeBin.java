@@ -66,10 +66,10 @@ public class ConvertColladaToJmeBin extends BaseSimpleGame
 					convertColladaFile(file, jme_file);
 				}
 			}
-			else if (file.getName().endsWith(".3DS"))
+			else if (file.getName().endsWith(".3DS") || file.getName().endsWith(".3ds"))
 			{
 				//URL model = Player.class.getClassLoader().getResource("ressources/3d gfx/" + (type == PersonType.WOMAN ? "mini_negerkvinde.3DS" : "Mand2.3DS"));
-				File jme_file = new File(file.getAbsolutePath().replace(".3DS", ".jme"));
+				File jme_file = new File(file.getAbsolutePath().replace(".3DS", ".jme").replace(".3ds", ".jme"));
 				if(!jme_file.exists() || jme_file.lastModified() < file.lastModified())
 				{
 					convert3DSFile(file, jme_file);

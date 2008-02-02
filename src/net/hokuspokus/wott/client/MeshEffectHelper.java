@@ -22,10 +22,9 @@ public class MeshEffectHelper
 		explodeNode.removeFromParent();
 		
 		// Extract meshes
-		//NodeUtils.removeControllers(explodeNode);
+		NodeUtils.removeAllControllers(explodeNode);
 		final Vector<Geometry> meshes = new Vector<Geometry>();
 		recursivelyAddMeshes(explodeNode, meshes);
-		//explodeNode.detachAllChildren();
 		
 		explodeNode.setLocalTranslation(explodeNode.getLocalTranslation());
 		explodeNode.addController(new Controller()
