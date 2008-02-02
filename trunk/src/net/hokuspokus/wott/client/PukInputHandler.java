@@ -48,8 +48,8 @@ public class PukInputHandler extends InputHandler
 		
 		// Setup either keyboard controller or Logitech-controller
 		Controller[] logitech_controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
-		p1_keys = new PukKeyboardHandler(game, KeyInput.KEY_UP, KeyInput.KEY_DOWN, KeyInput.KEY_LEFT, KeyInput.KEY_RIGHT, logitech_controllers.length > 0 ? logitech_controllers[0] : null);
-		p2_keys = new PukKeyboardHandler(game, KeyInput.KEY_W, KeyInput.KEY_S, KeyInput.KEY_A, KeyInput.KEY_D, logitech_controllers.length > 1 ? logitech_controllers[1] : null);
+		p1_keys = new PukKeyboardHandler(game.getPlayer(0), game, KeyInput.KEY_UP, KeyInput.KEY_DOWN, KeyInput.KEY_LEFT, KeyInput.KEY_RIGHT, logitech_controllers.length > 0 ? logitech_controllers[0] : null);
+		p2_keys = new PukKeyboardHandler(game.getPlayer(1), game, KeyInput.KEY_W, KeyInput.KEY_S, KeyInput.KEY_A, KeyInput.KEY_D, logitech_controllers.length > 1 ? logitech_controllers[1] : null);
 		addToAttachedHandlers(p1_keys);
 		addToAttachedHandlers(p2_keys);
 	}
@@ -100,11 +100,11 @@ class PlayerPuk
 	public static final float PUK_RADIUS = 1.5f;
 	Vector2f pos = new Vector2f();
 
-	public PlayerPuk(PlayingMode game)
+	public PlayerPuk(PlayingMode game, Player player)
 	{
 		this.puk = new Cylinder("Puk", 16, 16, 1.5f, 0.4f, true);
 		this.puk.getLocalRotation().fromAngles(FastMath.HALF_PI, 0, 0);
-		TextureUtil.getInstance().setTexture(puk, "2d gfx/citroen_logo_jo.jpg");
+		TextureUtil.getInstance().setTexture(puk, "/2d gfx/player_"+player.getColor()+".jpg");
 		game.getBoardNode().attachChild(puk);
 	}
 }
@@ -114,11 +114,11 @@ class PukKeyboardHandler extends InputHandler
 	PlayerPuk puk;
 	private Controller logitech_controller;
 	
-    public PukKeyboardHandler(PlayingMode game, int up, int down, int left, int right, Controller logitech_controller)
+    public PukKeyboardHandler(Player player, PlayingMode game, int up, int down, int left, int right, Controller logitech_controller)
     {
         KeyBindingManager keyboard = KeyBindingManager.getKeyBindingManager();
 
-        puk = new PlayerPuk(game);
+        puk = new PlayerPuk(game, player);
         
         if(logitech_controller == null || logitech_controller.getComponents().length < 16)
         {
