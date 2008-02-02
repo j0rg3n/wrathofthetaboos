@@ -69,12 +69,14 @@ public class Player
 				}
 				else
 				{
-	            	File file = new File("ressources/3d gfx/mini_negerkvinde02.jme");
+	            	File file = new File("ressources/3d gfx/mini_negerkvinde03.jme");
 	            	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
 	                ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
 					r1 = (Node) BinaryImporter.getInstance().load(file);
 					r1.getLocalScale().set(0.22f, 0.22f, 0.22f);
 				}
+				
+				//TextureUtil.getInstance().setTexture(r1, "/ressources/2d gfx/player_"+color+".jpg");
 				
 				/*
 				MaterialState ms = DisplaySystem.getDisplaySystem().getRenderer().createMaterialState();
@@ -83,7 +85,6 @@ public class Player
 				r1.updateRenderState();
 				
 */				
-				TextureUtil.getInstance().setTexture(r1, "/ressources/2d gfx/player_"+color+".jpg");
 /*
 				for (Controller c : r1.getControllers())
 				{

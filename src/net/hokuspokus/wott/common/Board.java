@@ -300,10 +300,13 @@ public class Board {
                 ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
 				Spatial obj = (Spatial) BinaryImporter.getInstance().load(file);
 				obj.setLocalScale(0.0100f);
-				obj.getLocalTranslation().set(p.getGeometry().getLocalTranslation());
+
+				//obj.getWorldTranslation().set(vect)LocalTranslation().set(p.getGeometry().getLocalTranslation());
 				
 				p.getGeometry().getParent().attachChild(obj);
 
+				obj.getWorldTranslation().set(p.getGeometry().getLocalTranslation());
+				
 				if(obj instanceof Node)
 				{
 	                for (Spatial child : ((Node)obj).getChildren()) {

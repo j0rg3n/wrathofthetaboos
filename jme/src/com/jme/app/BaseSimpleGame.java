@@ -490,6 +490,7 @@ public abstract class BaseSimpleGame extends BaseGame {
         PointLight light = new PointLight();
         light.setDiffuse( new ColorRGBA( 0.75f, 0.75f, 0.75f, 0.75f ) );
         light.setAmbient( new ColorRGBA( 0.5f, 0.5f, 0.5f, 1.0f ) );
+        light.setSpecular( new ColorRGBA( 0.3f, 0.3f, 0.3f, 1.0f ) );
         light.setLocation( new Vector3f( 100, 100, 100 ) );
         light.setEnabled( true );
 
