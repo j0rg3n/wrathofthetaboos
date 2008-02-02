@@ -91,7 +91,7 @@ public class WrathOfTaboo extends SimpleGame
 
 	private void createNewBoard()
 	{
-		board = new Board(15, 15);
+		board = new Board(20, 20);
 		p1 = new Player(new ColorRGBA(1,0,0,1));
 		p2 = new Player(new ColorRGBA(0,0,1,1));
 		
@@ -150,18 +150,6 @@ public class WrathOfTaboo extends SimpleGame
 		
 		// Upate game-logic
 		board.update();
-		
-		
-		// HACKISH
-		for(Person person : p1.getPopulation())
-		{
-			//person.getGeomtry().setLocalTranslation(person.getP, y, z)
-		}
-		
-		for(Person person : p2.getPopulation())
-		{
-			//boardNode.attachChild(person.getGeomtry());
-		}
 	}
 
 	public static WrathOfTaboo getInstance()

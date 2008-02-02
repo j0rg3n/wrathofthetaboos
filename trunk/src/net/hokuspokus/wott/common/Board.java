@@ -3,6 +3,7 @@ package net.hokuspokus.wott.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.scene.Spatial;
@@ -36,7 +37,11 @@ public class Board {
 			// Reduce force...
 			Vector2f newVelocity = p.getVelocity().mult(Math.min(0.90f, (float) Math.pow(0.50f, p.getVelocity().length())));
 			if (newVelocity.length() < .01f) {
-				newVelocity = new Vector2f();
+				newVelocity.set(0,0);
+				//p.getGeometry().getLocalRotation().fromAngles(-FastMath.HALF_PI, 0, 0);
+			}
+			else {
+				p.getGeometry().getLocalRotation().fromAngles(-FastMath.HALF_PI, newVelocity.getAngle()-FastMath.HALF_PI, 0); //
 			}
 			p.setVelocity(newVelocity);
 		}
@@ -80,16 +85,16 @@ public class Board {
 					p.getPos().x = 0;
 					p.getVelocity().x = Math.abs(p.getVelocity().x);
 				}
-				if (p.getPos().x > width - 1) {
-					p.getPos().x = width - 1;
+				if (p.getPos().x > width) {
+					p.getPos().x = width;
 					p.getVelocity().x = -Math.abs(p.getVelocity().x);
 				}
 				if (p.getPos().y < 0) {
 					p.getPos().y = 0;
 					p.getVelocity().y = Math.abs(p.getVelocity().y);
 				}
-				if (p.getPos().y > height - 1) {
-					p.getPos().y = height - 1;
+				if (p.getPos().y > height) {
+					p.getPos().y = height;
 					p.getVelocity().y = -Math.abs(p.getVelocity().y);
 				}
 			}
