@@ -12,6 +12,7 @@ public class PukInputHandler extends InputHandler
 {
 	private WrathOfTaboo game;
 	private Sphere puk;
+	private static final float PUK_RADIUS = 1.5f;
 
 	public PukInputHandler(WrathOfTaboo game)
 	{
@@ -43,15 +44,18 @@ public class PukInputHandler extends InputHandler
 		
 		for(Person p1 : game.board.getLiving())
 		{
-			float repulsion = Person.ZONE * 3 - p1.getPos().subtract(_screenPos).length();
-			if (repulsion > 0) {
-				Vector2f repulsionVector = 
-					p1.getPos()
-					.subtract(_screenPos)
-					.normalize()
-					.mult(repulsion);
-				//p1.setPos(p1.getPos().add(repulsionVector));
-				p1.setVelocity(repulsionVector);
+			if(p1.getOwner() == game.p1)
+			{
+				float repulsion = Person.ZONE + PUK_RADIUS - p1.getPos().subtract(_screenPos).length();
+				if (repulsion > 0) {
+					Vector2f repulsionVector = 
+						p1.getPos()
+						.subtract(_screenPos)
+						.normalize()
+						.mult(repulsion);
+					//p1.setPos(p1.getPos().add(repulsionVector));
+					p1.setVelocity(repulsionVector);
+				}
 			}
 		}
 	}
