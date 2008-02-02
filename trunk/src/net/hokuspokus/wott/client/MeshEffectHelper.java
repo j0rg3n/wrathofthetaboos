@@ -31,7 +31,7 @@ public class MeshEffectHelper
 			public void update(float time)
 			{
 				total_time += time;
-				if(total_time > 2)
+				if(total_time > 20)
 				{
 					explodeNode.removeFromParent();
 				}
@@ -39,6 +39,7 @@ public class MeshEffectHelper
 		});
 		for(Geometry g : meshes)
 		{
+			g.clearControllers();
 			g.removeFromParent();
 			g.addController(new LimbExplodeController(g));
 			explodeNode.attachChild(g);
@@ -89,7 +90,7 @@ class LimbExplodeController extends Controller
 	public void update(float time)
 	{
 		geom.getLocalTranslation().addLocal(_tmpVec.set(velocity).multLocal(time));
-		geom.getLocalRotation().multLocal(_tmpAng.set(angular).multLocal(time));
+		//geom.getLocalRotation().multLocal(_tmpAng.set(angular).multLocal(time));
 	}
 	
 }

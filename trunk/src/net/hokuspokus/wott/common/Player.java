@@ -72,7 +72,7 @@ public class Player
 	            	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
 	                ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
 					r1 = (Node) BinaryImporter.getInstance().load(file);
-					//r1.getLocalScale().set(Vector3f.UNIT_XYZ);
+					r1.getLocalScale().set(0.02f, 0.02f, 0.02f);
 				}
 				
 				//TextureUtil.clearRenderStateRecursively(r1, RenderState.RS_TEXTURE);
