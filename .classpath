@@ -3,7 +3,11 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="jme/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="jme/lib/lwjgl.jar"/>
+	<classpathentry kind="lib" path="jme/lib/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="WrathOfTheTaboo/jme/lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="jme/lib/jinput.jar"/>
 	<classpathentry kind="lib" path="jme/lib/junit-4.1.jar"/>
 	<classpathentry kind="lib" path="jme/lib/jogg-0.0.7.jar"/>

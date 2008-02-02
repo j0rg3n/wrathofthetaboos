@@ -7,11 +7,14 @@ import net.hokuspokus.wott.common.TabooDisplay;
 import net.hokuspokus.wott.common.TabooSelector;
 
 import com.jme.app.SimpleGame;
+import com.jme.input.InputHandler;
+import com.jme.input.Mouse;
 import com.jme.input.controls.controller.CameraController;
 import com.jme.math.Matrix3f;
 import com.jme.math.Quaternion;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
+import com.jme.scene.shape.Box;
 
 public class WrathOfTaboo extends SimpleGame
 {
@@ -21,6 +24,7 @@ public class WrathOfTaboo extends SimpleGame
 	private Node boardNode;
 	Node selectorNode;
 	private TabooSelector selector;
+	private InputHandler old_fps_input;
 	
 	public static void main(String[] args)
 	{
@@ -40,6 +44,11 @@ public class WrathOfTaboo extends SimpleGame
 		rootNode.attachChild(selectorNode);
 		createNewBoard();
 		createNewSelector();
+		
+		// Kill the first-person input
+		old_fps_input = input;
+		//input = new InputHandler();
+		//Mouse
 	}
 	
 	
@@ -55,10 +64,11 @@ public class WrathOfTaboo extends SimpleGame
 
 	private void createNewBoard()
 	{
-		board = new Board();
+		board = new Board(15, 15);
 		p1 = new Player(new ColorRGBA(1,0,0,1));
 		p2 = new Player(new ColorRGBA(0,0,1,1));
 		
+		boardNode.detachAllChildren();
 		for(Person person : p1.getPopulation())
 		{
 			boardNode.attachChild(person.getGeometry());
@@ -69,6 +79,14 @@ public class WrathOfTaboo extends SimpleGame
 		{
 			boardNode.attachChild(person.getGeometry());
 			board.addPiece(person);
+		}
+		
+		for(int y = 0; y < board.getHeight(); y++)
+		{
+			for(int x = 0; x < board.getHeight(); x++)
+			{
+				boardNode.attachChild(board.getTile(x, y));
+			}
 		}
 	}
 	
@@ -84,5 +102,18 @@ public class WrathOfTaboo extends SimpleGame
 		super.simpleUpdate();
 		
 		board.update();
+		
+		
+		// HACKISH
+		for(Person person : p1.getPopulation())
+		{
+			//person.getGeomtry().setLocalTranslation(person.getP, y, z)
+		}
+		
+		for(Person person : p2.getPopulation())
+		{
+			//boardNode.attachChild(person.getGeomtry());
+		}
+	
 	}
 }
