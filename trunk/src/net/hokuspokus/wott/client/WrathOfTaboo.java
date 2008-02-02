@@ -31,5 +31,7 @@ public class WrathOfTaboo extends SimpleGame
 	protected void simpleUpdate()
 	{
 		super.simpleUpdate();
+		
+		board.update();
 	}
 }
