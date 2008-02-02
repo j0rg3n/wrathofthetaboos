@@ -11,6 +11,7 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
 import com.jme.scene.Spatial;
+import com.jme.scene.shape.Quad;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.TextureState;
@@ -91,6 +92,8 @@ public class TextureUtil
 		TextureState ts = getTextureState(tex_filename, flip);
 		s.setRenderState(ts);
 	}
+	
+	
 	
 	public void setMultiplyTexture(Spatial s, String parch_tex, float parch_scale, String overlay_tex, float overlay_scale)
 	{

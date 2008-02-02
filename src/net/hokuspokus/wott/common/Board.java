@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.common.TabooSelector.TABOO;
+import net.hokuspokus.wott.utils.TextureUtil;
 
 import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
@@ -170,9 +171,10 @@ public class Board {
 	public Spatial getTile(int x, int y)
 	{
 		Spatial tile = new Box("tile_"+x+","+y, 
-				new Vector3f(0.02f * TILESIZE, -0.2f, 0.02f * TILESIZE), 
-				new Vector3f(0.98f * TILESIZE,  0.0f, 0.98f * TILESIZE));
+				new Vector3f( 0, -0.2f, 0), 
+				new Vector3f( TILESIZE,  0.0f,  TILESIZE));
 		tile.setLocalTranslation(getTilePos(x, y));
+		TextureUtil.getInstance().setTexture(tile, "/2d gfx/tile1.jpg");
 		return tile;
 	}
 	

@@ -4,7 +4,6 @@ import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 import sun.rmi.transport.LiveRef;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.LogManager;
@@ -20,6 +19,7 @@ import net.hokuspokus.wott.common.TabooSelector;
 import net.hokuspokus.wott.common.TurnTimer;
 import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.common.Player.PlayerColor;
+import net.hokuspokus.wott.utils.TextureUtil;
 
 import com.jme.app.SimpleGame;
 import com.jme.input.FirstPersonHandler;
@@ -27,10 +27,15 @@ import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
+import com.jme.math.FastMath;
+import com.jme.math.Vector3f;
 import com.jme.math.Quaternion;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
+import com.jme.scene.Spatial;
+import com.jme.scene.shape.Box;
+import com.jme.scene.shape.Quad;
 import com.jme.scene.SceneElement;
 import com.jme.scene.Spatial;
 import com.jme.scene.Text;
@@ -39,7 +44,8 @@ import com.jme.system.DisplaySystem;
 
 public class WrathOfTaboo extends SimpleGame
 {
-	public static final String NEXT_TABOO_BINDING = "next_taboo";
+	public static final String NEXT_TABOO_BINDING = "switch_taboo_now";
+	Node environmentNode;
 
 	private InputHandler old_fps_input;
 	private static WrathOfTaboo singleton;
@@ -56,6 +62,8 @@ public class WrathOfTaboo extends SimpleGame
 	@Override
 	protected void simpleInitGame()
 	{
+    	MouseInput.get().setCursorVisible(false);
+
 		currentMode = new PlayingMode(rootNode);
 		
         // Kill the first-person input
@@ -63,10 +71,50 @@ public class WrathOfTaboo extends SimpleGame
 		input = currentMode.initInput(); 
 		//Mouse
         currentMode.initCameraPosition(cam);
+		//initBackgroundAndEnvironment();
+		
 		
         KeyBindingManager.getKeyBindingManager().set( "toggle_input_handler", KeyInput.KEY_F12 );		
         KeyBindingManager.getKeyBindingManager().set( NEXT_TABOO_BINDING, KeyInput.KEY_F11 );		
 	}
+
+
+	private void initBackgroundAndEnvironment()
+	{
+		/*
+		if(environmentNode != null)
+		{
+			environmentNode.detachAllChildren();
+		}
+		else
+		{
+			environmentNode = new Node("Environment");
+			rootNode.attachChild(environmentNode);
+		}
+		// Create a bottom plane (with earth texture)
+		Quad bottomPlane = new Quad("Bottom plane", 100, 100);
+		bottomPlane.copyTextureCoords(0, 0, 1);
+		TextureUtil.getInstance().setMultiplyTexture(bottomPlane, "/2d gfx/dirt.jpg", 10, "/2d gfx/dirt_overlay.jpg", 1f);
+		//setTexture(bottomPlane, "2d gfx/dirt.jpg", new Vector3f());
+		bottomPlane.getLocalRotation().fromAngles(FastMath.HALF_PI, 0, 0);
+		bottomPlane.getLocalTranslation().set(0, -0.03f, 0);
+		environmentNode.attachChild(bottomPlane);
+		
+		// Set up sides for the game
+		Box leftSide = new Box("left border", new Vector3f(-0.2f, 0, 0), new Vector3f(0, 1, board.getHeight()));
+		environmentNode.attachChild(leftSide);
+		Box rightSide = new Box("right border", new Vector3f(board.getWidth(), 0, 0), new Vector3f(board.getWidth()+0.2f, 1, board.getHeight()));
+		environmentNode.attachChild(rightSide);
+		Box topSide = new Box("top border", new Vector3f(0, 0, -0.2f), new Vector3f(board.getWidth(), 1, 0));
+		environmentNode.attachChild(topSide);
+		Box bottomSide = new Box("bottom border", new Vector3f(0, 0, board.getHeight()), new Vector3f(board.getWidth(), 1, board.getHeight()+0.2f));
+		environmentNode.attachChild(bottomSide);
+		
+		// Ensure that all is up2date
+		environmentNode.updateRenderState();
+		*/
+	}
+
 
 	public DisplaySystem getdisplay()
 	{
@@ -91,6 +139,7 @@ public class WrathOfTaboo extends SimpleGame
             {
             	currentMode.initCameraPosition(cam);
             	input = currentMode.initInput();
+            	initBackgroundAndEnvironment();
             }
             else
             {
