@@ -188,4 +188,9 @@ public class WrathOfTaboo extends SimpleGame
 		
 		return rootNode;
 	}
+
+	public Camera getCamera()
+	{
+		return cam;
+	}
 }

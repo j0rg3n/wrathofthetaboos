@@ -29,8 +29,8 @@ public class PlayingMode extends GameMode {
 	TurnTimer timer;
 	private PukInputHandler real_input;
 	
-	private static final int MANCOUNT = 5;
-	private static final int WOMANCOUNT = 5;
+	private static final int MANCOUNT = 15;
+	private static final int WOMANCOUNT = 15;
 	
 	public PlayingMode(WrathOfTaboo game) {
 		
@@ -88,7 +88,7 @@ public class PlayingMode extends GameMode {
 
 	private void createNewBoard()
 	{
-		board = new Board(10, 10);
+		board = new Board(10, 10, game);
 		p1 = new Player(PlayerColor.RED);
 		p2 = new Player(PlayerColor.BLUE);
 		

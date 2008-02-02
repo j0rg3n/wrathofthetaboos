@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import net.hokuspokus.wott.client.MeshEffectHelper;
+import net.hokuspokus.wott.client.WrathOfTaboo;
 import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.common.TabooSelector.TABOO;
 import net.hokuspokus.wott.utils.TextureUtil;
@@ -45,11 +46,13 @@ public class Board {
 
 	private int width;
 	private int height;
+	private WrathOfTaboo app;
 
-	public Board(int width, int height)
+	public Board(int width, int height, WrathOfTaboo app)
 	{
 		this.width = width;
 		this.height = height;
+		this.app = app;
 	}
 
 	public void markViolators(TABOO taboo) {
@@ -330,12 +333,12 @@ public class Board {
 
 			
 			//p.getGeometry().removeFromParent();
-			MeshEffectHelper.explodeNode((Node) p.getGeometry());
+			MeshEffectHelper.explodeNode((Node) p.getGeometry(), app.getCamera());
 		}
 	}
 
 	public int getRoundTime() {
-		return living.size();
+		return Math.min(10, living.size());
 	}
 	
 	public boolean isDone() {
