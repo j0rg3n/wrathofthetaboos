@@ -16,11 +16,13 @@ import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
+import com.jme.renderer.Renderer;
 import com.jme.scene.Controller;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Arrow;
+import com.jme.scene.shape.Quad;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
 import com.jme.util.export.binary.BinaryImporter;
@@ -41,11 +43,16 @@ public class Player
 		GREEN
 	}
 	
+	public Quad bigIcon, smallIcon;
+	
 	private PlayerColor color;
 	
-	public Player(PlayerColor color) {
+	public Player(PlayerColor color, String bigIconPath, String smallIconPath) {
 		this.color = color;
+		this.bigIcon = TextureUtil.getTransparentQuad("icon", bigIconPath, 300, 300);
+		this.smallIcon = TextureUtil.getTransparentQuad("icon", smallIconPath, 170, 170);
 	}
+	
 	public Node createNode(PersonType type)
 	{
 		if (USE_PLACEHOLDER) {

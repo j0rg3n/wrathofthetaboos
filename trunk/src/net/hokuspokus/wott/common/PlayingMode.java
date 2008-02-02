@@ -13,6 +13,7 @@ import com.jme.app.BaseGame;
 import com.jme.app.SimpleGame;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
+import com.jme.math.FastMath;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Arrow;
@@ -28,6 +29,10 @@ public class PlayingMode extends GameMode {
 	private TabooSelector selector;
 	TurnTimer timer;
 	private PukInputHandler real_input;
+	Quad background;
+	boolean choosingTaboo;
+	
+	TabooBar tabooBar;
 	
 	private static final int MANCOUNT = 15;
 	private static final int WOMANCOUNT = 15;
@@ -36,10 +41,16 @@ public class PlayingMode extends GameMode {
 		
 		super(game);
 		
+		background = TextureUtil.getFullscreenQuad("bg", 
+				"/ressources/2d gfx/background.jpg");
+		
+		game.getBgRootNode().attachChild(background);
+		
+		tabooBar = new TabooBar();
+		game.getBgRootNode().attachChild(tabooBar.getRootNode());
+		
 		boardNode = new Node();
 		selectorNode = new Node();
-		
-		//rootNode.setLocalRotation(new Quaternion(new float[]{ (float)Math.PI * 1.0f / 4.0f , 0, 0 }));
 		
 		rootNode.attachChild(boardNode);
 		rootNode.attachChild(selectorNode);
@@ -55,6 +66,7 @@ public class PlayingMode extends GameMode {
         real_input = new PukInputHandler(this);
 
 		timer.reset(board.getRoundTime());
+		//choosingTaboo = false;
 	}
 	
 	public InputHandler initInput() {
@@ -89,8 +101,17 @@ public class PlayingMode extends GameMode {
 	private void createNewBoard()
 	{
 		board = new Board(10, 10, game);
-		p1 = new Player(PlayerColor.RED);
-		p2 = new Player(PlayerColor.BLUE);
+		p1 = new Player(PlayerColor.RED, 
+				"/ressources/2d gfx/god_a_big.png",
+				"/ressources/2d gfx/god_a_small.png");
+		p2 = new Player(PlayerColor.BLUE,
+				"/ressources/2d gfx/god_b_big.png",
+				"/ressources/2d gfx/god_b_small.png");
+		
+		game.getBgRootNode().attachChild(p1.bigIcon);
+		game.getBgRootNode().attachChild(p2.bigIcon);
+		game.getBgRootNode().attachChild(p1.smallIcon);
+		game.getBgRootNode().attachChild(p2.smallIcon);
 		
 		boardNode.detachAllChildren();
 		
@@ -131,21 +152,35 @@ public class PlayingMode extends GameMode {
 	}
 
 	public void update() {
-        board.markViolators(selector.getCurrent());
 
-        if ( KeyBindingManager.getKeyBindingManager().isValidCommand(
-                WrathOfTaboo.NEXT_TABOO_BINDING, false ) || timer.isTimeOut()) {
-        	selector.next();
-        	timer.reset(board.getRoundTime());
+		float t = (System.currentTimeMillis() % 1000) * 2.0f / 1000.0f * FastMath.PI;
+
+		p1.smallIcon.setLocalTranslation(game.getDisplay().getWidth() * 0.25f, 
+				game.getDisplay().getHeight() * (0.9f + FastMath.sin(t) * .01f), 0);
+		p2.smallIcon.setLocalTranslation(game.getDisplay().getWidth() * 0.75f, 
+				game.getDisplay().getHeight() * (0.9f + FastMath.cos(t) * .01f), 0);
+        
+		board.markViolators(selector.getCurrent());
+
+        if (!board.isDone()) {
+	        if ( timer.isTimeOut()) {
+	        	
+	        	selector.next();
+	        	timer.reset(board.getRoundTime());
+	        	
+	        	board.killViolators();
+	        }
+        } else {
         	
-        	board.killViolators();
         }
+        
 
 		// Upate game-logic
 		board.update();
 
 		// Draw taboo selector
 		selector.update();
+		tabooBar.update();
 		
 		// Update timer
 		timer.update();

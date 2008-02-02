@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 import net.hokuspokus.wott.common.Board;
 import net.hokuspokus.wott.common.GameMode;
-import net.hokuspokus.wott.common.HighscoreMode;
 import net.hokuspokus.wott.common.IntroMode;
 import net.hokuspokus.wott.common.Person;
 import net.hokuspokus.wott.common.Player;
@@ -34,6 +33,7 @@ import com.jme.math.Vector3f;
 import com.jme.math.Quaternion;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
+import com.jme.renderer.pass.RenderPass;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Box;
@@ -136,6 +136,10 @@ public class WrathOfTaboo extends SimpleGame
 		super.simpleRender();
 	}
 	
+	public Node getBgRootNode() {
+		return bgRootNode;
+	}
+	
 	@Override
 	protected void simpleUpdate()
 	{
@@ -160,12 +164,11 @@ public class WrathOfTaboo extends SimpleGame
         if ( currentMode.isDone() ) {
         	
         	rootNode.detachAllChildren();
+        	bgRootNode.detachAllChildren();
         	
         	if (currentMode instanceof IntroMode) {
         		setMode(new PlayingMode(this));
         	} else if (currentMode instanceof PlayingMode) {
-        		setMode(new HighscoreMode(this));
-        	} else {
         		setMode(new IntroMode(this));
         	}
         }

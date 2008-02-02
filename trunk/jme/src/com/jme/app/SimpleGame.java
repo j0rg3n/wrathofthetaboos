@@ -34,6 +34,8 @@ package com.jme.app;
 
 import com.jme.image.Texture;
 import com.jme.renderer.Renderer;
+import com.jme.renderer.pass.RenderPass;
+import com.jme.scene.Node;
 import com.jme.util.geom.Debugger;
 
 
@@ -57,6 +59,8 @@ import com.jme.util.geom.Debugger;
  */
 public abstract class SimpleGame extends BaseSimpleGame {
 
+	protected Node bgRootNode = new Node();
+	
     /**
      * Called every frame to update scene information.
      * 
@@ -83,10 +87,15 @@ public abstract class SimpleGame extends BaseSimpleGame {
      *            unused in this implementation
      * @see AbstractGame#render(float interpolation)
      */
-    protected final void render(float interpolation) {
+    protected void render(float interpolation) {
         super.render(interpolation);
         
         Renderer r = display.getRenderer();
+        
+        RenderPass rp = new RenderPass();
+        bgRootNode.updateRenderState();
+        rp.add(bgRootNode);
+        rp.doRender(r);
 
         /** Draw the rootNode and all its children. */
         r.draw(rootNode);
