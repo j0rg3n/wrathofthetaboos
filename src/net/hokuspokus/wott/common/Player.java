@@ -114,4 +114,8 @@ public class Player
 	{
 		return people;
 	}
+	public PlayerColor getColor()
+	{
+		return color;
+	}
 }
