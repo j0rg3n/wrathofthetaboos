@@ -60,9 +60,12 @@ public class Player
 				C1.convert(new BufferedInputStream(model.openStream()), BO);
 	            
 				r1 = (Node) BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
-				r1.setLocalScale(.010f);
+				if(type != PersonType.WOMAN)
+					r1.setLocalScale(.010f);
+				else
+					r1.getLocalScale().set(Vector3f.UNIT_XYZ);
 				
-				TextureUtil.clearRenderStateRecursively(r1, RenderState.RS_TEXTURE);
+				//TextureUtil.clearRenderStateRecursively(r1, RenderState.RS_TEXTURE);
 				TextureUtil.getInstance().setTexture(r1, "/2d gfx/player_"+color+".jpg");
 				
 		 /*       TextureState ts = WrathOfTaboo.getInstance().getdisplay().getRenderer().createTextureState();
@@ -84,9 +87,9 @@ public class Player
 				//if (r1.getChild(0).getControllers().size() != 0)
 				//	r1.getChild(0).getController(0).setSpeed(20);
 	            
-				Quaternion temp = new Quaternion();
-				temp.fromAngleAxis(FastMath.PI / 2, new Vector3f(-1, 0, 0));
-				r1.setLocalRotation(temp);
+				//Quaternion temp = new Quaternion();
+				//temp.fromAngleAxis(FastMath.PI / 2, new Vector3f(-1, 0, 0));
+				//r1.setLocalRotation(temp);
 				
 				//r1.setLocalTranslation(new Vector3f(10, 0, 0));
 				// rootNode.attachChild(r);
