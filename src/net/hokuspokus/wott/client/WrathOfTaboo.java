@@ -1,47 +1,16 @@
 package net.hokuspokus.wott.client;
 
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
-import sun.rmi.transport.LiveRef;
-
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-
-import net.hokuspokus.wott.common.Board;
 import net.hokuspokus.wott.common.GameMode;
 import net.hokuspokus.wott.common.IntroMode;
-import net.hokuspokus.wott.common.Person;
-import net.hokuspokus.wott.common.Player;
 import net.hokuspokus.wott.common.PlayingMode;
-import net.hokuspokus.wott.common.TabooDisplay;
-import net.hokuspokus.wott.common.TabooSelector;
-import net.hokuspokus.wott.common.TurnTimer;
-import net.hokuspokus.wott.common.Person.PersonType;
-import net.hokuspokus.wott.common.Player.PlayerColor;
-import net.hokuspokus.wott.utils.TextureUtil;
-
 import com.jme.app.SimpleGame;
 import com.jme.input.FirstPersonHandler;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
-import com.jme.math.FastMath;
-import com.jme.math.Vector3f;
-import com.jme.math.Quaternion;
 import com.jme.renderer.Camera;
-import com.jme.renderer.ColorRGBA;
-import com.jme.renderer.pass.RenderPass;
 import com.jme.scene.Node;
-import com.jme.scene.Spatial;
-import com.jme.scene.shape.Box;
-import com.jme.scene.shape.Quad;
-import com.jme.scene.SceneElement;
-import com.jme.scene.Spatial;
-import com.jme.scene.Text;
-import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 
 public class WrathOfTaboo extends SimpleGame

@@ -1,8 +1,6 @@
 package net.hokuspokus.wott.client;
 
 import java.util.Vector;
-
-import com.jme.animation.SpatialTransformer;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
@@ -11,7 +9,6 @@ import com.jme.scene.Controller;
 import com.jme.scene.Geometry;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
-import com.jme.system.DisplaySystem;
 
 public class MeshEffectHelper
 {

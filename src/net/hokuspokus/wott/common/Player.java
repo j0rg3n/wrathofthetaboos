@@ -1,37 +1,18 @@
 package net.hokuspokus.wott.common;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-
-import net.hokuspokus.wott.client.WrathOfTaboo;
 import net.hokuspokus.wott.common.Person.PersonType;
-
+import net.hokuspokus.wott.utils.TextureUtil;
 import com.jme.animation.SpatialTransformer;
-import com.jme.bounding.BoundingBox;
-import com.jme.math.FastMath;
-import com.jme.math.Quaternion;
-import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
-import com.jme.renderer.Renderer;
 import com.jme.scene.Controller;
 import com.jme.scene.Node;
-import com.jme.scene.SceneElement;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Arrow;
 import com.jme.scene.shape.Quad;
-import com.jme.scene.state.MaterialState;
-import com.jme.scene.state.RenderState;
-import com.jme.system.DisplaySystem;
 import com.jme.util.export.binary.BinaryImporter;
-import com.jmex.model.animation.KeyframeController;
 import com.jme.util.resource.ResourceLocatorTool;
 import com.jme.util.resource.SimpleResourceLocator;
-import com.jmex.model.converters.MaxToJme;
-import net.hokuspokus.wott.utils.TextureUtil;
 
 public class Player
 {

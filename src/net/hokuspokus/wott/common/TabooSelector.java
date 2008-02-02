@@ -2,14 +2,10 @@ package net.hokuspokus.wott.common;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
-import com.jme.scene.Spatial;
 import com.jme.scene.Text;
-import com.jme.scene.shape.Arrow;
-import com.jme.scene.shape.Sphere;
 import com.jme.scene.state.RenderState;
 
 public class TabooSelector {

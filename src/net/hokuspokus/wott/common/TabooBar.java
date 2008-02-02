@@ -1,7 +1,6 @@
 package net.hokuspokus.wott.common;
 
 import net.hokuspokus.wott.utils.TextureUtil;
-
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Quad;
