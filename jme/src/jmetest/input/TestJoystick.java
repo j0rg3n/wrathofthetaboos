@@ -58,6 +58,7 @@ public class TestJoystick {
             input.update();
             for (int x = 0; x < input.getJoystickCount(); x++) {
                 Joystick test = input.getJoystick(x);
+                System.out.println("test:"+test);
                 for (int i = 0; i < test.getAxisCount(); i++) {
                     float val = test.getAxisValue(i);
                     if (val != 0)
