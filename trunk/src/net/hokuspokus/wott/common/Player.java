@@ -45,7 +45,7 @@ public class Player
 			Node r1 = null;
 			try
 			{
-				if(type == PersonType.WOMAN)
+				if(type == PersonType.MAN)
 				{
 					/*
 					URL model = Player.class.getClassLoader().getResource("ressources/3d gfx/" + (type == PersonType.WOMAN ? "mini_negerkvinde.3DS" : "Mand2.3DS"));
@@ -84,7 +84,7 @@ public class Player
 				
 */				
 				TextureUtil.getInstance().setTexture(r1, "/ressources/2d gfx/player_"+color+".jpg");
-
+/*
 				for (Controller c : r1.getControllers())
 				{
 					System.out.println(" ");
@@ -102,7 +102,7 @@ public class Player
 						System.out.println(" ");
 					}
 				}
-				
+*/
 				SpatialTransformer kc;
 				if (r1 != null && r1.getControllerCount() >= 1 && r1.getController(0) != null)
 				{
