@@ -7,17 +7,24 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import net.hokuspokus.wott.client.WrathOfTaboo;
 import net.hokuspokus.wott.common.Person.PersonType;
 
+import com.jme.animation.SpatialTransformer;
 import com.jme.bounding.BoundingBox;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
+import com.jme.scene.Controller;
 import com.jme.scene.Node;
+import com.jme.scene.SceneElement;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Arrow;
+import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
 import com.jme.util.export.binary.BinaryImporter;
+import com.jmex.model.animation.KeyframeController;
 import com.jme.util.resource.ResourceLocatorTool;
 import com.jme.util.resource.SimpleResourceLocator;
 import com.jmex.model.converters.MaxToJme;
@@ -65,7 +72,7 @@ public class Player
 						r1.getLocalScale().set(Vector3f.UNIT_XYZ);
 					*/
 					//r1 = new Node();
-	            	File file = new File("ressources/3d gfx/Bobbing.jme");
+	            	File file = new File("ressources/3d gfx/Bobbing2.jme");
 	            	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
 	                ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
 					r1 = (Node) BinaryImporter.getInstance().load(file);
@@ -80,35 +87,31 @@ public class Player
 					r1.getLocalScale().set(0.02f, 0.02f, 0.02f);
 				}
 				
-				//TextureUtil.clearRenderStateRecursively(r1, RenderState.RS_TEXTURE);
-				TextureUtil.getInstance().setTexture(r1, "/ressources/2d gfx/player_"+color+".jpg");
+				//TextureUtil.getInstance().setTexture(r1, "/ressources/2d gfx/player_"+color+".jpg");
+
+				System.out.println(" ");
+				for (Controller c : r1.getControllers())
+				{
+					System.out.println(c);
+				}
+				System.out.println();
+
+				for (Spatial c : r1.getChildren())
+				{
+					for (Controller con : c.getControllers())
+					{
+						System.out.println(con);
+					}
+				}
+				System.out.println(" ");
 				
-		 /*       TextureState ts = WrathOfTaboo.getInstance().getdisplay().getRenderer().createTextureState();
-		        ts.setTexture(TextureManager.loadTexture(TestSimpleBoneAnimation.class
-		                .getClassLoader().getResource(type == PersonType.WOMAN ? "2d gfx/CITROEN_.JPG" : "2d gfx/CITROEN_.JPG"),
-		                Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR, 0.0f, true));
-		        r1.setRenderState(ts);*/
-	/*
-		        MaterialState ms = WrathOfTaboo.getInstance().getdisplay().getRenderer().createMaterialState();
-		        ms.setSpecular(new ColorRGBA(0.9f, 0.9f, 0.9f, 1));
-		        ms.setShininess(10);
-		        b.setRenderState(ms);*/
-				
-				// Node r = new Node("parent stuff");
-				// r.attachChild(C1.get(new
-				// BufferedInputStream(modelToLoad.openStream()), BO));
-				// r.setLocalScale(.1f);
-				//r1.setLocalScale(.1f);
-				//if (r1.getChild(0).getControllers().size() != 0)
-				//	r1.getChild(0).getController(0).setSpeed(20);
-	            
-				//Quaternion temp = new Quaternion();
-				//temp.fromAngleAxis(FastMath.PI / 2, new Vector3f(-1, 0, 0));
-				//r1.setLocalRotation(temp);
-				
-				//r1.setLocalTranslation(new Vector3f(10, 0, 0));
-				// rootNode.attachChild(r);
-				// rootNode.attachChild(r1);
+				SpatialTransformer kc;
+				if (r1 != null && r1.getControllerCount() >= 1 && r1.getController(0) != null)
+				{
+					kc = (SpatialTransformer) r1.getController(0);
+					kc.setSpeed(10);
+					kc.setRepeatType(Controller.RT_WRAP);
+				}
 			}
 			catch (IOException e)
 			{
