@@ -49,17 +49,20 @@ public class MeshEffectHelper
 
 	private static void recursivelyAddMeshes(Node meshes_node, Vector<Geometry> meshes)
 	{
-		for(Spatial s : meshes_node.getChildren())
+		if(meshes_node.getChildren() != null)
 		{
-			if(s == null)
-				continue;
-			if(s instanceof Geometry)
+			for(Spatial s : meshes_node.getChildren())
 			{
-				meshes.add((Geometry) s);
-			}
-			else if (s instanceof Node)
-			{
-				recursivelyAddMeshes((Node) s, meshes);
+				if(s == null)
+					continue;
+				if(s instanceof Geometry)
+				{
+					meshes.add((Geometry) s);
+				}
+				else if (s instanceof Node)
+				{
+					recursivelyAddMeshes((Node) s, meshes);
+				}
 			}
 		}
 	}
