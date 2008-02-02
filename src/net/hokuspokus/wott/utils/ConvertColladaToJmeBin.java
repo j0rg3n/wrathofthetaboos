@@ -23,6 +23,7 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.Controller;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
+import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState;
 import com.jme.util.export.Savable;
 import com.jme.util.export.binary.BinaryExporter;
@@ -125,19 +126,32 @@ public class ConvertColladaToJmeBin extends BaseSimpleGame
 		        
 		        //Obtain the animation from the file by name
 		        BoneAnimation anim1 = ColladaImporter.getAnimationController(animations.get(0));
-		        //System.out.println("anim1:"+anim1.getBoneTransforms().get(0).);
+		        //System.out.println("anim1:"+);
+			        
+		        //set up a new animation controller with our BoneAnimation
+		        AnimationController ac = new AnimationController();
+		        ac.addAnimation(anim1);
+		        ac.setRepeatType(Controller.RT_WRAP);
+		        ac.setActive(true);
+		        ac.setActiveAnimation(anim1);
 			        
 		        if(skel != null)
 		        {
-			        //set up a new animation controller with our BoneAnimation
-			        AnimationController ac = new AnimationController();
-			        ac.addAnimation(anim1);
-			        ac.setRepeatType(Controller.RT_WRAP);
-			        ac.setActive(true);
-			        ac.setActiveAnimation(anim1);
-			        
 			        //assign the animation controller to our skeleton
 			        skel.addController(ac);
+		        }
+		        else
+		        {
+		        	String nodeId = anim1.getBoneTransforms().get(0).getBoneId();
+		        	Spatial s = NodeUtils.getFirstChildSubNamed(node, nodeId, SceneElement.NODE, Spatial.class);
+		        	if(s != null)
+		        	{
+		        		s.addController(ac);
+		        	}
+		        	else
+		        	{
+		        		throw new RuntimeException("Could not find: "+nodeId);
+		        	}
 		        }
 	        }
 	        NodeUtils.printNodeStructure(node);
