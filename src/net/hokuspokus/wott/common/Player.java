@@ -5,22 +5,17 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import net.hokuspokus.wott.common.Person.PersonType;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 import com.jme.scene.shape.Arrow;
-import com.jme.scene.shape.Box;
-import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
-import com.jme.scene.state.TextureState;
-import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.model.converters.MaxToJme;
 import net.hokuspokus.wott.utils.TextureUtil;
@@ -51,10 +46,8 @@ public class Player
 			Node r1 = null;
 			try
 			{
-				
-				
-				
-				URL model = Player.class.getClassLoader().getResource(type == PersonType.WOMAN ? "3d gfx/Kvinde.3DS" : "3d gfx/Mand.3DS");
+				URL model = Player.class.getClassLoader().getResource("ressources/3d gfx/" + (type == PersonType.WOMAN ? "Kvinde.3DS" : "Mand2.3DS"));
+
 				MaxToJme C1 = new MaxToJme();
 				ByteArrayOutputStream BO = new ByteArrayOutputStream();
 				C1.convert(new BufferedInputStream(model.openStream()), BO);
@@ -66,7 +59,7 @@ public class Player
 					r1.getLocalScale().set(Vector3f.UNIT_XYZ);
 				
 				//TextureUtil.clearRenderStateRecursively(r1, RenderState.RS_TEXTURE);
-				TextureUtil.getInstance().setTexture(r1, "/2d gfx/player_"+color+".jpg");
+				TextureUtil.getInstance().setTexture(r1, "/ressources/2d gfx/player_"+color+".jpg");
 				
 		 /*       TextureState ts = WrathOfTaboo.getInstance().getdisplay().getRenderer().createTextureState();
 		        ts.setTexture(TextureManager.loadTexture(TestSimpleBoneAnimation.class
