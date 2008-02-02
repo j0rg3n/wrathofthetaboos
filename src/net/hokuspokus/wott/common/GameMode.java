@@ -1,5 +1,8 @@
 package net.hokuspokus.wott.common;
 
+import net.hokuspokus.wott.client.WrathOfTaboo;
+
+import com.jme.app.SimpleGame;
 import com.jme.input.InputHandler;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
@@ -7,9 +10,11 @@ import com.jme.scene.Node;
 public abstract class GameMode {
 
 	protected Node rootNode;
+	protected WrathOfTaboo game;
 	
-	public GameMode() {
-		rootNode = new Node();
+	public GameMode(WrathOfTaboo game) {
+		this.game = game;
+		this.rootNode = game.getRootNode();
 	}
 	
 	

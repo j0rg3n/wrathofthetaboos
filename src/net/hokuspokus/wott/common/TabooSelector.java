@@ -11,7 +11,6 @@ import com.jme.scene.Text;
 import com.jme.scene.shape.Arrow;
 import com.jme.scene.shape.Sphere;
 import com.jme.scene.state.RenderState;
-import com.jme.scene.state.TextureState;
 
 public class TabooSelector {
 
@@ -43,10 +42,7 @@ public class TabooSelector {
 		for (TABOO taboo : TABOO.values()) {
 			Text tabooText;
 			
-			tabooText = Text.createDefaultTextLabel( taboo.name() + " label" );
-		    tabooText.setCullMode( SceneElement.CULL_NEVER );
-		    tabooText.setTextureCombineMode( TextureState.REPLACE );
-	        tabooText.print( taboo.name() );
+			tabooText = SuperDuperAssistants.createText( taboo.name() + " label", taboo.name() );
 
 	        rootNode.attachChild(tabooText);
 			
@@ -54,10 +50,7 @@ public class TabooSelector {
 			taboos.add(d);
 		}
 		
-		marker = Text.createDefaultTextLabel( "Taboo marker");
-	    marker.setCullMode( SceneElement.CULL_NEVER );
-	    marker.setTextureCombineMode( TextureState.REPLACE );
-        marker.print( ">>" );
+		marker = SuperDuperAssistants.createText("Taboo marker", ">>");
 
         rootNode.attachChild(marker);
         
@@ -97,12 +90,13 @@ public class TabooSelector {
 		for (int i = 0; i < taboos.size(); ++i) {
 			TabooDisplay d = taboos.get(i);
 			
-			y += 100.0f;
-			d.getGeometry().setLocalTranslation(marker.getWidth(), 750.0f - y, 0.0f);
+			d.getGeometry().setLocalTranslation(marker.getWidth(), -y, 0.0f);
 			
 			if (i == current) {
-				marker.setLocalTranslation(0.0f, 750.0f - y, 0.0f);
+				marker.setLocalTranslation(0.0f, -y, 0.0f);
 			}
+
+			y += marker.getHeight();
 		}
 	}
 

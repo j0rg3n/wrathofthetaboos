@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 
 import net.hokuspokus.wott.common.Board;
 import net.hokuspokus.wott.common.GameMode;
+import net.hokuspokus.wott.common.HighscoreMode;
+import net.hokuspokus.wott.common.IntroMode;
 import net.hokuspokus.wott.common.Person;
 import net.hokuspokus.wott.common.Player;
 import net.hokuspokus.wott.common.PlayingMode;
@@ -46,6 +48,7 @@ public class WrathOfTaboo extends SimpleGame
 {
 	public static final String NEXT_TABOO_BINDING = "switch_taboo_now";
 	Node environmentNode;
+	public static final String NEXT_GAME_MODE = "next_game_mode";
 
 	private InputHandler old_fps_input;
 	private static WrathOfTaboo singleton;
@@ -64,20 +67,32 @@ public class WrathOfTaboo extends SimpleGame
 	{
     	MouseInput.get().setCursorVisible(false);
 
-		currentMode = new PlayingMode(rootNode);
-		
-        // Kill the first-person input
-		old_fps_input = input;
-		input = currentMode.initInput(); 
-		//Mouse
-        currentMode.initCameraPosition(cam);
-		//initBackgroundAndEnvironment();
-		
-		
+    	setMode(new IntroMode(this));
+        //setMode(new HighscoreMode(this));
+        //setMode(new PlayingMode(this));
+
         KeyBindingManager.getKeyBindingManager().set( "toggle_input_handler", KeyInput.KEY_F12 );		
-        KeyBindingManager.getKeyBindingManager().set( NEXT_TABOO_BINDING, KeyInput.KEY_F11 );		
+        KeyBindingManager.getKeyBindingManager().set( NEXT_TABOO_BINDING, KeyInput.KEY_F11 );
+        KeyBindingManager.getKeyBindingManager().set( NEXT_GAME_MODE, KeyInput.KEY_SPACE );
 	}
 
+	private void setMode(GameMode newMode) {
+
+		rootNode.updateRenderState();
+		
+		currentMode = newMode;
+		
+		// Kill the first-person input
+		old_fps_input = input;
+		InputHandler newInput = currentMode.initInput();
+		if (newInput != null) {
+			input = newInput;  
+		}
+		//Mouse
+        currentMode.initCameraPosition(cam);
+
+        //initBackgroundAndEnvironment();
+	}
 
 	private void initBackgroundAndEnvironment()
 	{
@@ -115,12 +130,6 @@ public class WrathOfTaboo extends SimpleGame
 		*/
 	}
 
-
-	public DisplaySystem getdisplay()
-	{
-		return display;
-	}
-	
 	@Override
 	protected void simpleRender()
 	{
@@ -147,6 +156,20 @@ public class WrathOfTaboo extends SimpleGame
             	input = old_fps_input;
             }
         }
+        
+        if ( KeyBindingManager.getKeyBindingManager().isValidCommand(
+                NEXT_GAME_MODE, false ) ) {
+        	
+        	rootNode.detachAllChildren();
+        	
+        	if (currentMode instanceof IntroMode) {
+        		setMode(new PlayingMode(this));
+        	} else if (currentMode instanceof PlayingMode) {
+        		setMode(new HighscoreMode(this));
+        	} else {
+        		setMode(new IntroMode(this));
+        	}
+        }
 
         currentMode.update();
 	}
@@ -154,5 +177,14 @@ public class WrathOfTaboo extends SimpleGame
 	public static WrathOfTaboo getInstance()
 	{
 		return singleton;
+	}
+	
+	public DisplaySystem getDisplay() {
+		return display;
+	}
+
+	public Node getRootNode() {
+		
+		return rootNode;
 	}
 }

@@ -211,7 +211,10 @@ public class Board {
 			case MIX:
 			case MEN:
 			case WOMEN:
-				if (persons.size() >= 3) {
+				// Note: This also covers a single man and a single woman, but in that case,
+				// we'll just jump directly to the MANWOMAN test below, so the extra check is
+				// benign.
+				if (persons.size() >= 2) {
 					if (isAllSameType(taboo, persons)) {
 						if (persons.get(0).getType() == PersonType.MAN) {
 							isViolator = taboo == TABOO.MEN;
@@ -223,6 +226,11 @@ public class Board {
 					}
 				}
 				break;
+			case MANWOMAN:
+				if (persons.size() == 2) {
+					isViolator = persons.get(0).getType() != persons.get(1).getType();
+				}
+				break;
 			case MAN:
 			case WOMAN:
 				if (persons.size() == 1) {
@@ -230,13 +238,6 @@ public class Board {
 						isViolator = taboo == TABOO.MAN;
 					} else {
 						isViolator = taboo == TABOO.WOMAN;
-					}
-				}
-				break;
-			case MANWOMAN:
-				if (persons.size() == 2) {
-					if (persons.get(0).getType() != persons.get(1).getType()) {
-						isViolator = taboo == TABOO.MANWOMAN;
 					}
 				}
 				break;

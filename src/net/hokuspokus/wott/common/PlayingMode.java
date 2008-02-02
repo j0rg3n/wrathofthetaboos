@@ -29,9 +29,9 @@ public class PlayingMode extends GameMode {
 	private static final int MANCOUNT = 5;
 	private static final int WOMANCOUNT = 5;
 	
-	public PlayingMode(Node rootNode) {
+	public PlayingMode(WrathOfTaboo game) {
 		
-		this.rootNode = rootNode;
+		super(game);
 		
 		boardNode = new Node();
 		selectorNode = new Node();
