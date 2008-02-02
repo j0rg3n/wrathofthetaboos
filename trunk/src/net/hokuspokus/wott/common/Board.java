@@ -41,8 +41,8 @@ public class Board {
 
 	public Spatial getTile(int x, int y)
 	{
-		Spatial tile = new Box("tile_"+x+","+y, new Vector3f(0.02f, 0.02f, 0.1f), new Vector3f(0.98f, 0.98f, 0.1f));
-		tile.setLocalTranslation(x, y, 0);
+		Spatial tile = new Box("tile_"+x+","+y, new Vector3f(0.02f, 0.1f, 0.02f), new Vector3f(0.98f, 0.1f, 0.98f));
+		tile.setLocalTranslation(x, 0, y);
 		return tile;
 	}
 	
