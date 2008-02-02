@@ -7,7 +7,10 @@ import net.hokuspokus.wott.common.TabooDisplay;
 import net.hokuspokus.wott.common.TabooSelector;
 
 import com.jme.app.SimpleGame;
+import com.jme.input.FirstPersonHandler;
 import com.jme.input.InputHandler;
+import com.jme.input.KeyBindingManager;
+import com.jme.input.KeyInput;
 import com.jme.input.Mouse;
 import com.jme.input.controls.controller.CameraController;
 import com.jme.math.Matrix3f;
@@ -25,6 +28,7 @@ public class WrathOfTaboo extends SimpleGame
 	Node selectorNode;
 	private TabooSelector selector;
 	private InputHandler old_fps_input;
+	private PukInputHandler real_input;
 	
 	public static void main(String[] args)
 	{
@@ -47,10 +51,13 @@ public class WrathOfTaboo extends SimpleGame
 		
 		// Kill the first-person input
 		old_fps_input = input;
-		//input = new PukInputHandler(this);
+		input = real_input = new PukInputHandler(this);
 		//Mouse
 		
+		// Make sure the camera starts in position
 		initCameraPosition();
+		
+        KeyBindingManager.getKeyBindingManager().set( "toggle_input_handler", KeyInput.KEY_F12 );		
 	}
 	
 	
@@ -110,7 +117,22 @@ public class WrathOfTaboo extends SimpleGame
 	protected void simpleUpdate()
 	{
 		super.simpleUpdate();
+	
+		// Change input
+        if ( KeyBindingManager.getKeyBindingManager().isValidCommand(
+                "toggle_input_handler", false ) ) {
+            if(input instanceof FirstPersonHandler)
+            {
+            	initCameraPosition();
+            	input = real_input;
+            }
+            else
+            {
+            	input = old_fps_input;
+            }
+        }
 		
+		// Upate game-logic
 		board.update();
 		
 		
