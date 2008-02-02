@@ -302,7 +302,7 @@ public class Board {
             	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
                 ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
 				Spatial obj = (Spatial) BinaryImporter.getInstance().load(file);
-				
+				System.out.println("\n"+p.getGeometry().getLocalTranslation()+"\n");
 				obj.setLocalScale(0.0100f);
 				obj.getLocalTranslation().set(p.getGeometry().getLocalTranslation());
 				
