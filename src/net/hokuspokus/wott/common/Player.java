@@ -27,8 +27,6 @@ import net.hokuspokus.wott.utils.TextureUtil;
 
 public class Player
 {
-	private static final int MANCOUNT = 5;
-	private static final int WOMANCOUNT = 5;
 	private static final boolean USE_PLACEHOLDER = false;
 	
 	public enum PlayerColor
@@ -39,17 +37,9 @@ public class Player
 	}
 	
 	private PlayerColor color;
-	List<Person> people = new ArrayList<Person>();
 
 	public Player(PlayerColor color) {
 		this.color = color;
-		for (int i = 0; i < MANCOUNT; ++i) {
-			people.add(new Person(this, PersonType.MAN));
-		}
-
-		for (int i = 0; i < WOMANCOUNT; ++i) {
-			people.add(new Person(this, PersonType.WOMAN));
-		}
 	}
 	public Node createNode(PersonType type)
 	{
@@ -110,10 +100,6 @@ public class Player
 		}
 	}
 
-	public Iterable<Person> getPopulation()
-	{
-		return people;
-	}
 	public PlayerColor getColor()
 	{
 		return color;

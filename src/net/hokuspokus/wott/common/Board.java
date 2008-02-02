@@ -276,5 +276,12 @@ public class Board {
 	public Iterable<Person> getLiving()
 	{
 		return living;
+	}
+
+	public void killViolators() {
+		for (Person p : violators) {
+			living.remove(p);
+			p.getGeometry().removeFromParent();
+		}
 	}	
 }
