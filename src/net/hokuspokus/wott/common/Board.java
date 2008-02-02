@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import net.hokuspokus.wott.client.MeshEffectHelper;
 import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.common.TabooSelector.TABOO;
 import net.hokuspokus.wott.utils.TextureUtil;
@@ -327,7 +328,8 @@ public class Board {
 			}
 
 			
-			p.getGeometry().removeFromParent();
+			//p.getGeometry().removeFromParent();
+			MeshEffectHelper.explodeNode((Node) p.getGeometry());
 		}
 	}	
 }
