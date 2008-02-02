@@ -48,7 +48,7 @@ public class WrathOfTaboo extends SimpleGame
 {
 	public static final String NEXT_TABOO_BINDING = "switch_taboo_now";
 	Node environmentNode;
-	public static final String NEXT_GAME_MODE = "next_game_mode";
+	public static final String START_GAME_BINDING = "next_game_mode";
 
 	private InputHandler old_fps_input;
 	private static WrathOfTaboo singleton;
@@ -73,7 +73,7 @@ public class WrathOfTaboo extends SimpleGame
 
         KeyBindingManager.getKeyBindingManager().set( "toggle_input_handler", KeyInput.KEY_F12 );		
         KeyBindingManager.getKeyBindingManager().set( NEXT_TABOO_BINDING, KeyInput.KEY_F11 );
-        KeyBindingManager.getKeyBindingManager().set( NEXT_GAME_MODE, KeyInput.KEY_SPACE );
+        KeyBindingManager.getKeyBindingManager().set( START_GAME_BINDING, KeyInput.KEY_SPACE );
 	}
 
 	private void setMode(GameMode newMode) {
@@ -156,9 +156,8 @@ public class WrathOfTaboo extends SimpleGame
             	input = old_fps_input;
             }
         }
-        
-        if ( KeyBindingManager.getKeyBindingManager().isValidCommand(
-                NEXT_GAME_MODE, false ) ) {
+
+        if ( currentMode.isDone() ) {
         	
         	rootNode.detachAllChildren();
         	
@@ -170,6 +169,8 @@ public class WrathOfTaboo extends SimpleGame
         		setMode(new IntroMode(this));
         	}
         }
+        
+        // Switch game mode on death.
 
         currentMode.update();
 	}

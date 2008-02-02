@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -331,5 +332,32 @@ public class Board {
 			//p.getGeometry().removeFromParent();
 			MeshEffectHelper.explodeNode((Node) p.getGeometry());
 		}
+	}
+
+	public int getRoundTime() {
+		return living.size();
+	}
+	
+	public boolean isDone() {
+		if (living.isEmpty()) {
+			return true;
+		} 
+		
+		return getWinner() != null;
+	}
+
+	public Player getWinner() {
+		if (living.isEmpty()) {
+			throw new NoSuchElementException("Noone left alive.");
+		}
+		
+		Player prevPlayer =  living.get(0).getOwner();
+		for (Person p : living) {
+			if (prevPlayer != p.getOwner()) {
+				return null;
+			}
+		}
+		
+		return prevPlayer;
 	}	
 }

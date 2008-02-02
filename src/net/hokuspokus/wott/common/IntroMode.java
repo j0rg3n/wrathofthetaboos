@@ -6,6 +6,7 @@ import java.util.List;
 import net.hokuspokus.wott.client.WrathOfTaboo;
 
 import com.jme.input.InputHandler;
+import com.jme.input.KeyBindingManager;
 import com.jme.math.FastMath;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
@@ -80,4 +81,9 @@ public class IntroMode extends GameMode {
 		}
 	}
 
+	@Override
+	public boolean isDone() {
+    	return KeyBindingManager.getKeyBindingManager().isValidCommand(
+                WrathOfTaboo.START_GAME_BINDING, false );        	
+	}	
 }
