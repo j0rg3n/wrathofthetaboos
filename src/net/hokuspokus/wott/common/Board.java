@@ -26,11 +26,74 @@ public class Board {
 
 	public void update()
 	{
+		applyForce(10);
+		
 		for (Person p : living) {
 			p.getGeometry().setLocalTranslation(
-					getTileCenterPos((int)p.getPos().x, (int)p.getPos().y)
+					getTileCenterPos(p.getPos().x, p.getPos().y)
 					.add(0, .5f, 0));
+			
+			// Reduce force...
+			Vector2f newVelocity = p.getVelocity().mult(0.98f);
+			if (newVelocity.length() < .01f) {
+				newVelocity = new Vector2f();
+			}
+			p.setVelocity(newVelocity);
 		}
+	}
+
+	private void applyForce(int steps) {
+
+		for (int i = 0; i < steps; ++i) {
+			
+			// Apply one stepth of velocity plus repulsive forces.
+			for (Person p : living) {
+				p.setPos(p.getPos().add(p.getVelocity().divide(steps)));
+			}
+
+			// Apply repulsion between all touching pairs and from the walls. 
+			for (int j = 0; j < living.size(); ++j) {
+				Person p1 = living.get(j);
+				
+				// Good, old, O(n^2) collision detection
+				for (int k = 0; k < j; ++k) {
+					Person p2 = living.get(k);
+					if (p1 != p2) {
+						float repulsion = Person.ZONE * 2 - p1.getDistance(p2);
+						if (repulsion > 0) {
+							Vector2f repulsionVector = 
+								p1.getPos()
+								.subtract(p2.getPos())
+								.normalize()
+								.mult(repulsion / 2.0f);
+							p1.setPos(p1.getPos().add(repulsionVector));
+							p2.setPos(p2.getPos().subtract(repulsionVector));
+						}
+					}
+				}
+			}
+
+			// Bounce off walls, too.
+			for (Person p : living) {
+
+				if (p.getPos().x < 0) {
+					p.getPos().x = 0;
+					p.getVelocity().x = Math.abs(p.getVelocity().x);
+				}
+				if (p.getPos().x > width - 1) {
+					p.getPos().x = width - 1;
+					p.getVelocity().x = -Math.abs(p.getVelocity().x);
+				}
+				if (p.getPos().y < 0) {
+					p.getPos().y = 0;
+					p.getVelocity().y = Math.abs(p.getVelocity().y);
+				}
+				if (p.getPos().y > height - 1) {
+					p.getPos().y = height - 1;
+					p.getVelocity().y = -Math.abs(p.getVelocity().y);
+				}
+			}
+		}		
 	}
 
 	public int getWidth()
@@ -43,11 +106,11 @@ public class Board {
 		return height;
 	}
 	
-	public static Vector3f getTilePos(int x, int y) {
+	public static Vector3f getTilePos(float x, float y) {
 		return new Vector3f(x * TILESIZE, 0, y * TILESIZE);
 	}
 
-	public static Vector3f getTileCenterPos(int x, int y) {
+	public static Vector3f getTileCenterPos(float x, float y) {
 		return new Vector3f((x + .5f) * TILESIZE, 0, (y + .5f) * TILESIZE);
 	}
 
@@ -66,5 +129,9 @@ public class Board {
 		
 		person.setPos(new Vector2f((int)(Math.random() * width),
 				(int)(Math.random() * height)));
+
+		float u = 0.1f;
+		person.setVelocity(new Vector2f((float)(Math.random() * 2 * u - u), 
+				(float)(Math.random() * 2 * u - u)));
 	}	
 }

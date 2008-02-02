@@ -6,6 +6,7 @@ import com.jme.scene.Spatial;
 
 public class Person
 {
+	public static final float ZONE = .6f;
 	private static int nextId = 0;
 	public enum PersonType
 	{
@@ -15,7 +16,8 @@ public class Person
 	
 	Player owner;
 	PersonType type;
-	Vector2f pos;
+	Vector2f pos = new Vector2f();
+	Vector2f velocity = new Vector2f();
 	final int id;
 	Spatial geometry;
 	
@@ -38,5 +40,20 @@ public class Person
 
 	public void setPos(Vector2f pos) {
 		this.pos = pos;
+	}
+
+	public Vector2f getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(Vector2f velocity) {
+		this.velocity = velocity;
+	}
+
+	/**
+	 * Distance from center of this person to center of other person.
+	 */
+	public float getDistance(Person p2) {
+		return getPos().subtract(p2.getPos()).length();
 	}
 }
