@@ -1,6 +1,9 @@
 package net.hokuspokus.wott.client;
 
 import java.util.Vector;
+
+import net.hokuspokus.wott.utils.NodeUtils;
+
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
@@ -19,6 +22,7 @@ public class MeshEffectHelper
 		explodeNode.removeFromParent();
 		
 		// Extract meshes
+		//NodeUtils.removeControllers(explodeNode);
 		final Vector<Geometry> meshes = new Vector<Geometry>();
 		recursivelyAddMeshes(explodeNode, meshes);
 		//explodeNode.detachAllChildren();
@@ -40,40 +44,7 @@ public class MeshEffectHelper
 		for(Geometry g : meshes)
 		{
 			g.clearControllers();
-			//g.removeFromParent();
 			g.addController(new LimbExplodeController(g));
-			/*
-	        SpatialTransformer st = new SpatialTransformer(1);
-
-	        st.setObject(g,0,-1);
-	        //st.setObject(s,1,0);
-
-	        Quaternion x0=new Quaternion();
-	        x0.fromAngleAxis(0,new Vector3f(0,1,0));
-	        Quaternion x90=new Quaternion();
-	        x90.fromAngleAxis((float) (Math.PI/2),new Vector3f(1,0,0));
-	        Quaternion x180=new Quaternion();
-	        x180.fromAngleAxis((float) (Math.PI),new Vector3f(0,1,0));
-	        Quaternion x270=new Quaternion();
-	        x270.fromAngleAxis((float) (3*Math.PI/2),new Vector3f(0,0,1));
-
-	        st.setRotation(0,0,x0);
-	        st.setRotation(0,1,x90);
-	        st.setRotation(0,2,x180);
-	        st.setRotation(0,3,x270);
-	        st.setRotation(0,5,x0);
-	        
-	        st.setPosition(0,0,new Vector3f().set(g.getLocalTranslation()));
-	        //st.setPosition(1,2,new Vector3f(0,0,-5));
-	        st.setPosition(0,5,
-	        		new Vector3f().set(g.getLocalTranslation())
-	        		.addLocal(new Vector3f(FastMath.rand.nextFloat()*20-10,FastMath.rand.nextFloat()*20-10,5)
-	        		.divideLocal(g.getParent().getWorldScale())));
-
-	        st.interpolateMissing();
-			g.addController(st);
-			//explodeNode.attachChild(g);
-			*/
 		}
 		parent.attachChild(explodeNode);
 		explodeNode.updateRenderState();
@@ -106,6 +77,7 @@ class LimbExplodeController extends Controller
 	private Geometry geom;
 	private Quaternion angular;
 	private Vector3f worldScale = new Vector3f();
+	private int bounceCount = 0;
 	private static Vector3f _tmpVec = new Vector3f();
 	private static Quaternion _tmpAng = new Quaternion();
 
@@ -130,6 +102,11 @@ class LimbExplodeController extends Controller
 	{
 		velocity.z -= time * 9.82f / worldScale.z;
 		geom.getLocalTranslation().addLocal(_tmpVec.set(velocity).multLocal(time));
+		//geom.updateGeometricState(time, false);
+		if(velocity.z < 0 && geom.getLocalTranslation().z < 0 && bounceCount++ < 4)
+		{
+			velocity.z = -velocity.z * 0.60f;
+		}
 		geom.getLocalRotation().addLocal(_tmpAng.set(angular).multLocal(time));
 	}
 	
