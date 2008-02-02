@@ -1,5 +1,7 @@
 package net.hokuspokus.wott.utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
@@ -11,6 +13,9 @@ import com.jme.scene.SceneElement;
 import com.jme.scene.SharedMesh;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState;
+import com.jme.util.export.binary.BinaryImporter;
+import com.jme.util.resource.ResourceLocatorTool;
+import com.jme.util.resource.SimpleResourceLocator;
 
 public class NodeUtils
 {
@@ -295,6 +300,23 @@ public class NodeUtils
 				addBoundingVolumes(sc, bound_type);
 			}
 			s.updateWorldBound();
+		}
+	}
+	
+	public static Node loadNode(String nodefile)
+	{
+		try
+		{
+	    	File file = new File(nodefile);
+	    	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
+	        ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
+			Node retval = (Node) BinaryImporter.getInstance().load(file);
+			ResourceLocatorTool.removeResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
+			return retval;
+		}
+		catch(IOException e)
+		{
+			return null;
 		}
 	}
 	

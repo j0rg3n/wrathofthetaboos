@@ -6,9 +6,12 @@ import net.hokuspokus.wott.client.PukInputHandler;
 import net.hokuspokus.wott.client.WrathOfTaboo;
 import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.common.Player.PlayerColor;
+import net.hokuspokus.wott.utils.NodeUtils;
 import net.hokuspokus.wott.utils.TextureUtil;
 import com.jme.input.InputHandler;
 import com.jme.math.FastMath;
+import com.jme.math.FastMath;
+import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Quad;
@@ -51,6 +54,8 @@ public class PlayingMode extends GameMode {
 		
 		createNewBoard();
 		
+		createSurroundings();
+		
 		createNewSelector();
 
 		timer = new TurnTimer();
@@ -63,6 +68,15 @@ public class PlayingMode extends GameMode {
 		//choosingTaboo = false;
 	}
 	
+	private void createSurroundings()
+	{
+		Node pyramid = NodeUtils.loadNode("ressources/3d gfx/Pyramid.jme");
+		pyramid.setLocalScale(new Vector3f(board.getWidth()/2, board.getHeight()/2, board.getWidth()/2));
+		pyramid.getLocalRotation().fromAngles(-FastMath.HALF_PI, 0, 0);
+		TextureUtil.getInstance().setMultiplyTexture(pyramid, "ressources//2d gfx/dirt.jpg", 10, "ressources//2d gfx/dirt_overlay.jpg", 1f);
+		rootNode.attachChild(pyramid);
+	}
+
 	public InputHandler initInput() {
 		return real_input;	
 	}
