@@ -34,7 +34,9 @@ public class Player
 	public Spatial createNode(PersonType type)
 	{
 		//return new Box("Player:"+type, new Vector3f(-1, -1, -1), new Vector3f(1, 1, 1));
-		return new Arrow("Player:"+type, 2, 1);
+		Arrow arrow = new Arrow("Player:"+type, 2, 1);
+		arrow.setDefaultColor(color);
+		return arrow;
 	}
 
 	public Iterable<Person> getPopulation()

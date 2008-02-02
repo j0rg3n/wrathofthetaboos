@@ -25,10 +25,19 @@ public class Person
 		this.type = type;
 		this.id = nextId++;
 		this.geometry = owner.createNode(type);
+		
+		pos = new Vector2f((float)(Math.random() * 100),
+				(float)(Math.random() * 100));
 	}
 
 	public Spatial getGeometry()
 	{
 		return geometry;
 	}
+
+	public Vector2f getPos() {
+		return pos;
+	}
+	
+	
 }

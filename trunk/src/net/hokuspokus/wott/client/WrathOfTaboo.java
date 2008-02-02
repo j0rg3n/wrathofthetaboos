@@ -62,11 +62,13 @@ public class WrathOfTaboo extends SimpleGame
 		for(Person person : p1.getPopulation())
 		{
 			boardNode.attachChild(person.getGeometry());
+			board.addPiece(person);
 		}
 		
 		for(Person person : p2.getPopulation())
 		{
 			boardNode.attachChild(person.getGeometry());
+			board.addPiece(person);
 		}
 	}
 	

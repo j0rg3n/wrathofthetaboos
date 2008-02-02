@@ -12,9 +12,13 @@ public class Board {
 
 	public void update()
 	{
-		// TODO Auto-generated method stub
-		
+		for (Person p : living) {
+			p.getGeometry().setLocalTranslation(p.getPos().x, 0, p.getPos().y);
+		}
 	}
-	
-	
+
+	public void addPiece(Person person) {
+
+		living.add(person);
+	}	
 }
