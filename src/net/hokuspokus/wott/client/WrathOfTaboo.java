@@ -47,11 +47,21 @@ public class WrathOfTaboo extends SimpleGame
 		
 		// Kill the first-person input
 		old_fps_input = input;
-		//input = new InputHandler();
+		//input = new PukInputHandler(this);
 		//Mouse
+		
+		initCameraPosition();
 	}
 	
 	
+	private void initCameraPosition()
+	{
+		cam.setDirection(cam.getDirection().set(0, -1, -1).normalizeLocal());
+		cam.setLocation(cam.getLocation().set(board.getWidth()/2, board.getHeight()*1.0f, board.getHeight()*1.5f));
+		cam.setLeft(cam.getLeft().set(-1, 0, 0));
+		cam.setUp(cam.getUp().set(0, 1, -1).normalizeLocal());
+	}
+
 	private void createNewSelector() {
 		
 		selector = new TabooSelector();
@@ -114,17 +124,5 @@ public class WrathOfTaboo extends SimpleGame
 		{
 			//boardNode.attachChild(person.getGeomtry());
 		}
-	
-		
-		// 
-		System.out.println("dir:"+cam.getDirection());
-		cam.setDirection(cam.getDirection().set(0, -1, -1).normalizeLocal());
-		System.out.println("loc:"+cam.getLocation());
-		cam.setLocation(cam.getLocation().set(board.getWidth()/2, board.getHeight()*1.0f, board.getHeight()*1.5f));
-		System.out.println("lef:"+cam.getLeft());
-		cam.setLeft(cam.getLeft().set(-1, 0, 0));
-		System.out.println("up: "+cam.getUp());
-		cam.setUp(cam.getUp().set(0, 1, -1).normalizeLocal());
-		
 	}
 }
