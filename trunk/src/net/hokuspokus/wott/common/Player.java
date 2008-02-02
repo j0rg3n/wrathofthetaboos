@@ -7,26 +7,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import jmetest.renderer.TestSimpleBoneAnimation;
 
-import com.jme.animation.SkinNode;
-import com.jme.bounding.BoundingBox;
-import com.jme.image.Texture;
+import net.hokuspokus.wott.common.Person.PersonType;
+
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Arrow;
-import com.jme.scene.shape.Box;
-import com.jme.scene.state.MaterialState;
-import com.jme.scene.state.TextureState;
-import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.model.converters.MaxToJme;
-
-import net.hokuspokus.wott.client.WrathOfTaboo;
-import net.hokuspokus.wott.common.Person.PersonType;
 
 public class Player
 {

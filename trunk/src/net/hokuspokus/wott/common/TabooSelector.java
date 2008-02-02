@@ -19,13 +19,14 @@ public class TabooSelector {
 	
 	List<TabooDisplay> taboos = new ArrayList<TabooDisplay>();
 	int current;
+	Vector3f pos = new Vector3f();
 	
 	public TabooSelector() {
 		
 		current = 0;
 		for (TABOO taboo : TABOO.values()) {
 			TabooDisplay d = new TabooDisplay(new Vector3f(0, 0, 0), 
-					new Sphere(taboo.name()));
+					new Sphere(taboo.name(), 10, 10, 1.0f));
 			taboos.add(d);
 		}
 	}
@@ -46,5 +47,7 @@ public class TabooSelector {
 		this.current = current;
 	}
 	
-	
+	public void setPos(float x, float y, float z) {
+		pos.set(x, y, z);
+	}	
 }

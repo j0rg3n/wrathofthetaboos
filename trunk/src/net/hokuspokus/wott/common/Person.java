@@ -1,7 +1,6 @@
 package net.hokuspokus.wott.common;
 
 import com.jme.math.Vector2f;
-import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Arrow;
 

@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.common.TabooSelector.TABOO;
 
-import com.jme.math.Quaternion;
 import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
@@ -89,12 +88,14 @@ public class Board {
 	}
 
 	private void applyForce(int steps) {
+		
+		Vector2f repulsionVector = new Vector2f();
 
 		for (int i = 0; i < steps; ++i) {
 			
 			// Apply one stepth of velocity plus repulsive forces.
 			for (Person p : living) {
-				p.setPos(p.getPos().add(p.getVelocity().divide(steps)));
+				p.getPos().addLocal(p.getVelocity().divide(steps));
 			}
 
 			// Apply repulsion between all touching pairs and from the walls. 
@@ -107,13 +108,14 @@ public class Board {
 					if (p1 != p2) {
 						float repulsion = Person.ZONE * 2 - p1.getDistance(p2);
 						if (repulsion > 0) {
-							Vector2f repulsionVector = 
-								p1.getPos()
-								.subtract(p2.getPos())
-								.normalize()
-								.mult(repulsion / 2.0f);
-							p1.setPos(p1.getPos().add(repulsionVector));
-							p2.setPos(p2.getPos().subtract(repulsionVector));
+							
+							repulsionVector.set(p1.getPos());
+							repulsionVector.subtractLocal(p2.getPos());
+							repulsionVector.normalizeLocal();
+							repulsionVector.multLocal(repulsion / 2.0f);
+							
+							p1.getPos().addLocal(repulsionVector);
+							p2.getPos().subtractLocal(repulsionVector);
 						}
 					}
 				}
