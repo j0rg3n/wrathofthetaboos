@@ -1,6 +1,5 @@
 package net.hokuspokus.wott.client;
 
-import java.net.URL;
 import net.hokuspokus.wott.common.Board;
 import net.hokuspokus.wott.common.Person;
 import net.hokuspokus.wott.common.Player;
@@ -12,17 +11,10 @@ import com.jme.input.FirstPersonHandler;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
-import com.jme.input.Mouse;
 import com.jme.input.MouseInput;
-import com.jme.input.controls.controller.CameraController;
-import com.jme.math.Matrix3f;
-import com.jme.math.Quaternion;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
-import com.jme.scene.state.CullState;
-import com.jme.scene.state.LightState;
-import com.jme.scene.shape.Box;
 import com.jme.system.DisplaySystem;
 
 public class WrathOfTaboo extends SimpleGame
