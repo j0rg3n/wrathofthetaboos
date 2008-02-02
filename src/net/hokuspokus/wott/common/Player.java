@@ -65,8 +65,8 @@ public class Player
 	            	//SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
 	                //ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
 					//r1 = (Node) BinaryImporter.getInstance().load(file);
-					r1 = (Node) NodeUtils.loadNode("ressources/3d gfx/Bobbing2.jme");
-					r1.getLocalScale().set(0.02f, 0.02f, 0.02f);
+					r1 = (Node) NodeUtils.loadNode("ressources/3d gfx/negermand.jme");
+					r1.getLocalScale().set(0.22f, 0.22f, 0.22f);
 				}
 				else
 				{
@@ -75,7 +75,7 @@ public class Player
 	                //ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
 					//r1 = (Node) BinaryImporter.getInstance().load(file);
 					
-					r1 = (Node) NodeUtils.loadNode("ressources/3d gfx/neger_test_collada.jme");
+					r1 = (Node) NodeUtils.loadNode("ressources/3d gfx/negerkvinde.jme");
 					r1.getLocalScale().set(0.22f, 0.22f, 0.22f);
 					//r1 = new Node();
 				}
