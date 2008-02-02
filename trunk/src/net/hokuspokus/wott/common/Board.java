@@ -1,5 +1,7 @@
 package net.hokuspokus.wott.common;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,8 +19,13 @@ import net.hokuspokus.wott.utils.TextureUtil;
 import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
+import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Box;
+import com.jme.util.export.binary.BinaryImporter;
+import com.jme.util.resource.ResourceLocatorTool;
+import com.jme.util.resource.SimpleResourceLocator;
+import com.jmex.effects.particles.ParticleGeometry;
 
 public class Board {
 
@@ -283,6 +290,36 @@ public class Board {
 	public void killViolators() {
 		for (Person p : violators) {
 			living.remove(p);
+			
+            try
+			{
+            	File file = new File("ressources/2d gfx/death3.jme");
+            	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
+                ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
+				Spatial obj = (Spatial) BinaryImporter.getInstance().load(file);
+				p.getGeometry().getParent().attachChild(obj);
+
+				if(obj instanceof Node)
+				{
+	                for (Spatial child : ((Node)obj).getChildren()) {
+	                    if (child instanceof ParticleGeometry) {
+	                        ((ParticleGeometry) child).forceRespawn();
+	                    }
+	                }
+				}
+				else
+				{
+					((ParticleGeometry) obj).forceRespawn();
+				}
+				//BOO: obj.setLocalScale(0.01f);
+				obj.updateRenderState();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+
+			
 			p.getGeometry().removeFromParent();
 		}
 	}	

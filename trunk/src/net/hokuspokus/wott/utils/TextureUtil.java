@@ -138,7 +138,7 @@ public class TextureUtil
 	}
 
 	
-	private URL getResource(String res)
+	public URL getResource(String res)
 	{
 		URL url = TextureUtil.class.getResource(res);
 		if(url == null)
