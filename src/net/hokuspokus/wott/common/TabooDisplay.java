@@ -1,30 +1,28 @@
 package net.hokuspokus.wott.common;
 
+import net.hokuspokus.wott.common.TabooSelector.TABOO;
+
 import com.jme.math.Vector3f;
 import com.jme.scene.Geometry;
+import com.jme.scene.Spatial;
 
 public class TabooDisplay {
 
-	Vector3f position;
-	
-	Geometry shape;
+	Spatial shape;
+	TABOO taboo;
 
-	public TabooDisplay(Vector3f position, Geometry shape) {
+	public TabooDisplay(TABOO taboo, Spatial shape) {
 
-		this.position = position;
+		this.taboo = taboo;
 		this.shape = shape;
 	}
 
-	public Vector3f getPosition() {
-		return position;
-	}
-
-	public void setPosition(Vector3f position) {
-		this.position = position;
-	}
-
-	public Geometry getGeometry() {
+	public Spatial getGeometry() {
 		return shape;
+	}
+
+	public TABOO getTaboo() {
+		return taboo;
 	}
 
 	
