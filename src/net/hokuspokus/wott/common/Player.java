@@ -3,6 +3,7 @@ package net.hokuspokus.wott.common;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -17,6 +18,8 @@ import com.jme.scene.Spatial;
 import com.jme.scene.shape.Arrow;
 import com.jme.scene.state.RenderState;
 import com.jme.util.export.binary.BinaryImporter;
+import com.jme.util.resource.ResourceLocatorTool;
+import com.jme.util.resource.SimpleResourceLocator;
 import com.jmex.model.converters.MaxToJme;
 import net.hokuspokus.wott.utils.TextureUtil;
 
@@ -46,17 +49,31 @@ public class Player
 			Node r1 = null;
 			try
 			{
-				URL model = Player.class.getClassLoader().getResource("ressources/3d gfx/" + (type == PersonType.WOMAN ? "Kvinde.3DS" : "Mand2.3DS"));
-
-				MaxToJme C1 = new MaxToJme();
-				ByteArrayOutputStream BO = new ByteArrayOutputStream();
-				C1.convert(new BufferedInputStream(model.openStream()), BO);
-	            
-				r1 = (Node) BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
-				if(type != PersonType.WOMAN)
-					r1.setLocalScale(.010f);
+				if(type == PersonType.WOMAN)
+				{
+					/*
+					URL model = Player.class.getClassLoader().getResource("ressources/3d gfx/" + (type == PersonType.WOMAN ? "mini_negerkvinde.3DS" : "Mand2.3DS"));
+	
+					MaxToJme C1 = new MaxToJme();
+					ByteArrayOutputStream BO = new ByteArrayOutputStream();
+					C1.convert(new BufferedInputStream(model.openStream()), BO);
+		            
+					r1 = (Node) BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
+					if(type != PersonType.WOMAN)
+						r1.setLocalScale(.010f);
+					else
+						r1.getLocalScale().set(Vector3f.UNIT_XYZ);
+					*/
+					r1 = new Node();
+				}
 				else
-					r1.getLocalScale().set(Vector3f.UNIT_XYZ);
+				{
+	            	File file = new File("ressources/3d gfx/mini_negermand3_collada.jme");
+	            	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
+	                ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
+					r1 = (Node) BinaryImporter.getInstance().load(file);
+					//r1.getLocalScale().set(Vector3f.UNIT_XYZ);
+				}
 				
 				//TextureUtil.clearRenderStateRecursively(r1, RenderState.RS_TEXTURE);
 				TextureUtil.getInstance().setTexture(r1, "/ressources/2d gfx/player_"+color+".jpg");
