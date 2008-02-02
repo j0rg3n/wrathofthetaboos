@@ -298,7 +298,7 @@ public class Board {
 			
             try
 			{
-            	File file = new File("/ressources/2d gfx/death3.jme");
+            	File file = new File("ressources/2d gfx/death3.jme");
             	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
                 ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
 				Spatial obj = (Spatial) BinaryImporter.getInstance().load(file);
