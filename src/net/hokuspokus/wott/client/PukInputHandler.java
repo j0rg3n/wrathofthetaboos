@@ -1,23 +1,30 @@
 package net.hokuspokus.wott.client;
 
 import net.hokuspokus.wott.common.Person;
+import net.hokuspokus.wott.utils.TextureUtil;
 
 import com.jme.input.InputHandler;
 import com.jme.input.MouseInput;
+import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
-import com.jme.scene.shape.Sphere;
+import com.jme.renderer.ColorRGBA;
+import com.jme.scene.Spatial;
+import com.jme.scene.shape.Cylinder;
+
 
 public class PukInputHandler extends InputHandler
 {
 	private WrathOfTaboo game;
-	private Sphere puk;
+	private Spatial puk;
 	private static final float PUK_RADIUS = 1.5f;
 
 	public PukInputHandler(WrathOfTaboo game)
 	{
 		this.game = game;
-		this.puk = new Sphere("Puk", 16, 16, 1);
+		this.puk = new Cylinder("Puk", 16, 16, 1.5f, 0.4f, true);
+		this.puk.getLocalRotation().fromAngles(FastMath.HALF_PI, 0, 0);
+		TextureUtil.getInstance().setTexture(puk, "/ressources/2d gfx/citroen_logo_jo.jpg");
 		game.getBoardNode().attachChild(puk);
 	}
 	
