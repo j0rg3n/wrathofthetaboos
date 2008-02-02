@@ -50,6 +50,8 @@ public class PlayingMode extends GameMode {
 
 		// Make sure the camera starts in position
         real_input = new PukInputHandler(this);
+
+		timer.reset(board.getRoundTime());
 	}
 	
 	public InputHandler initInput() {
@@ -72,6 +74,8 @@ public class PlayingMode extends GameMode {
 		
 		selector = new TabooSelector();
 		selectorNode = selector.getRootNode();
+		
+		selectorNode.setLocalTranslation(0, (game.getDisplay().getHeight() + selector.getHeight()) / 2.0f, 0);
 		
 		selectorNode.updateGeometricState( 0.0f, true );
         selectorNode.updateRenderState();
@@ -129,7 +133,7 @@ public class PlayingMode extends GameMode {
         if ( KeyBindingManager.getKeyBindingManager().isValidCommand(
                 WrathOfTaboo.NEXT_TABOO_BINDING, false ) || timer.isTimeOut()) {
         	selector.next();
-        	timer.reset(15);
+        	timer.reset(board.getRoundTime());
         	
         	board.killViolators();
         }
@@ -148,5 +152,8 @@ public class PlayingMode extends GameMode {
 		return board;
 	}
 
-	
+	@Override
+	public boolean isDone() {
+		return board.isDone();
+	}
 }

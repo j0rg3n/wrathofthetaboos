@@ -42,4 +42,9 @@ public class HighscoreMode extends GameMode {
 		
 	}
 
+	@Override
+	public boolean isDone() {
+		return false;
+	}
+
 }

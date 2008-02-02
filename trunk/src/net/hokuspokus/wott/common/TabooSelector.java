@@ -107,4 +107,8 @@ public class TabooSelector {
 			current = 0;
 		}
 	}
+
+	public float getHeight() {
+		return marker.getHeight() * taboos.size();
+	}
 }

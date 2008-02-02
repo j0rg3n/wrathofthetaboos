@@ -4,6 +4,7 @@ import net.hokuspokus.wott.client.WrathOfTaboo;
 
 import com.jme.app.SimpleGame;
 import com.jme.input.InputHandler;
+import com.jme.input.KeyBindingManager;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 
@@ -28,5 +29,6 @@ public abstract class GameMode {
 	public abstract void update();
 	public abstract void initCameraPosition(Camera cam);
 	public abstract InputHandler initInput();
+	public abstract boolean isDone();
 	
 }
