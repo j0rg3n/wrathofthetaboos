@@ -3,6 +3,9 @@ package net.hokuspokus.wott.client;
 import net.hokuspokus.wott.common.Person;
 import net.hokuspokus.wott.common.Player;
 import net.hokuspokus.wott.utils.TextureUtil;
+import net.java.games.input.Component;
+import net.java.games.input.Controller;
+import net.java.games.input.ControllerEnvironment;
 
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
@@ -20,6 +23,7 @@ import com.jme.input.action.KeyStrafeDownAction;
 import com.jme.input.action.KeyStrafeLeftAction;
 import com.jme.input.action.KeyStrafeRightAction;
 import com.jme.input.action.KeyStrafeUpAction;
+import com.jme.input.joystick.JoystickInput;
 import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
@@ -41,9 +45,10 @@ public class PukInputHandler extends InputHandler
 	{
 		this.game = game;
 		
-		// temporary Keyboard control
-		p1_keys = new PukKeyboardHandler(game, KeyInput.KEY_UP, KeyInput.KEY_DOWN, KeyInput.KEY_LEFT, KeyInput.KEY_RIGHT);
-		p2_keys = new PukKeyboardHandler(game, KeyInput.KEY_W, KeyInput.KEY_S, KeyInput.KEY_A, KeyInput.KEY_D);
+		// Setup either keyboard controller or Logitech-controller
+		Controller[] logitech_controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
+		p1_keys = new PukKeyboardHandler(game, KeyInput.KEY_UP, KeyInput.KEY_DOWN, KeyInput.KEY_LEFT, KeyInput.KEY_RIGHT, logitech_controllers.length > 0 ? logitech_controllers[0] : null);
+		p2_keys = new PukKeyboardHandler(game, KeyInput.KEY_W, KeyInput.KEY_S, KeyInput.KEY_A, KeyInput.KEY_D, logitech_controllers.length > 1 ? logitech_controllers[1] : null);
 		addToAttachedHandlers(p1_keys);
 		addToAttachedHandlers(p2_keys);
 	}
@@ -69,8 +74,11 @@ public class PukInputHandler extends InputHandler
 		
 		*/
 		
-		p1_keys.updatePuk(game, game.p1);
-		p2_keys.updatePuk(game, game.p2);
+		//System.out.println("JoystickInput.get().getDefaultJoystick():"+JoystickInput.get().getDefaultJoystick().getAxisCount());
+		//
+		
+		p1_keys.updatePuk(time, game, game.p1);
+		p2_keys.updatePuk(time, game, game.p2);
 		
 		// Update inter-puk projection
 		_tmpPuckDiff.set(p1_keys.puk.pos).subtractLocal(p2_keys.puk.pos);
@@ -103,27 +111,50 @@ class PlayerPuk
 class PukKeyboardHandler extends InputHandler 
 {
 	PlayerPuk puk;
+	private Controller logitech_controller;
 	
-    public PukKeyboardHandler(WrathOfTaboo game, int up, int down, int left, int right)
+    public PukKeyboardHandler(WrathOfTaboo game, int up, int down, int left, int right, Controller logitech_controller)
     {
         KeyBindingManager keyboard = KeyBindingManager.getKeyBindingManager();
 
         puk = new PlayerPuk(game);
+        this.logitech_controller = logitech_controller;
         
-        keyboard.set( "up"+up, up );
-        keyboard.set( "down"+down, down );
-        keyboard.set( "left"+left, left );
-        keyboard.set( "right"+right, right );
-
-        addAction(new DirectionalAction(new Vector2f(  0,-10), puk), "up"+up, true);
-        addAction(new DirectionalAction(new Vector2f(  0, 10), puk), "down"+down, true);
-        addAction(new DirectionalAction(new Vector2f(-10,  0), puk), "left"+left, true);
-        addAction(new DirectionalAction(new Vector2f( 10,  0), puk), "right"+right, true);
+        if(logitech_controller == null || logitech_controller.getComponents().length < 16)
+        {
+	        keyboard.set( "up"+up, up );
+	        keyboard.set( "down"+down, down );
+	        keyboard.set( "left"+left, left );
+	        keyboard.set( "right"+right, right );
+	
+	        addAction(new DirectionalAction(new Vector2f(  0,-10), puk), "up"+up, true);
+	        addAction(new DirectionalAction(new Vector2f(  0, 10), puk), "down"+down, true);
+	        addAction(new DirectionalAction(new Vector2f(-10,  0), puk), "left"+left, true);
+	        addAction(new DirectionalAction(new Vector2f( 10,  0), puk), "right"+right, true);
+        }
     }
 
 	static Vector2f _repulsionVector = new Vector2f();
-	public void updatePuk(WrathOfTaboo game, Player player)
+	public void updatePuk(float dt, WrathOfTaboo game, Player player)
 	{
+		if(logitech_controller != null)
+		{
+			if(logitech_controller.poll())
+			{
+				int c = 0;
+				puk.pos.addLocal(
+						15*dt*logitech_controller.getComponents()[14].getPollData(),
+						15*dt*logitech_controller.getComponents()[15].getPollData());
+				/*
+				for(Component c_sub : logitech_controller.getComponents())
+				{
+					if(c_sub.getPollData() != 0.0f)
+						System.out.println("csub:"+c+":"+c_sub.getName()+":"+c_sub.getPollData());
+					c++;
+				}
+				*/
+			}
+		}
 		puk.puk.setLocalTranslation(puk.pos.x, 0, puk.pos.y);
 		
 		for(Person p1 : game.board.getLiving())
