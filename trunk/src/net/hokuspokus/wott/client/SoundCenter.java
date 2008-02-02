@@ -93,7 +93,7 @@ public class SoundCenter
 	{
         for (int x = trackers.size(); --x >= 0; ) {
             RangedAudioTracker t = trackers .get(x);
-            t.checkTrackAudible(cam.getLocation());
+            //t.checkTrackAudible(cam.getLocation());
         }
 	}
 

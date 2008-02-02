@@ -65,6 +65,9 @@ public class WrathOfTaboo extends SimpleGame
         KeyBindingManager.getKeyBindingManager().set( "toggle_input_handler", KeyInput.KEY_F12 );
         KeyBindingManager.getKeyBindingManager().set( NEXT_TABOO_BINDING, KeyInput.KEY_F11 );
         KeyBindingManager.getKeyBindingManager().set( START_GAME_BINDING, KeyInput.KEY_SPACE );
+        
+        // Put in drums
+        soundCenter.enqueueSound("ressources/sound/music_bongo_sting1.ogg");
 	}
 
 	private void setMode(GameMode newMode) {
