@@ -25,6 +25,7 @@ import com.jme.scene.shape.Arrow;
 import com.jme.scene.shape.Quad;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
+import com.jme.system.DisplaySystem;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.model.animation.KeyframeController;
 import com.jme.util.resource.ResourceLocatorTool;
@@ -87,19 +88,27 @@ public class Player
 				}
 				else
 				{
-	            	File file = new File("ressources/3d gfx/mini_negermand3_collada.jme");
+	            	File file = new File("ressources/3d gfx/mini_negerkvinde02.jme");
 	            	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
 	                ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
 					r1 = (Node) BinaryImporter.getInstance().load(file);
-					r1.getLocalScale().set(0.02f, 0.02f, 0.02f);
+					r1.getLocalScale().set(0.22f, 0.22f, 0.22f);
 				}
 				
-				//TextureUtil.getInstance().setTexture(r1, "/ressources/2d gfx/player_"+color+".jpg");
+				/*
+				MaterialState ms = DisplaySystem.getDisplaySystem().getRenderer().createMaterialState();
+				ms.setColorMaterial(MaterialState.CM_NONE);
+				r1.setRenderState(ms);
+				r1.updateRenderState();
+				
+*/				
+				TextureUtil.getInstance().setTexture(r1, "/ressources/2d gfx/player_"+color+".jpg");
 
-				System.out.println(" ");
 				for (Controller c : r1.getControllers())
 				{
+					System.out.println(" ");
 					System.out.println(c);
+					System.out.println(" ");
 				}
 				System.out.println();
 
@@ -107,10 +116,11 @@ public class Player
 				{
 					for (Controller con : c.getControllers())
 					{
+						System.out.println(" ");
 						System.out.println(con);
+						System.out.println(" ");
 					}
 				}
-				System.out.println(" ");
 				
 				SpatialTransformer kc;
 				if (r1 != null && r1.getControllerCount() >= 1 && r1.getController(0) != null)
