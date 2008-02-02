@@ -34,7 +34,7 @@ public class WrathOfTaboo extends SimpleGame
 	@Override
 	protected void simpleInitGame()
 	{
-		rootNode = new Node();
+		//rootNode = new Node();
 		boardNode = new Node();
 		selectorNode = new Node();
 		
