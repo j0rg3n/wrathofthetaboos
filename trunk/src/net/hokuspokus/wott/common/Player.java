@@ -10,6 +10,7 @@ import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Arrow;
 import com.jme.scene.shape.Quad;
+import com.jme.scene.state.RenderState;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jme.util.resource.ResourceLocatorTool;
 import com.jme.util.resource.SimpleResourceLocator;
@@ -111,6 +112,18 @@ public class Player
 					kc.setSpeed(10);
 					kc.setRepeatType(Controller.RT_WRAP);
 				}
+	/*			System.out.println(r1.getLightCombineMode());
+				System.out.println(r1.getRenderState(RenderState.RS_ALPHA));
+				System.out.println(r1.getRenderState(RenderState.RS_ATTRIBUTE));
+				System.out.println(r1.getRenderState(RenderState.RS_CLIP));
+				System.out.println(r1.getRenderState(RenderState.RS_COLORMASK_STATE));
+				System.out.println(r1.getRenderState(RenderState.RS_CULL));
+				System.out.println(r1.getRenderState(RenderState.RS_DITHER));
+				System.out.println(r1.getRenderState(RenderState.RS_FOG));
+				System.out.println(r1.getRenderState(RenderState.RS_LIGHT));
+				System.out.println(r1.getRenderState(RenderState.RS_MATERIAL));
+				System.out.println(r1.getRenderState(RenderState.RS_TEXTURE));
+				System.out.println(r1.getRenderState(RenderState.RS_ZBUFFER));*/
 			}
 			catch (IOException e)
 			{
