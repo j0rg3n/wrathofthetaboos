@@ -3,18 +3,14 @@ package net.hokuspokus.wott.common;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import net.hokuspokus.wott.client.PukInputHandler;
 import net.hokuspokus.wott.client.WrathOfTaboo;
 import net.hokuspokus.wott.utils.TextureUtil;
-
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.math.FastMath;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.scene.Text;
-import com.jme.scene.shape.Arrow;
 import com.jme.scene.shape.Quad;
 
 public class IntroMode extends GameMode {

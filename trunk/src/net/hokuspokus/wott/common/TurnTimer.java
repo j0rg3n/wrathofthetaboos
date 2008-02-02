@@ -1,7 +1,5 @@
 package net.hokuspokus.wott.common;
 
-import java.util.Date;
-
 import com.jme.scene.SceneElement;
 import com.jme.scene.Text;
 import com.jme.scene.state.TextureState;

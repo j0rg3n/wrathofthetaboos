@@ -1,10 +1,7 @@
 package net.hokuspokus.wott.common;
 
 import net.hokuspokus.wott.client.WrathOfTaboo;
-
-import com.jme.app.SimpleGame;
 import com.jme.input.InputHandler;
-import com.jme.input.KeyBindingManager;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 

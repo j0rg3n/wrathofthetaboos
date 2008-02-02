@@ -1,9 +1,6 @@
 package net.hokuspokus.wott.common;
 
 import net.hokuspokus.wott.common.TabooSelector.TABOO;
-
-import com.jme.math.Vector3f;
-import com.jme.scene.Geometry;
 import com.jme.scene.Spatial;
 
 public class TabooDisplay {

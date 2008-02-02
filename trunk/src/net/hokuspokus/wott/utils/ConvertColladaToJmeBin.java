@@ -5,21 +5,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-
-import net.hokuspokus.wott.common.Player;
-import net.hokuspokus.wott.common.Person.PersonType;
-
 import com.jme.animation.AnimationController;
 import com.jme.animation.Bone;
 import com.jme.animation.BoneAnimation;
-import com.jme.animation.SkinNode;
 import com.jme.app.BaseSimpleGame;
-import com.jme.renderer.Renderer;
 import com.jme.scene.Controller;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;

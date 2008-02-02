@@ -3,7 +3,6 @@ package net.hokuspokus.wott.utils;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Hashtable;
-
 import com.jme.image.Image;
 import com.jme.image.Texture;
 import com.jme.math.FastMath;
