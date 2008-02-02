@@ -13,6 +13,7 @@ public class WrathOfTaboo extends SimpleGame
 	Board board;
 	Player p1;
 	Player p2;
+	private Node boardNode;
 	
 	public static void main(String[] args)
 	{
@@ -23,6 +24,8 @@ public class WrathOfTaboo extends SimpleGame
 	protected void simpleInitGame()
 	{
 		rootNode = new Node();
+		boardNode = new Node();
+		rootNode.attachChild(boardNode);
 		createNewBoard();
 	}
 	
@@ -35,12 +38,12 @@ public class WrathOfTaboo extends SimpleGame
 		
 		for(Person person : p1.getPopulation())
 		{
-			rootNode.attachChild(person.getGeomtry());
+			boardNode.attachChild(person.getGeomtry());
 		}
 		
 		for(Person person : p2.getPopulation())
 		{
-			rootNode.attachChild(person.getGeomtry());
+			boardNode.attachChild(person.getGeomtry());
 		}
 	}
 	
