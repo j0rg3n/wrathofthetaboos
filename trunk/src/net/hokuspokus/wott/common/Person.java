@@ -12,6 +12,7 @@ public class Person
 		MAN,
 		WOMAN
 	}
+	
 	Player owner;
 	PersonType type;
 	Vector2f pos;
@@ -26,7 +27,7 @@ public class Person
 		this.geometry = owner.createNode(type);
 	}
 
-	public Spatial getGeomtry()
+	public Spatial getGeometry()
 	{
 		return geometry;
 	}

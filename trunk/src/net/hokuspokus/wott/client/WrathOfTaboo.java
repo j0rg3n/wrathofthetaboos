@@ -3,8 +3,13 @@ package net.hokuspokus.wott.client;
 import net.hokuspokus.wott.common.Board;
 import net.hokuspokus.wott.common.Person;
 import net.hokuspokus.wott.common.Player;
+import net.hokuspokus.wott.common.TabooDisplay;
+import net.hokuspokus.wott.common.TabooSelector;
 
 import com.jme.app.SimpleGame;
+import com.jme.input.controls.controller.CameraController;
+import com.jme.math.Matrix3f;
+import com.jme.math.Quaternion;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 
@@ -14,6 +19,8 @@ public class WrathOfTaboo extends SimpleGame
 	Player p1;
 	Player p2;
 	private Node boardNode;
+	Node selectorNode;
+	private TabooSelector selector;
 	
 	public static void main(String[] args)
 	{
@@ -25,11 +32,27 @@ public class WrathOfTaboo extends SimpleGame
 	{
 		rootNode = new Node();
 		boardNode = new Node();
+		selectorNode = new Node();
+		
+		rootNode.setLocalRotation(new Quaternion(new float[]{ (float)Math.PI * 1.0f / 4.0f , 0, 0 }));
+		
 		rootNode.attachChild(boardNode);
+		rootNode.attachChild(selectorNode);
 		createNewBoard();
+		createNewSelector();
 	}
 	
 	
+	private void createNewSelector() {
+		
+		selector = new TabooSelector();
+		
+		for (TabooDisplay d : selector.getDisplays()) {
+			selectorNode.attachChild(d.getGeometry());
+		}
+		
+	}
+
 	private void createNewBoard()
 	{
 		board = new Board();
@@ -38,12 +61,12 @@ public class WrathOfTaboo extends SimpleGame
 		
 		for(Person person : p1.getPopulation())
 		{
-			boardNode.attachChild(person.getGeomtry());
+			boardNode.attachChild(person.getGeometry());
 		}
 		
 		for(Person person : p2.getPopulation())
 		{
-			boardNode.attachChild(person.getGeomtry());
+			boardNode.attachChild(person.getGeometry());
 		}
 	}
 	
