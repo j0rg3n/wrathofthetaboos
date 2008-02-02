@@ -62,11 +62,11 @@ public class Player
 			r1 = (Node) BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
 			r1.setLocalScale(.010f);
 			
-	        TextureState ts = WrathOfTaboo.getInstance().getdisplay().getRenderer().createTextureState();
+	 /*       TextureState ts = WrathOfTaboo.getInstance().getdisplay().getRenderer().createTextureState();
 	        ts.setTexture(TextureManager.loadTexture(TestSimpleBoneAnimation.class
-	                .getClassLoader().getResource(type == PersonType.WOMAN ? "2d gfx/woman.jpg" : "2d gfx/man.jpg"),
+	                .getClassLoader().getResource(type == PersonType.WOMAN ? "2d gfx/CITROEN_.JPG" : "2d gfx/CITROEN_.JPG"),
 	                Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR, 0.0f, true));
-	        r1.setRenderState(ts);
+	        r1.setRenderState(ts);*/
 /*
 	        MaterialState ms = WrathOfTaboo.getInstance().getdisplay().getRenderer().createMaterialState();
 	        ms.setSpecular(new ColorRGBA(0.9f, 0.9f, 0.9f, 1));
