@@ -1,5 +1,6 @@
 package net.hokuspokus.wott.client;
 
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.LogManager;
@@ -18,13 +19,16 @@ import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
+import com.jme.math.Quaternion;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
+import com.jme.scene.Text;
 import com.jme.system.DisplaySystem;
 
 public class WrathOfTaboo extends SimpleGame
 {
+	private static final String NEXT_TABOO_BINDING = "next_taboo";
 	Board board;
 	Player p1;
 	Player p2;
@@ -74,7 +78,7 @@ public class WrathOfTaboo extends SimpleGame
 		
 		createNewSelector();
 		
-		// Kill the first-person input
+        // Kill the first-person input
 		old_fps_input = input;
 		input = real_input = new PukInputHandler(this);
 		//Mouse
@@ -83,9 +87,9 @@ public class WrathOfTaboo extends SimpleGame
 		initCameraPosition();
 		
         KeyBindingManager.getKeyBindingManager().set( "toggle_input_handler", KeyInput.KEY_F12 );		
+        KeyBindingManager.getKeyBindingManager().set( NEXT_TABOO_BINDING, KeyInput.KEY_F11 );		
 	}
-	
-	
+
 	private void initCameraPosition()
 	{
 		cam.setDirection(cam.getDirection().set(0, -1, -1).normalizeLocal());
@@ -97,16 +101,17 @@ public class WrathOfTaboo extends SimpleGame
 	private void createNewSelector() {
 		
 		selector = new TabooSelector();
+		selectorNode = selector.getRootNode();
 		
-		for (TabooDisplay d : selector.getDisplays()) {
-			selectorNode.attachChild(d.getGeometry());
-		}
-		
+		selectorNode.updateGeometricState( 0.0f, true );
+        selectorNode.updateRenderState();
+        
+        rootNode.attachChild(selectorNode);
 	}
 
 	private void createNewBoard()
 	{
-		board = new Board(20, 20);
+		board = new Board(10, 10);
 		p1 = new Player(PlayerColor.RED);
 		p2 = new Player(PlayerColor.BLUE);
 		
@@ -170,11 +175,19 @@ public class WrathOfTaboo extends SimpleGame
             	input = old_fps_input;
             }
         }
+        
+        if ( KeyBindingManager.getKeyBindingManager().isValidCommand(
+                NEXT_TABOO_BINDING, false ) ) {
+        	selector.next();
+        }
 
-        
-        
+        board.markViolators(selector.getCurrent());
+
 		// Upate game-logic
 		board.update();
+
+		// Draw taboo selector
+		selector.update();
 	}
 
 	public static WrathOfTaboo getInstance()

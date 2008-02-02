@@ -1,6 +1,7 @@
 package net.hokuspokus.wott.common;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -27,6 +28,8 @@ public class Board {
 	 * List of still living pieces.
 	 */
 	List<Person> living = new ArrayList<Person>();
+	private Set<Person> violators = new HashSet<Person>();
+
 	private int width;
 	private int height;
 
@@ -36,6 +39,10 @@ public class Board {
 		this.height = height;
 	}
 
+	public void markViolators(TABOO taboo) {
+		violators.clear();
+		violators.addAll(getTabooViolators(taboo));	
+	}
 	
 	private float t;
 	public void update()
@@ -44,10 +51,8 @@ public class Board {
 		
 		applyForce(10);
 
-		Set<Person> violators = new HashSet<Person>();
-		violators.addAll(getTabooViolators(TABOO.MAN));
-		
 		for (Person p : living) {
+			
 			float silliness = violators.contains(p) ? (float)Math.sin(t) * 0.05f : 0;
 			
 			p.getGeometry().setLocalTranslation(
@@ -194,8 +199,20 @@ public class Board {
 			List<Person> persons = e.getValue();
 			boolean isViolator = false;
 			switch (taboo) {
-			case PLENTY:
-				isViolator = persons.size() >= 3;
+			case MIX:
+			case MEN:
+			case WOMEN:
+				if (persons.size() >= 3) {
+					if (isAllSameType(taboo, persons)) {
+						if (persons.get(0).getType() == PersonType.MAN) {
+							isViolator = taboo == TABOO.MEN;
+						} else {
+							isViolator = taboo == TABOO.WOMEN;
+						}
+					} else {
+						isViolator = taboo == TABOO.MIX;
+					}
+				}
 				break;
 			case MAN:
 			case WOMAN:
@@ -207,17 +224,9 @@ public class Board {
 					}
 				}
 				break;
-			case WOMANWOMAN:
-			case MANMAN:
 			case MANWOMAN:
 				if (persons.size() == 2) {
-					if (persons.get(0).getType() == persons.get(1).getType()) {
-						if (persons.get(0).getType() == PersonType.MAN) {
-							isViolator = taboo == TABOO.MANMAN;
-						} else {
-							isViolator = taboo == TABOO.WOMANWOMAN;
-						}
-					} else {
+					if (persons.get(0).getType() != persons.get(1).getType()) {
 						isViolator = taboo == TABOO.MANWOMAN;
 					}
 				}
@@ -230,6 +239,19 @@ public class Board {
 		}
 		
 		return violators;
+	}
+
+	private boolean isAllSameType(TabooSelector.TABOO taboo, List<Person> persons) {
+
+		PersonType prevPersonType = persons.get(0).getType();
+		for (int i = 1; i < persons.size(); ++i) {
+			Person p = persons.get(i);
+			if (p.getType() != prevPersonType) {
+				return false;
+			}
+			prevPersonType = p.getType();
+		}
+		return true;
 	}
 
 	public Map<Vector2f, List<Person>> getCellBuckets() {
