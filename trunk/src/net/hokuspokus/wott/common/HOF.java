@@ -21,6 +21,15 @@ public class HOF implements Serializable {
 		addHighscore("FOO", 23);
 		addHighscore("BAR", 1000000);
 		addHighscore("ZOO", 42);
+		addHighscore("FOO", 23);
+		addHighscore("BAR", 1000000);
+		addHighscore("ZOO", 42);
+		addHighscore("FOO", 23);
+		addHighscore("BAR", 1000000);
+		addHighscore("ZOO", 42);
+		addHighscore("FOO", 23);
+		addHighscore("BAR", 1000000);
+		addHighscore("ZOO", 42);
 		
 	}
 

@@ -6,6 +6,8 @@ import java.util.Hashtable;
 
 import com.jme.image.Image;
 import com.jme.image.Texture;
+import com.jme.math.FastMath;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
@@ -13,8 +15,10 @@ import com.jme.scene.SceneElement;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Quad;
 import com.jme.scene.state.AlphaState;
+import com.jme.scene.state.LightState;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.TextureState;
+import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 
@@ -236,6 +240,28 @@ public class TextureUtil
 		if(instance == null)
 			instance = new TextureUtil();
 		return instance;
+	}
+
+	public void disableZBuffer(Spatial foo) {
+		ZBufferState zState = DisplaySystem.getDisplaySystem().getRenderer().createZBufferState();
+		zState.setEnabled(false);
+		zState.setWritable(false);
+		foo.setRenderState(zState);
+	}
+
+	public static Quad getFullscreenQuad(String name, String path) {
+		int sWidth = DisplaySystem.getDisplaySystem().getWidth();
+		int sHeight = DisplaySystem.getDisplaySystem().getHeight();
+		
+		Quad foo = new Quad(name, sWidth, sHeight);
+		foo.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		foo.setLightCombineMode(LightState.OFF);
+		foo.setLocalTranslation(sWidth / 2.0f, sHeight / 2.0f, 0);
+		foo.setLocalRotation(new Quaternion(new float[]{ FastMath.PI, 0, 0 }));
+		getInstance().disableZBuffer(foo);
+		getInstance().setTexture(foo, path);
+		
+		return foo;
 	}
 
 

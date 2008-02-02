@@ -7,6 +7,7 @@ import net.hokuspokus.wott.client.PukInputHandler;
 import net.hokuspokus.wott.client.WrathOfTaboo;
 import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.common.Player.PlayerColor;
+import net.hokuspokus.wott.utils.TextureUtil;
 
 import com.jme.app.BaseGame;
 import com.jme.app.SimpleGame;
@@ -14,6 +15,8 @@ import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
+import com.jme.scene.shape.Arrow;
+import com.jme.scene.shape.Quad;
 
 public class PlayingMode extends GameMode {
 
@@ -44,7 +47,7 @@ public class PlayingMode extends GameMode {
 		createNewBoard();
 		
 		createNewSelector();
-		
+
 		timer = new TurnTimer();
         rootNode.attachChild(timer.getRootNode());
 
