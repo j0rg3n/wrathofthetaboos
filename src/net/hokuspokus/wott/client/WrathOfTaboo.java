@@ -38,7 +38,7 @@ public class WrathOfTaboo extends SimpleGame
 		boardNode = new Node();
 		selectorNode = new Node();
 		
-		rootNode.setLocalRotation(new Quaternion(new float[]{ (float)Math.PI * 1.0f / 4.0f , 0, 0 }));
+		//rootNode.setLocalRotation(new Quaternion(new float[]{ (float)Math.PI * 1.0f / 4.0f , 0, 0 }));
 		
 		rootNode.attachChild(boardNode);
 		rootNode.attachChild(selectorNode);
@@ -115,5 +115,16 @@ public class WrathOfTaboo extends SimpleGame
 			//boardNode.attachChild(person.getGeomtry());
 		}
 	
+		
+		// 
+		System.out.println("dir:"+cam.getDirection());
+		cam.setDirection(cam.getDirection().set(0, -1, -1).normalizeLocal());
+		System.out.println("loc:"+cam.getLocation());
+		cam.setLocation(cam.getLocation().set(board.getWidth()/2, board.getHeight()*1.0f, board.getHeight()*1.5f));
+		System.out.println("lef:"+cam.getLeft());
+		cam.setLeft(cam.getLeft().set(-1, 0, 0));
+		System.out.println("up: "+cam.getUp());
+		cam.setUp(cam.getUp().set(0, 1, -1).normalizeLocal());
+		
 	}
 }
