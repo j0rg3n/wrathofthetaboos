@@ -14,8 +14,7 @@ public class TabooSelector {
 		WOMANWOMAN,
 		MANWOMAN,
 		MAN,
-		WOMAN,
-		MAX
+		WOMAN
 	}
 	
 	List<TabooDisplay> taboos = new ArrayList<TabooDisplay>();
