@@ -1,5 +1,6 @@
 package net.hokuspokus.wott.client;
 
+import java.net.URL;
 import net.hokuspokus.wott.common.Board;
 import net.hokuspokus.wott.common.Person;
 import net.hokuspokus.wott.common.Player;
@@ -19,7 +20,10 @@ import com.jme.math.Quaternion;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
+import com.jme.scene.state.CullState;
+import com.jme.scene.state.LightState;
 import com.jme.scene.shape.Box;
+import com.jme.system.DisplaySystem;
 
 public class WrathOfTaboo extends SimpleGame
 {
@@ -31,10 +35,13 @@ public class WrathOfTaboo extends SimpleGame
 	private TabooSelector selector;
 	private InputHandler old_fps_input;
 	private PukInputHandler real_input;
+	private static WrathOfTaboo singleton;
 	
 	public static void main(String[] args)
 	{
-		new WrathOfTaboo().start();
+		singleton = new WrathOfTaboo();
+		singleton.setDialogBehaviour(ALWAYS_SHOW_PROPS_DIALOG, (URL)null);
+		singleton.start();
 	}
 	
 	@Override
@@ -49,6 +56,7 @@ public class WrathOfTaboo extends SimpleGame
 		rootNode.attachChild(boardNode);
 		rootNode.attachChild(selectorNode);
 		createNewBoard();
+		
 		createNewSelector();
 		
 		// Kill the first-person input
@@ -109,6 +117,11 @@ public class WrathOfTaboo extends SimpleGame
 		}
 	}
 	
+	public DisplaySystem getdisplay()
+	{
+		return display;
+	}
+	
 	@Override
 	protected void simpleRender()
 	{
@@ -149,6 +162,11 @@ public class WrathOfTaboo extends SimpleGame
 		{
 			//boardNode.attachChild(person.getGeomtry());
 		}
+	}
+
+	public static WrathOfTaboo getInstance()
+	{
+		return singleton;
 	}
 
 	public Camera getCamera()
