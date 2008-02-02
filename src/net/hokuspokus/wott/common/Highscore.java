@@ -13,11 +13,9 @@ public class Highscore implements Comparable<Highscore> {
 		this.score = score;
 	}
 
-
-
-	@Override
-	public int compareTo(Highscore o) {
-		return o.score - score;
+	public int compareTo(Highscore arg0)
+	{
+		return arg0.score - score;
 	}
 	
 }
