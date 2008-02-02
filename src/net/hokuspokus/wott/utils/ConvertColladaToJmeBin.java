@@ -125,16 +125,20 @@ public class ConvertColladaToJmeBin extends BaseSimpleGame
 		        
 		        //Obtain the animation from the file by name
 		        BoneAnimation anim1 = ColladaImporter.getAnimationController(animations.get(0));
-		        
-		        //set up a new animation controller with our BoneAnimation
-		        AnimationController ac = new AnimationController();
-		        ac.addAnimation(anim1);
-		        ac.setRepeatType(Controller.RT_WRAP);
-		        ac.setActive(true);
-		        ac.setActiveAnimation(anim1);
-		        
-		        //assign the animation controller to our skeleton
-		        skel.addController(ac);
+		        //System.out.println("anim1:"+anim1.getBoneTransforms().get(0).);
+			        
+		        if(skel != null)
+		        {
+			        //set up a new animation controller with our BoneAnimation
+			        AnimationController ac = new AnimationController();
+			        ac.addAnimation(anim1);
+			        ac.setRepeatType(Controller.RT_WRAP);
+			        ac.setActive(true);
+			        ac.setActiveAnimation(anim1);
+			        
+			        //assign the animation controller to our skeleton
+			        skel.addController(ac);
+		        }
 	        }
 	        NodeUtils.printNodeStructure(node);
 	        for(int i = RenderState.RS_ALPHA; i < RenderState.RS_MAX_STATE; i++)
