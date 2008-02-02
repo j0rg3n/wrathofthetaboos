@@ -57,8 +57,8 @@ public class Board {
 			float silliness = violators.contains(p) ? (float)Math.sin(t) * 0.05f : 0;
 			
 			p.getGeometry().setLocalTranslation(
-					getTileCenterPos(p.getPos().x, p.getPos().y)
-					.add(0, .5f + silliness , 0));
+					getTilePos(p.getPos().x, p.getPos().y)
+					.add(0, .05f + silliness , 0));
 			
 			// Reduce force...
 			Vector2f newVelocity = p.getVelocity().mult(Math.min(0.90f, (float) Math.pow(0.50f, p.getVelocity().length())));
