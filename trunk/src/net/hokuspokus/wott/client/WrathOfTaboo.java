@@ -1,10 +1,16 @@
 package net.hokuspokus.wott.client;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 import net.hokuspokus.wott.common.Board;
 import net.hokuspokus.wott.common.Person;
 import net.hokuspokus.wott.common.Player;
 import net.hokuspokus.wott.common.TabooDisplay;
 import net.hokuspokus.wott.common.TabooSelector;
+import net.hokuspokus.wott.common.Player.PlayerColor;
 
 import com.jme.app.SimpleGame;
 import com.jme.input.FirstPersonHandler;
@@ -28,6 +34,23 @@ public class WrathOfTaboo extends SimpleGame
 	private InputHandler old_fps_input;
 	private PukInputHandler real_input;
 	private static WrathOfTaboo singleton;
+	
+	static
+	{
+		try
+		{
+			// I this fails, you must add "WrathOfTheTaboo" to you classpath (in the run... dialog)
+			LogManager.getLogManager().readConfiguration(WrathOfTaboo.class.getResourceAsStream("/logging.properties"));
+		}
+		catch (SecurityException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
 	
 	public static void main(String[] args)
 	{
@@ -84,8 +107,8 @@ public class WrathOfTaboo extends SimpleGame
 	private void createNewBoard()
 	{
 		board = new Board(20, 20);
-		p1 = new Player(new ColorRGBA(1,0,0,1));
-		p2 = new Player(new ColorRGBA(0,0,1,1));
+		p1 = new Player(PlayerColor.RED);
+		p2 = new Player(PlayerColor.BLUE);
 		
 		boardNode.detachAllChildren();
 		for(Person person : p1.getPopulation())

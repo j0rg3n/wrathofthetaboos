@@ -16,8 +16,14 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Arrow;
+import com.jme.scene.shape.Box;
+import com.jme.scene.state.MaterialState;
+import com.jme.scene.state.RenderState;
+import com.jme.scene.state.TextureState;
+import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.model.converters.MaxToJme;
+import net.hokuspokus.wott.utils.TextureUtil;
 
 public class Player
 {
@@ -25,10 +31,17 @@ public class Player
 	private static final int WOMANCOUNT = 5;
 	private static final boolean USE_PLACEHOLDER = false;
 	
-	private ColorRGBA color;
+	public enum PlayerColor
+	{
+		BLUE,
+		RED,
+		GREEN
+	}
+	
+	private PlayerColor color;
 	List<Person> people = new ArrayList<Person>();
 
-	public Player(ColorRGBA color) {
+	public Player(PlayerColor color) {
 		this.color = color;
 		for (int i = 0; i < MANCOUNT; ++i) {
 			people.add(new Person(this, PersonType.MAN));
@@ -58,6 +71,9 @@ public class Player
 	            
 				r1 = (Node) BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
 				r1.setLocalScale(.010f);
+				
+				TextureUtil.clearRenderStateRecursively(r1, RenderState.RS_TEXTURE);
+				TextureUtil.getInstance().setTexture(r1, "/2d gfx/player_"+color+".jpg");
 				
 		 /*       TextureState ts = WrathOfTaboo.getInstance().getdisplay().getRenderer().createTextureState();
 		        ts.setTexture(TextureManager.loadTexture(TestSimpleBoneAnimation.class
