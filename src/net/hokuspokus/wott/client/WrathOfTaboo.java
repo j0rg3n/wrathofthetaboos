@@ -12,9 +12,11 @@ import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.Mouse;
+import com.jme.input.MouseInput;
 import com.jme.input.controls.controller.CameraController;
 import com.jme.math.Matrix3f;
 import com.jme.math.Quaternion;
+import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Box;
@@ -128,6 +130,7 @@ public class WrathOfTaboo extends SimpleGame
             }
             else
             {
+            	MouseInput.get().setCursorVisible(false);
             	input = old_fps_input;
             }
         }
@@ -146,5 +149,15 @@ public class WrathOfTaboo extends SimpleGame
 		{
 			//boardNode.attachChild(person.getGeomtry());
 		}
+	}
+
+	public Camera getCamera()
+	{
+		return cam;
+	}
+
+	public Node getBoardNode()
+	{
+		return boardNode;
 	}
 }

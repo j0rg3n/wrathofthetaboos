@@ -34,7 +34,7 @@ public class Board {
 					.add(0, .5f, 0));
 			
 			// Reduce force...
-			Vector2f newVelocity = p.getVelocity().mult(0.98f);
+			Vector2f newVelocity = p.getVelocity().mult((float) Math.pow(0.50f, p.getVelocity().length()));
 			if (newVelocity.length() < .01f) {
 				newVelocity = new Vector2f();
 			}
@@ -133,5 +133,10 @@ public class Board {
 		float u = 0.1f;
 		person.setVelocity(new Vector2f((float)(Math.random() * 2 * u - u), 
 				(float)(Math.random() * 2 * u - u)));
+	}
+
+	public Iterable<Person> getLiving()
+	{
+		return living;
 	}	
 }
