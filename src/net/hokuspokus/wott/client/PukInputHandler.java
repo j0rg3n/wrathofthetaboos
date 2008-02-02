@@ -103,7 +103,7 @@ class PlayerPuk
 	{
 		this.puk = new Cylinder("Puk", 16, 16, 1.5f, 0.4f, true);
 		this.puk.getLocalRotation().fromAngles(FastMath.HALF_PI, 0, 0);
-		TextureUtil.getInstance().setTexture(puk, "/ressources/2d gfx/citroen_logo_jo.jpg");
+		TextureUtil.getInstance().setTexture(puk, "2d gfx/citroen_logo_jo.jpg");
 		game.getBoardNode().attachChild(puk);
 	}
 }
