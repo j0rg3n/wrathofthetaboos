@@ -3,6 +3,7 @@ package net.hokuspokus.wott.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
@@ -31,7 +32,7 @@ public class Player
 
 	public Spatial createNode(PersonType type)
 	{
-		return new Box();
+		return new Box("Player:"+type, new Vector3f(-1, -1, -1), new Vector3f(1, 1, 1));
 	}
 
 	public Iterable<Person> getPopulation()
