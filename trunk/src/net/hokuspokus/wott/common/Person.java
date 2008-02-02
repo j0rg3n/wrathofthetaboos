@@ -6,7 +6,7 @@ import com.jme.scene.Spatial;
 
 public class Person
 {
-	public static final float ZONE = .6f;
+	public static final float ZONE = .1f;
 	private static int nextId = 0;
 	public enum PersonType
 	{
@@ -55,5 +55,10 @@ public class Person
 	 */
 	public float getDistance(Person p2) {
 		return getPos().subtract(p2.getPos()).length();
+	}
+
+	public Player getOwner()
+	{
+		return owner;
 	}
 }

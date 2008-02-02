@@ -34,7 +34,7 @@ public class Board {
 					.add(0, .5f, 0));
 			
 			// Reduce force...
-			Vector2f newVelocity = p.getVelocity().mult((float) Math.pow(0.50f, p.getVelocity().length()));
+			Vector2f newVelocity = p.getVelocity().mult(Math.min(0.90f, (float) Math.pow(0.50f, p.getVelocity().length())));
 			if (newVelocity.length() < .01f) {
 				newVelocity = new Vector2f();
 			}
