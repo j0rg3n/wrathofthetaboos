@@ -3,6 +3,7 @@ package net.hokuspokus.wott.common;
 import com.jme.math.Vector2f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
+import com.jme.scene.shape.Arrow;
 
 public class Person
 {
@@ -20,6 +21,7 @@ public class Person
 	Vector2f velocity = new Vector2f();
 	final int id;
 	Spatial geometry;
+	private Arrow cellPointer;
 	
 	public Person(Player owner, PersonType type)
 	{
@@ -27,7 +29,16 @@ public class Person
 		this.type = type;
 		this.id = nextId++;
 		this.geometry = owner.createNode(type);
+		this.cellPointer = new Arrow("uha", 1.0f, .05f);
 	}
+	
+	
+
+	public PersonType getType() {
+		return type;
+	}
+
+
 
 	public Spatial getGeometry()
 	{
@@ -55,6 +66,10 @@ public class Person
 	 */
 	public float getDistance(Person p2) {
 		return getPos().subtract(p2.getPos()).length();
+	}
+
+	public Spatial getCellPointerGeometry() {
+		return cellPointer;
 	}
 
 	public Player getOwner()

@@ -1,8 +1,18 @@
 package net.hokuspokus.wott.common;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
+import net.hokuspokus.wott.common.Person.PersonType;
+import net.hokuspokus.wott.common.TabooSelector.TABOO;
+
+import com.jme.math.Quaternion;
 import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
@@ -12,6 +22,8 @@ import com.jme.scene.shape.Box;
 public class Board {
 
 	private static final float TILESIZE = 1.0f;
+	public static final boolean SHOW_CELL_MEMBERSHIP = false;
+	
 	/**
 	 * List of still living pieces.
 	 */
@@ -25,14 +37,23 @@ public class Board {
 		this.height = height;
 	}
 
+	
+	private float t;
 	public void update()
 	{
+		t += 0.2f;
+		
 		applyForce(10);
+
+		Set<Person> violators = new HashSet<Person>();
+		violators.addAll(getTabooViolators(TABOO.MAN));
 		
 		for (Person p : living) {
+			float silliness = violators.contains(p) ? (float)Math.sin(t) * 0.05f : 0;
+			
 			p.getGeometry().setLocalTranslation(
 					getTileCenterPos(p.getPos().x, p.getPos().y)
-					.add(0, .5f, 0));
+					.add(0, .5f + silliness , 0));
 			
 			// Reduce force...
 			Vector2f newVelocity = p.getVelocity().mult(Math.min(0.90f, (float) Math.pow(0.50f, p.getVelocity().length())));
@@ -44,6 +65,26 @@ public class Board {
 				p.getGeometry().getLocalRotation().fromAngles(-FastMath.HALF_PI, newVelocity.getAngle()-FastMath.HALF_PI, 0); //
 			}
 			p.setVelocity(newVelocity);
+		}
+		
+		if (SHOW_CELL_MEMBERSHIP) {
+			// Make cells point to the people inside
+			Map<Vector2f, List<Person>> cellBuckets = getCellBuckets();
+			Vector2f cellPos = new Vector2f();
+			for (int x = 0; x < width; ++x) {
+				for (int y = 0; y < height; ++y) {
+					cellPos.set(x, y);
+					List<Person> persons = cellBuckets.get(cellPos);
+					if (persons != null) {
+						for (Person p : persons) {
+							//p.getCellPointerGeometry()
+							//.setLocalRotation(new Quaternion(new float[]{ 0, (float)Math.random(), -(float)(Math.PI / 2) }));
+							p.getCellPointerGeometry()
+							.setLocalTranslation(getTileCenterPos(x, y).add(0, .5f, 0));
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -138,6 +179,74 @@ public class Board {
 		float u = 0.1f;
 		person.setVelocity(new Vector2f((float)(Math.random() * 2 * u - u), 
 				(float)(Math.random() * 2 * u - u)));
+	}
+	
+	public List<Person> getTabooViolators(TabooSelector.TABOO taboo) {
+
+		Map<Vector2f, List<Person>> cellBuckets = getCellBuckets();
+		
+		// Process each cell
+		List<Person> violators = new LinkedList<Person>();
+		for (Entry<Vector2f, List<Person>> e : cellBuckets.entrySet()) {
+
+			List<Person> persons = e.getValue();
+			boolean isViolator = false;
+			switch (taboo) {
+			case PLENTY:
+				isViolator = persons.size() >= 3;
+				break;
+			case MAN:
+			case WOMAN:
+				if (persons.size() == 1) {
+					if (persons.get(0).getType() == PersonType.MAN) {
+						isViolator = taboo == TABOO.MAN;
+					} else {
+						isViolator = taboo == TABOO.WOMAN;
+					}
+				}
+				break;
+			case WOMANWOMAN:
+			case MANMAN:
+			case MANWOMAN:
+				if (persons.size() == 2) {
+					if (persons.get(0).getType() == persons.get(1).getType()) {
+						if (persons.get(0).getType() == PersonType.MAN) {
+							isViolator = taboo == TABOO.MANMAN;
+						} else {
+							isViolator = taboo == TABOO.WOMANWOMAN;
+						}
+					} else {
+						isViolator = taboo == TABOO.MANWOMAN;
+					}
+				}
+				break;
+			}
+			
+			if (isViolator) {
+				violators.addAll(persons);
+			}
+		}
+		
+		return violators;
+	}
+
+	public Map<Vector2f, List<Person>> getCellBuckets() {
+		// Gather in cells to ease processing
+		Map<Vector2f, List<Person>> cellBuckets = new HashMap<Vector2f, List<Person>>();
+		for (Person p : living) {
+			
+			Vector2f cell = new Vector2f((int)(p.getPos().x + .5f), 
+					(int)(p.getPos().y + .5f));
+			
+			List<Person> persons = cellBuckets.get(cell);
+			if (persons == null) {
+				persons = new LinkedList<Person>();
+				cellBuckets.put(cell, persons);
+			}
+			
+			persons.add(p);
+		}
+		return cellBuckets;
 	}
 
 	public Iterable<Person> getLiving()
