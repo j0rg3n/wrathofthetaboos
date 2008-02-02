@@ -54,7 +54,7 @@ public class Player
 				
 				
 				
-				URL model = Player.class.getClassLoader().getResource(type == PersonType.WOMAN ? "3d gfx/Kvinde.3DS" : "3d gfx/Mand2.3DS");
+				URL model = Player.class.getClassLoader().getResource(type == PersonType.WOMAN ? "3d gfx/Kvinde.3DS" : "3d gfx/Mand.3DS");
 				MaxToJme C1 = new MaxToJme();
 				ByteArrayOutputStream BO = new ByteArrayOutputStream();
 				C1.convert(new BufferedInputStream(model.openStream()), BO);
