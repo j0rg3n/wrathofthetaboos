@@ -41,6 +41,7 @@ import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
 import com.jme.input.joystick.JoystickInput;
+import com.jme.light.DirectionalLight;
 import com.jme.light.PointLight;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -487,11 +488,12 @@ public abstract class BaseSimpleGame extends BaseGame {
 
         // ---- LIGHTS
         /** Set up a basic, default light. */
-        PointLight light = new PointLight();
+        DirectionalLight light = new DirectionalLight();
         light.setDiffuse( new ColorRGBA( 0.75f, 0.75f, 0.75f, 0.75f ) );
         light.setAmbient( new ColorRGBA( 0.5f, 0.5f, 0.5f, 1.0f ) );
         light.setSpecular( new ColorRGBA( 0.3f, 0.3f, 0.3f, 1.0f ) );
-        light.setLocation( new Vector3f( 100, 100, 100 ) );
+        // light.setLocation( new Vector3f( 100, 100, 100 ) );
+        light.setDirection( new Vector3f( 0.8f, -1.0f, -1.0f ) );
         light.setEnabled( true );
 
         /** Attach the light to a lightState and the lightState to rootNode. */

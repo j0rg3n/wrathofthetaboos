@@ -15,6 +15,7 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Quad;
+import com.jme.scene.state.RenderState;
 
 public class PlayingMode extends GameMode {
 
@@ -70,12 +71,12 @@ public class PlayingMode extends GameMode {
 	
 	private void createSurroundings()
 	{
-		Node pyramid = NodeUtils.loadNode("ressources/3d gfx/Pyramid.jme");
+		Node pyramid = NodeUtils.loadNode("ressources/3d gfx/Pyramid3.jme");
 		pyramid.setLocalScale(new Vector3f(board.getWidth()/2, board.getHeight()/2, board.getWidth()/2));
 		pyramid.getLocalRotation().fromAngles(-FastMath.HALF_PI, 0, 0);
-		TextureUtil.getInstance().setMultiplyTexture(pyramid, "ressources//2d gfx/dirt.jpg", 10, "ressources//2d gfx/dirt_overlay.jpg", 1f);
-		System.out.println(pyramid.getLightCombineMode());
-		System.out.println(pyramid.getLightCombineMode());
+		//TextureUtil.getInstance().setMultiplyTexture(pyramid, "ressources//2d gfx/dirt.jpg", 10, "ressources//2d gfx/dirt_overlay.jpg", 1f);
+		TextureUtil.getInstance().setTexture(pyramid, "/ressources/3d gfx/GRYDIRT2.JPG");
+		pyramid.setLocalTranslation(new Vector3f(0f,6.2f,0f));
 		rootNode.attachChild(pyramid);
 	}
 
