@@ -6,5 +6,8 @@
 	<classpathentry kind="lib" path="jme/lib/lwjgl.jar"/>
 	<classpathentry kind="lib" path="jme/lib/jinput.jar"/>
 	<classpathentry kind="lib" path="jme/lib/junit-4.1.jar"/>
+	<classpathentry kind="lib" path="jme/lib/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="jme/lib/jorbis-0.0.15.jar"/>
+	<classpathentry kind="lib" path="jme/lib/lwjgl_util_applet.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
