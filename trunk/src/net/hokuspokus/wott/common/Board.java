@@ -15,6 +15,7 @@ import net.hokuspokus.wott.client.MeshEffectHelper;
 import net.hokuspokus.wott.client.WrathOfTaboo;
 import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.common.TabooSelector.TABOO;
+import net.hokuspokus.wott.utils.NodeUtils;
 import net.hokuspokus.wott.utils.TextureUtil;
 import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
@@ -293,43 +294,38 @@ public class Board {
 
 			living.remove(p);
 			
-            try
+        	//File file = new File();
+        	//SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
+            //ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
+			Spatial obj = NodeUtils.loadNode("ressources/2d gfx/death3.jme"); //(Spatial) BinaryImporter.getInstance().load(file);
+			obj.setLocalScale(0.0100f);
+			obj.getLocalTranslation().set(p.getGeometry().getLocalTranslation());
+			
+			p.getGeometry().getParent().attachChild(obj);
+
+			if(obj instanceof Node)
 			{
-            	File file = new File("ressources/2d gfx/death3.jme");
-            	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
-                ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
-				Spatial obj = (Spatial) BinaryImporter.getInstance().load(file);
-				obj.setLocalScale(0.0100f);
-
-				//obj.getWorldTranslation().set(vect)LocalTranslation().set(p.getGeometry().getLocalTranslation());
-				
-				p.getGeometry().getParent().attachChild(obj);
-
-				obj.getWorldTranslation().set(p.getGeometry().getLocalTranslation());
-				
-				if(obj instanceof Node)
-				{
+				Node n = (Node) obj;
+				if(n.getChildren() != null) {
 	                for (Spatial child : ((Node)obj).getChildren()) {
 	                    if (child instanceof ParticleGeometry) {
 	                        ((ParticleGeometry) child).forceRespawn();
 	                    }
 	                }
 				}
-				else
-				{
-					((ParticleGeometry) obj).forceRespawn();
-				}
-				//BOO: obj.setLocalScale(0.01f);
-				obj.updateRenderState();
 			}
-			catch (IOException e)
+			else
 			{
-				e.printStackTrace();
+				((ParticleGeometry) obj).forceRespawn();
 			}
+			//BOO: obj.setLocalScale(0.01f);
+			obj.updateRenderState();
+
 
 			
 			//p.getGeometry().removeFromParent();
 			MeshEffectHelper.explodeNode((Node) p.getGeometry(), app.getCamera());
+			app.getSoundCenter().playSound("ressources/sound/explode1.wav", p.getGeometry(), false);
 		}
 	}
 

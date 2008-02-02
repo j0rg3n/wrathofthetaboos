@@ -2,6 +2,7 @@ package net.hokuspokus.wott.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Vector;
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
@@ -11,6 +12,7 @@ import com.jme.scene.Geometry;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
 import com.jme.scene.SharedMesh;
+import com.jme.scene.SharedNode;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState;
 import com.jme.util.export.binary.BinaryImporter;
@@ -25,6 +27,7 @@ public class NodeUtils
 	public static final int NODE_CULLMODE            = 4;
 	public static final int NODE_RENDERSTATES 		 = 8;
 	public static final int NODE_BOUNDING_VOLUMES    = 16;
+	private static Hashtable<String, Node> cached_nodes = new Hashtable<String, Node>();
 
 
 	/**
@@ -303,21 +306,31 @@ public class NodeUtils
 		}
 	}
 	
-	public static Node loadNode(String nodefile)
+	public static Spatial loadNode(String nodefile)
 	{
+		Node retval = cached_nodes.get(nodefile);
 		try
 		{
 	    	File file = new File(nodefile);
 	    	SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
 	        ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
-			Node retval = (Node) BinaryImporter.getInstance().load(file);
+			Spatial s = (Spatial) BinaryImporter.getInstance().load(file);
 			ResourceLocatorTool.removeResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
-			return retval;
+			if(s instanceof Node)
+			{
+				retval = (Node) s;
+			}
+			else
+			{
+				return s;
+			}
+			cached_nodes.put(nodefile, retval);
 		}
 		catch(IOException e)
 		{
 			return null;
 		}
+		return new SharedNode("cachedNode", retval);
 	}
 	
 	
@@ -398,6 +411,23 @@ public class NodeUtils
 			{
 				Spatial sc = (Spatial)o;
 				setCullMode(sc, mode);
+			}
+		}
+	}
+
+	public static void removeAllControllers(Spatial s)
+	{
+		s.clearControllers();
+		if((s.getType() & SceneElement.NODE) != 0)
+		{
+			Node node = (Node)s;
+			if(node.getChildren() != null)
+			{
+				for(Object o : node.getChildren())
+				{
+					Spatial sc = (Spatial)o;
+					removeAllControllers(sc);
+				}
 			}
 		}
 	}
