@@ -1,9 +1,12 @@
 package net.hokuspokus.wott.common;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import net.hokuspokus.wott.client.PukInputHandler;
 import net.hokuspokus.wott.client.WrathOfTaboo;
+import net.hokuspokus.wott.utils.TextureUtil;
 
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
@@ -11,6 +14,8 @@ import com.jme.math.FastMath;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.scene.Text;
+import com.jme.scene.shape.Arrow;
+import com.jme.scene.shape.Quad;
 
 public class IntroMode extends GameMode {
 
@@ -21,26 +26,21 @@ public class IntroMode extends GameMode {
 	public IntroMode(WrathOfTaboo game) {
 		super(game);
 		
-		heading = SuperDuperAssistants.createText("Intro heading", 
-			"W R A T H  O F  T H E  T A B O O S");
-		heading.setLocalTranslation(
-				(game.getDisplay().getWidth() - heading.getWidth()) / 2, 
-				(game.getDisplay().getHeight() - heading.getHeight()) / 2, 
-				0);
-		rootNode.attachChild(heading);
+		Quad foo = TextureUtil.getFullscreenQuad("foo", "ressources/2d gfx/splashscreen.jpg");
+		rootNode.attachChild(foo);
 		
-		blink = SuperDuperAssistants.createText("Insert coin", 
-			"(insert coin)");
+		blink = SuperDuperAssistants.createText("Insert coin", "(insert coin)");
 		rootNode.attachChild(blink);
 
 	
 		hof = new HOF();
 		
-		rootNode.attachChild(heading);
+		Iterator<Highscore> hi = hof.getHighscores().iterator();
+		for (int i = 0; (i < 10) && hi.hasNext(); ++i) {
+			Highscore highscore = hi.next();
 
-		for (Highscore highscore : hof.getHighscores()) {
 			HighscoreDisplay highscoreDisplay = new HighscoreDisplay(game.getDisplay());
-			highscoreDisplay.setHighscore(highscore);
+			highscoreDisplay.setHighscore(i + 1, highscore);
 			
 			Node highscoreNode = highscoreDisplay.getRootNode();
 
@@ -48,10 +48,9 @@ public class IntroMode extends GameMode {
 			rootNode.attachChild(highscoreNode);
 		}
 	}
-	
+
 	@Override
 	public void initCameraPosition(Camera cam) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -65,7 +64,7 @@ public class IntroMode extends GameMode {
 		blink.setLocalTranslation(
 				(game.getDisplay().getWidth() - blink.getWidth()) / 2 + 
 				blinkState * game.getDisplay().getWidth(), 
-				(game.getDisplay().getHeight() - blink.getHeight()) / 2 - 2 * blink.getHeight(), 
+				game.getDisplay().getHeight() * 0.45f - blink.getHeight() - 2 * blink.getHeight(), 
 				0);
 	
 		float t = (System.currentTimeMillis() % 2000) * FastMath.PI / 1000.0f;
@@ -74,9 +73,10 @@ public class IntroMode extends GameMode {
 		for (HighscoreDisplay highscoreDisplay : lines) {
 			Node highscoreNode = highscoreDisplay.getRootNode();
 
-			float y = game.getDisplay().getHeight() - ((i + 3) * heading.getHeight());
-			highscoreNode.setLocalTranslation(FastMath.sin(t + FastMath.PI * i / 7.0f) * 
-					heading.getHeight(), y, 0);
+			float y = game.getDisplay().getHeight() * 0.32f - ((i + 3) * blink.getHeight());
+			highscoreNode.setLocalTranslation(FastMath.sin(t + FastMath.PI * i / 23.0f) *
+					(FastMath.sin(t + FastMath.PI * i / 9.0f) * .5f + .5f) * 2 *
+					blink.getHeight(), y, 0);
 			++i;
 		}
 	}

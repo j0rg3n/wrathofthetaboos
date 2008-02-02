@@ -75,4 +75,11 @@ public class Person
 	{
 		return owner;
 	}
+
+
+
+	public int getID() {
+		// TODO Auto-generated method stub
+		return id;
+	}
 }

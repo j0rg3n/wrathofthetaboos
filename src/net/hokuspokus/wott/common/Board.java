@@ -57,16 +57,14 @@ public class Board {
 		violators.addAll(getTabooViolators(taboo));	
 	}
 	
-	private float t;
 	public void update()
 	{
-		t += 0.2f;
-		
 		applyForce(10);
 
 		for (Person p : living) {
-			
-			float silliness = violators.contains(p) ? (float)Math.sin(t) * 0.05f : 0;
+
+			float t = (System.currentTimeMillis() % 1000) * 8.0f / 1000.0f * FastMath.PI;
+			float silliness = violators.contains(p) ? (float)Math.sin(t + p.getID()) * 0.05f : 0;
 			
 			p.getGeometry().setLocalTranslation(
 					getTilePos(p.getPos().x, p.getPos().y)
