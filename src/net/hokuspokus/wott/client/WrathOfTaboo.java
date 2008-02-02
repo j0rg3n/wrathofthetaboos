@@ -40,7 +40,7 @@ public class WrathOfTaboo extends SimpleGame
 	public static void main(String[] args)
 	{
 		singleton = new WrathOfTaboo();
-		singleton.setDialogBehaviour(ALWAYS_SHOW_PROPS_DIALOG, (URL)null);
+		//singleton.setDialogBehaviour(ALWAYS_SHOW_PROPS_DIALOG, (URL)null);
 		singleton.start();
 	}
 	
@@ -99,12 +99,20 @@ public class WrathOfTaboo extends SimpleGame
 		for(Person person : p1.getPopulation())
 		{
 			boardNode.attachChild(person.getGeometry());
+			
+			if (Board.SHOW_CELL_MEMBERSHIP) 
+				boardNode.attachChild(person.getCellPointerGeometry());
+			
 			board.addPiece(person);
 		}
 		
 		for(Person person : p2.getPopulation())
 		{
 			boardNode.attachChild(person.getGeometry());
+			
+			if (Board.SHOW_CELL_MEMBERSHIP) 
+				boardNode.attachChild(person.getCellPointerGeometry());
+
 			board.addPiece(person);
 		}
 		
@@ -147,7 +155,9 @@ public class WrathOfTaboo extends SimpleGame
             	input = old_fps_input;
             }
         }
-		
+
+        
+        
 		// Upate game-logic
 		board.update();
 	}
