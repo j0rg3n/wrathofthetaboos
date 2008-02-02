@@ -1,8 +1,12 @@
 package net.hokuspokus.wott.client;
 
 import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
+import sun.rmi.transport.LiveRef;
+
 import java.io.IOException;
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -11,6 +15,8 @@ import net.hokuspokus.wott.common.Person;
 import net.hokuspokus.wott.common.Player;
 import net.hokuspokus.wott.common.TabooDisplay;
 import net.hokuspokus.wott.common.TabooSelector;
+import net.hokuspokus.wott.common.TurnTimer;
+import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.common.Player.PlayerColor;
 
 import com.jme.app.SimpleGame;
@@ -23,7 +29,9 @@ import com.jme.math.Quaternion;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
+import com.jme.scene.SceneElement;
 import com.jme.scene.Text;
+import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 
 public class WrathOfTaboo extends SimpleGame
@@ -38,6 +46,11 @@ public class WrathOfTaboo extends SimpleGame
 	private InputHandler old_fps_input;
 	private PukInputHandler real_input;
 	private static WrathOfTaboo singleton;
+	
+	TurnTimer timer;
+	
+	private static final int MANCOUNT = 5;
+	private static final int WOMANCOUNT = 5;
 	
 	static
 	{
@@ -83,6 +96,9 @@ public class WrathOfTaboo extends SimpleGame
 		input = real_input = new PukInputHandler(this);
 		//Mouse
 		
+		timer = new TurnTimer();
+        rootNode.attachChild(timer.getRootNode());
+		
 		// Make sure the camera starts in position
 		initCameraPosition();
 		
@@ -116,24 +132,28 @@ public class WrathOfTaboo extends SimpleGame
 		p2 = new Player(PlayerColor.BLUE);
 		
 		boardNode.detachAllChildren();
-		for(Person person : p1.getPopulation())
-		{
-			boardNode.attachChild(person.getGeometry());
-			
-			if (Board.SHOW_CELL_MEMBERSHIP) 
-				boardNode.attachChild(person.getCellPointerGeometry());
-			
-			board.addPiece(person);
-		}
 		
-		for(Person person : p2.getPopulation())
-		{
-			boardNode.attachChild(person.getGeometry());
+		for (Player p : new Player[]{ p1, p2 }) {
 			
-			if (Board.SHOW_CELL_MEMBERSHIP) 
-				boardNode.attachChild(person.getCellPointerGeometry());
+			List<Person> people = new LinkedList<Person>();
+			
+			for (int i = 0; i < MANCOUNT; ++i) {
+				people.add(new Person(p, PersonType.MAN));
+			}
 
-			board.addPiece(person);
+			for (int i = 0; i < WOMANCOUNT; ++i) {
+				people.add(new Person(p, PersonType.WOMAN));
+			}	
+
+			for(Person person : people)
+			{
+				boardNode.attachChild(person.getGeometry());
+				
+				if (Board.SHOW_CELL_MEMBERSHIP) 
+					boardNode.attachChild(person.getCellPointerGeometry());
+				
+				board.addPiece(person);
+			}
 		}
 		
 		for(int y = 0; y < board.getHeight(); y++)
@@ -176,18 +196,24 @@ public class WrathOfTaboo extends SimpleGame
             }
         }
         
-        if ( KeyBindingManager.getKeyBindingManager().isValidCommand(
-                NEXT_TABOO_BINDING, false ) ) {
-        	selector.next();
-        }
-
         board.markViolators(selector.getCurrent());
+
+        if ( KeyBindingManager.getKeyBindingManager().isValidCommand(
+                NEXT_TABOO_BINDING, false ) || timer.isTimeOut()) {
+        	selector.next();
+        	timer.reset(15);
+        	
+        	board.killViolators();
+        }
 
 		// Upate game-logic
 		board.update();
 
 		// Draw taboo selector
 		selector.update();
+		
+		// Update timer
+		timer.update();
 	}
 
 	public static WrathOfTaboo getInstance()
