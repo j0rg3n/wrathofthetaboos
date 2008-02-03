@@ -1,9 +1,15 @@
 package net.hokuspokus.wott.client;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.logging.LogManager;
 
 import net.hokuspokus.wott.common.GameMode;
+import net.hokuspokus.wott.common.HOF;
 import net.hokuspokus.wott.common.IntroMode;
 import net.hokuspokus.wott.common.PlayingMode;
 import com.jme.app.SimpleGame;
@@ -25,6 +31,7 @@ public class WrathOfTaboo extends SimpleGame
 	private InputHandler old_fps_input;
 	private static WrathOfTaboo singleton;
 	
+	HOF highscore;
 	GameMode currentMode;
 	SoundCenter soundCenter;
 	
@@ -55,6 +62,19 @@ public class WrathOfTaboo extends SimpleGame
 	@Override
 	protected void simpleInitGame()
 	{
+		File hfFile = new File("highscore.dat");
+		if (hfFile.exists()) {
+			try {
+				ObjectInputStream input = new ObjectInputStream(new FileInputStream(hfFile));
+				highscore = (HOF)input.readObject();
+			} catch (Exception e) {
+				// Fallback.
+				highscore = new HOF();
+			}
+		} else {
+			highscore = new HOF();
+		}
+	
 		soundCenter = new SoundCenter(cam);
     	MouseInput.get().setCursorVisible(false);
 
@@ -78,7 +98,16 @@ public class WrathOfTaboo extends SimpleGame
 
 	private void setMode(GameMode newMode) {
 
+		try {
+			File hfFile = new File("highscore.dat");
+			ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(hfFile));
+			output.writeObject(highscore);
+		} catch (Exception e) {
+		}
+
 		rootNode.updateRenderState();
+		bgRootNode.updateRenderState();
+		fgRootNode.updateRenderState();
 		
 		currentMode = newMode;
 		
@@ -169,6 +198,7 @@ public class WrathOfTaboo extends SimpleGame
         	
         	rootNode.detachAllChildren();
         	bgRootNode.detachAllChildren();
+        	fgRootNode.detachAllChildren();
         	
         	if (currentMode instanceof IntroMode) {
         		setMode(new PlayingMode(this));
@@ -215,5 +245,9 @@ public class WrathOfTaboo extends SimpleGame
 	public SoundCenter getSoundCenter()
 	{
 		return soundCenter;
+	}
+
+	public HOF getHighscore() {
+		return highscore;
 	}
 }
