@@ -93,6 +93,7 @@ public class TabooBar {
 		
 		"won_red",
 		"won_green",
+		"won_none",
 	};
 	
 	private static final TABOO[] TABOO_MAPPING = new TABOO[]{
@@ -113,7 +114,7 @@ public class TabooBar {
 	Icon[] icons = new Icon[6];
 	Node rootNode;
 	
-	SpriteQuad[] messages = new SpriteQuad[8];
+	SpriteQuad[] messages = new SpriteQuad[IMAGE_FILENAMES.length];
 	Node messageNode = new Node();
 	
 	public TabooBar() {
@@ -154,15 +155,23 @@ public class TabooBar {
 	}
 	
 	public void setWinner(PlayerColor color) {
+		for (int i = 0; i < COLOR_MAPPING.length; ++i) {
+			if (COLOR_MAPPING[i] == color) {
+				setWinnerMessage(i);
+			}
+		}
+	}
+
+	public void setNoWinner() {
+		setWinnerMessage(COLOR_MAPPING.length);
+	}
+	
+	protected void setWinnerMessage(int index) {
 		for (Icon icon : icons) {
 			icon.setMode(Mode.INACTIVE);
 		}
-		
-		for (int i = 0; i < COLOR_MAPPING.length; ++i) {
-			if (COLOR_MAPPING[i] == color) {
-				setMessage(icons.length + i);
-			}
-		}
+
+		setMessage(icons.length + index);
 	}
 	
 	private void setMessage(int i) {
@@ -183,6 +192,6 @@ public class TabooBar {
 	public Node getRootNode() {
 		return rootNode;
 	}
-	
-	
+
+
 }

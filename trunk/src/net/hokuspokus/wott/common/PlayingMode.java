@@ -15,6 +15,7 @@ import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 import com.jme.scene.shape.Quad;
 import com.jme.system.DisplaySystem;
 import com.jme.scene.state.RenderState;
@@ -33,15 +34,26 @@ public class PlayingMode extends GameMode {
 	boolean choosingTaboo;
 	
 	TabooBar tabooBar;
+	HOFEntryGizmo hofEntry;
 	
 	/**
 	 * Set this to indicate that we're done.
 	 */
 	private boolean highscoreEntered = false;
 	
+	/**
+	 * Set this to indicate that the game is over.
+	 */
+	private boolean gameOver = false;
+	
 	private static final int MANCOUNT = 15;
 	private static final int WOMANCOUNT = 15;
 	private static final boolean SHOW_TEXT_ONLY_TABOO_DISPLAY = false;
+	
+	/**
+	 * Force immediate game over
+	 */
+	private static final boolean FORCE_GAME_OVER = true;
 	
 	public PlayingMode(WrathOfTaboo game) {
 		
@@ -67,6 +79,8 @@ public class PlayingMode extends GameMode {
 		
 		createNewSelector();
 
+		hofEntry = new HOFEntryGizmo();
+		
 		timer = new TurnTimer();
         rootNode.attachChild(timer.getRootNode());
 
@@ -198,7 +212,27 @@ public class PlayingMode extends GameMode {
         
 		board.markViolators(selector.getCurrent());
 
-        if (!board.isDone()) {
+		// Ugly: Detect win happening
+		if ((FORCE_GAME_OVER || board.isDone()) && !gameOver) {
+			gameOver = true;
+
+			Player winner = board.getWinner();
+			if (winner != null) {
+				tabooBar.setWinner(winner.getColor());
+			} else {
+				tabooBar.setNoWinner();
+			}
+        	
+        	// Throw the hof entry gizmo into the mix.
+			hofEntry.setText("AAA");
+			hofEntry.setLocalTranslation(
+					(DisplaySystem.getDisplaySystem().getWidth() - hofEntry.getWidth()) * .5f, 
+					(DisplaySystem.getDisplaySystem().getHeight() - hofEntry.getHeight()) * .5f, 0);
+			game.getFgRootNode().attachChild(hofEntry);
+		}
+		
+		if (!gameOver) {
+		
 	        if ( timer.isTimeOut()) {
 	        	
 	        	selector.next();
@@ -210,8 +244,9 @@ public class PlayingMode extends GameMode {
 	        tabooBar.setActiveTaboo(selector.getCurrent());
 	        
         } else {
-        	
-        	tabooBar.setWinner(board.getWinner().getColor());
+
+        	// nothing for now.
+        	hofEntry.update();
         }
         
 

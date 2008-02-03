@@ -17,6 +17,7 @@ import com.jme.system.DisplaySystem;
 
 public class IntroMode extends GameMode {
 
+	private static final int MAX_HIGHSCORE_LINES = 5;
 	private Text heading, blink;
 	private HOF hof;
 	private List<HighscoreDisplay> lines = new ArrayList<HighscoreDisplay>();
@@ -35,7 +36,7 @@ public class IntroMode extends GameMode {
 		hof = new HOF();
 		
 		Iterator<Highscore> hi = hof.getHighscores().iterator();
-		for (int i = 0; (i < 10) && hi.hasNext(); ++i) {
+		for (int i = 0; (i < MAX_HIGHSCORE_LINES) && hi.hasNext(); ++i) {
 			Highscore highscore = hi.next();
 
 			HighscoreDisplay highscoreDisplay = new HighscoreDisplay(game.getDisplay());
@@ -72,7 +73,7 @@ public class IntroMode extends GameMode {
 		for (HighscoreDisplay highscoreDisplay : lines) {
 			Node highscoreNode = highscoreDisplay.getRootNode();
 
-			float y = game.getDisplay().getHeight() * 0.32f - ((i + 3) * blink.getHeight());
+			float y = game.getDisplay().getHeight() * 0.32f - ((i + 2) * blink.getHeight() * 2);
 			highscoreNode.setLocalTranslation(FastMath.sin(t + FastMath.PI * i / 23.0f) *
 					(FastMath.sin(t + FastMath.PI * i / 9.0f) * .5f + .5f) * 2 *
 					blink.getHeight(), y, 0);
