@@ -178,7 +178,7 @@ public class WrathOfTaboo extends SimpleGame
         }
         
         // we must have sound
-        soundCenter.updateSounds(cam);
+        soundCenter.updateSounds(tpf, cam);
         
         // Switch game mode on death.
         currentMode.update();
