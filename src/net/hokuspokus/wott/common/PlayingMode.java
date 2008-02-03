@@ -17,8 +17,10 @@ import com.jme.animation.SpatialTransformer;
 import com.jme.input.InputHandler;
 import com.jme.math.FastMath;
 import com.jme.math.FastMath;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
+import com.jme.scene.CameraNode;
 import com.jme.scene.Controller;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
@@ -122,12 +124,20 @@ public class PlayingMode extends GameMode {
 		return index == 0 ? p1 : p2;
 	}
 	
+	@Override
 	public void initCameraPosition(Camera cam)
-	{		
+	{
+		
+		Vector3f cam_pos = new Vector3f(board.getWidth()/2f, board.getHeight()*1.3f, board.getWidth()*1.1f);
+		Quaternion rotation = new Quaternion();
+		rotation.fromAngles(FastMath.HALF_PI/2-0.2f, FastMath.PI, 0);
+		cam.setFrame(cam_pos, rotation);
+		/*
 		cam.setDirection(cam.getDirection().set(0, -1, -1).normalizeLocal());
 		cam.setLocation(cam.getLocation().set(board.getWidth()/2, board.getHeight()*1.0f, board.getHeight()*1.5f));
 		cam.setLeft(cam.getLeft().set(-1, 0, 0));
 		cam.setUp(cam.getUp().set(0, 1, -1).normalizeLocal());
+		*/
 	}
 
 	private void createNewSelector() {
