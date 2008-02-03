@@ -14,6 +14,7 @@ import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.KeyInputAction;
 import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
+import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Cylinder;
 
@@ -87,16 +88,30 @@ class PlayerPuk
 	public PlayerPuk(PlayingMode game, Player player, Vector2f pos)
 	{
 		this.pos.set(pos);
-		this.puk = new Cylinder("Puk", 16, 16, 1.5f, 0.4f, true);
+		this.puk = new Node();
 		this.puk.getLocalRotation().fromAngles(FastMath.HALF_PI, 0, 0);
-		this.puk.getLocalTranslation().set(pos.x, 0, pos.y);
-		TextureUtil.getInstance().setTexture(puk, "ressources/2d gfx/player_"+player.getColor()+".jpg");
+		this.puk.getLocalTranslation().set(pos.x, 0.5f, pos.y);
+		
+		Cylinder cyl = new Cylinder("Puk", 16, 16, 1.5f, 1.5f, true);
+		TextureUtil.getInstance().setTexture(cyl, "ressources/2d gfx/puk_"+player.getColor()+".png");
+		TextureUtil.getInstance().setAlphaBlending(cyl);
+		cyl.getLocalTranslation().set(0, 0, -(0.75f + 0.1f));
+		((Node)puk).attachChild(cyl);
+		/*
+		Cylinder cy2 = new Cylinder("Puk2", 16, 16, 1.5f, 0.f, false);
+		TextureUtil.getInstance().setTexture(cyl, "ressources/2d gfx/puk_"+player.getColor()+".png");
+		TextureUtil.getInstance().setAlphaBlending(cyl);
+		cyl.getLocalTranslation().set(0, 0, -1.5f);
+		((Node)puk).attachChild(cyl);
+		*/
+		
 		game.getBoardNode().attachChild(puk);
 	}
 }
 
 class PukKeyboardHandler extends InputHandler 
 {
+	private static final float PUCK_SPEED = 15f;
 	PlayerPuk puk;
 	private Controller logitech_controller;
 	
@@ -132,8 +147,8 @@ class PukKeyboardHandler extends InputHandler
 			if(logitech_controller.poll())
 			{
 				puk.pos.addLocal(
-						15*dt*logitech_controller.getComponents()[14].getPollData(),
-						15*dt*logitech_controller.getComponents()[15].getPollData());
+						PUCK_SPEED*dt*logitech_controller.getComponents()[14].getPollData(),
+						PUCK_SPEED*dt*logitech_controller.getComponents()[15].getPollData());
 
 				/*
 				if(logitech_controller.getComponents()[14].getPollData() != 0.0)
@@ -153,6 +168,9 @@ class PukKeyboardHandler extends InputHandler
 				*/
 			}
 		}
+		// Project puk into the board
+		puk.pos.x = FastMath.clamp(puk.pos.x, -PlayerPuk.PUK_RADIUS, game.getBoard().getWidth()+PlayerPuk.PUK_RADIUS);
+		puk.pos.y = FastMath.clamp(puk.pos.y, -PlayerPuk.PUK_RADIUS, game.getBoard().getHeight()+PlayerPuk.PUK_RADIUS);
 		puk.puk.setLocalTranslation(puk.pos.x, 0, puk.pos.y);
 		
 		for(Person p1 : game.getBoard().getLiving())
@@ -170,6 +188,7 @@ class PukKeyboardHandler extends InputHandler
 				}
 			}
 		}
+		
 	}
 }
 
