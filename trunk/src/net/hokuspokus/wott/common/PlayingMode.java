@@ -193,8 +193,12 @@ public class PlayingMode extends GameMode {
 	        	
 	        	board.killViolators();
 	        }
+
+	        tabooBar.setActiveTaboo(selector.getCurrent());
+	        
         } else {
         	
+        	tabooBar.setWinner(board.getWinner().getColor());
         }
         
 
@@ -203,7 +207,6 @@ public class PlayingMode extends GameMode {
 
 		// Draw taboo selector
 		selector.update();
-		tabooBar.setActiveTaboo(selector.getCurrent());
 		tabooBar.update();
 		
 		// Update timer

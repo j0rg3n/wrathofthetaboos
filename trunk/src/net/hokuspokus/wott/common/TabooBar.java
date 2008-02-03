@@ -1,7 +1,11 @@
 package net.hokuspokus.wott.common;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.omg.PortableInterceptor.INACTIVE;
 
+import net.hokuspokus.wott.common.Player.PlayerColor;
 import net.hokuspokus.wott.common.TabooBar.Icon.Mode;
 import net.hokuspokus.wott.common.TabooSelector.TABOO;
 import net.hokuspokus.wott.utils.SpriteQuad;
@@ -78,13 +82,17 @@ public class TabooBar {
 		}
 	}
 	
-	private static final String[] ICON_FILENAME = new String[]{
+	private static final String[] IMAGE_FILENAMES = new String[]{
+		
 		"taboo_1_gay",
 		"taboo_2_lesbian",
 		"taboo_3_masturbation",
 		"taboo_4_menstruation",
 		"taboo_5_orgy",
 		"taboo_6_wifebeater",
+		
+		"won_red",
+		"won_green",
 	};
 	
 	private static final TABOO[] TABOO_MAPPING = new TABOO[]{
@@ -96,11 +104,16 @@ public class TabooBar {
 		TABOO.MANWOMAN,
 	};
 	
+	private static final PlayerColor[] COLOR_MAPPING = new PlayerColor[] {
+		PlayerColor.RED,
+		PlayerColor.GREEN,
+	};
+	
 	SpriteQuad bg;
 	Icon[] icons = new Icon[6];
 	Node rootNode;
 	
-	SpriteQuad[] messages = new SpriteQuad[6];
+	SpriteQuad[] messages = new SpriteQuad[8];
 	Node messageNode = new Node();
 	
 	public TabooBar() {
@@ -112,15 +125,16 @@ public class TabooBar {
 		rootNode.attachChild(bg);
 		
 		for (int i = 0; i < icons.length; ++i) {
-			icons[i] = new Icon(RES_PATH + ICON_FILENAME[i]);
+			icons[i] = new Icon(RES_PATH + IMAGE_FILENAMES[i]);
 			icons[i].setOffset(TABOO_BAR_LEFT + TABOO_BAR_ICON_SIZE * i, -TABOO_BAR_TOP);
 			rootNode.attachChild(icons[i]);
 		}
 
-		for (int i = 0; i < messages.length; ++i) {
-			messages[i] = TextureUtil.getTransparentQuad("message" + i, RES_PATH + "text_" + ICON_FILENAME[i] + ".png", 
+		for (int i = 0; i < IMAGE_FILENAMES.length; ++i) {
+			messages[i] = TextureUtil.getTransparentQuad("message" + i, RES_PATH + "text_" + IMAGE_FILENAMES[i] + ".png", 
 					MESSAGE_WIDTH, MESSAGE_HEIGHT);
 		}
+		
 		rootNode.attachChild(messageNode);
 		messageNode.setLocalTranslation(
 				(TABOO_BAR_WIDTH - MESSAGE_WIDTH) * .5f,
@@ -135,6 +149,18 @@ public class TabooBar {
 			
 			if (TABOO_MAPPING[i] == taboo) {
 				setMessage(i);
+			}
+		}
+	}
+	
+	public void setWinner(PlayerColor color) {
+		for (Icon icon : icons) {
+			icon.setMode(Mode.INACTIVE);
+		}
+		
+		for (int i = 0; i < COLOR_MAPPING.length; ++i) {
+			if (COLOR_MAPPING[i] == color) {
+				setMessage(icons.length + i);
 			}
 		}
 	}
