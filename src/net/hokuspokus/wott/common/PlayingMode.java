@@ -1,5 +1,9 @@
 package net.hokuspokus.wott.common;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import net.hokuspokus.wott.client.PukInputHandler;
@@ -9,16 +13,20 @@ import net.hokuspokus.wott.common.Player.PlayerColor;
 import net.hokuspokus.wott.utils.SpriteQuad;
 import net.hokuspokus.wott.utils.NodeUtils;
 import net.hokuspokus.wott.utils.TextureUtil;
+import com.jme.animation.SpatialTransformer;
 import com.jme.input.InputHandler;
 import com.jme.math.FastMath;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
+import com.jme.scene.Controller;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Quad;
 import com.jme.system.DisplaySystem;
 import com.jme.scene.state.RenderState;
+import com.jme.util.export.binary.BinaryImporter;
+import com.jmex.model.converters.MaxToJme;
 
 public class PlayingMode extends GameMode {
 
@@ -93,12 +101,16 @@ public class PlayingMode extends GameMode {
 	
 	private void createSurroundings()
 	{
-		Node pyramid = (Node)NodeUtils.loadNode("ressources/3d gfx/pyramid4.jme");
+		Node pyramid = (Node)NodeUtils.loadNode("ressources/3d gfx/pyramid43m.jme");
+		
 		pyramid.setLocalScale(new Vector3f(board.getWidth()/2, board.getHeight()/2, board.getWidth()/2));
 		pyramid.getLocalRotation().fromAngles(-FastMath.HALF_PI, 0, 0);
-		//TextureUtil.getInstance().setMultiplyTexture(pyramid, "ressources//2d gfx/dirt.jpg", 10, "ressources//2d gfx/dirt_overlay.jpg", 1f);
+		pyramid.setLocalTranslation(new Vector3f(0f,8.7f,0f));
+		
 		TextureUtil.getInstance().setTexture(pyramid, "/ressources/3d gfx/GRYDIRT2.JPG");
-		pyramid.setLocalTranslation(new Vector3f(0f,6.2f,0f));
+		
+		NodeUtils.makeAllAnimationLoopRecursive(pyramid);
+		
 		rootNode.attachChild(pyramid);
 	}
 
