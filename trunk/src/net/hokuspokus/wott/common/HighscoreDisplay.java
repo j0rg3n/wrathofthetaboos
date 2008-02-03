@@ -1,5 +1,7 @@
 package net.hokuspokus.wott.common;
 
+import net.hokuspokus.wott.utils.TextureUtil;
+
 import com.jme.scene.Node;
 import com.jme.scene.Text;
 import com.jme.system.DisplaySystem;
@@ -15,11 +17,11 @@ public class HighscoreDisplay {
 
 		rootNode = new Node();
 		
-		rank = SuperDuperAssistants.createText("rank", "rank");
+		rank = TextureUtil.createText("rank", "rank");
 		rootNode.attachChild(rank);
-		name = SuperDuperAssistants.createText("name", "name");
+		name = TextureUtil.createText("name", "name");
 		rootNode.attachChild(name);
-		score = SuperDuperAssistants.createText("score", "score");
+		score = TextureUtil.createText("score", "score");
 		rootNode.attachChild(score);
 	}
 	

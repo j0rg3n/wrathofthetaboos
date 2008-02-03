@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import net.hokuspokus.wott.client.WrathOfTaboo;
+import net.hokuspokus.wott.utils.SpriteQuad;
 import net.hokuspokus.wott.utils.TextureUtil;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
@@ -12,6 +13,7 @@ import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.scene.Text;
 import com.jme.scene.shape.Quad;
+import com.jme.system.DisplaySystem;
 
 public class IntroMode extends GameMode {
 
@@ -22,10 +24,11 @@ public class IntroMode extends GameMode {
 	public IntroMode(WrathOfTaboo game) {
 		super(game);
 		
-		Quad foo = TextureUtil.getFullscreenQuad("foo", "ressources/2d gfx/splashscreen.jpg");
-		rootNode.attachChild(foo);
+		SpriteQuad background = TextureUtil.getFullscreenQuad("foo", "ressources/2d gfx/splashscreen.jpg");
+		background.setLocalTranslation(0, DisplaySystem.getDisplaySystem().getHeight(), 0);
+		rootNode.attachChild(background);
 		
-		blink = SuperDuperAssistants.createText("Insert coin", "(insert coin)");
+		blink = TextureUtil.createText("Insert coin", "(insert coin)");
 		rootNode.attachChild(blink);
 
 	

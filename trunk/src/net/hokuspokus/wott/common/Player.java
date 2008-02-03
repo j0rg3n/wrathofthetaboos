@@ -15,10 +15,17 @@ import com.jme.scene.shape.Quad;
 import com.jme.scene.state.RenderState;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jme.util.resource.ResourceLocatorTool;
+
 import com.jme.util.resource.SimpleResourceLocator;
+import com.jmex.model.converters.MaxToJme;
+
+import net.hokuspokus.wott.utils.SpriteQuad;
+import net.hokuspokus.wott.utils.TextureUtil;
 
 public class Player
 {
+	public static final int SMALL_ICON_SIZE = 170;
+	public static final int BIG_ICON_SIZE = 300;
 	private static final boolean USE_PLACEHOLDER = false;
 	
 	public enum PlayerColor
@@ -27,14 +34,16 @@ public class Player
 		GREEN
 	}
 	
-	public Quad bigIcon, smallIcon;
+	public SpriteQuad bigIcon, smallIcon;
 	
 	private PlayerColor color;
 	
 	public Player(PlayerColor color, String bigIconPath, String smallIconPath) {
 		this.color = color;
-		this.bigIcon = TextureUtil.getTransparentQuad("icon", bigIconPath, 300, 300);
-		this.smallIcon = TextureUtil.getTransparentQuad("icon", smallIconPath, 170, 170);
+		this.bigIcon = TextureUtil.getTransparentQuad("icon", bigIconPath, 
+				BIG_ICON_SIZE, BIG_ICON_SIZE);
+		this.smallIcon = TextureUtil.getTransparentQuad("icon", smallIconPath, 
+				SMALL_ICON_SIZE, SMALL_ICON_SIZE);
 	}
 	
 	public Node createNode(PersonType type)

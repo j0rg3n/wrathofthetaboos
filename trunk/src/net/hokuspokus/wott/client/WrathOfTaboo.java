@@ -65,7 +65,7 @@ public class WrathOfTaboo extends SimpleGame
         KeyBindingManager.getKeyBindingManager().set( "toggle_input_handler", KeyInput.KEY_F12 );
         KeyBindingManager.getKeyBindingManager().set( NEXT_TABOO_BINDING, KeyInput.KEY_F11 );
         KeyBindingManager.getKeyBindingManager().set( START_GAME_BINDING, KeyInput.KEY_SPACE );
-        /*
+        
         // Put in drums
         soundCenter.enqueueSound(
         		"ressources/sound/musica.ogg",
@@ -74,7 +74,6 @@ public class WrathOfTaboo extends SimpleGame
         		"ressources/sound/music_bongo_sting2.ogg",
         		"ressources/sound/music_bongo_sting3.ogg",
         		"ressources/sound/music_bongo_sting4.ogg");
-        */
 	}
 
 	private void setMode(GameMode newMode) {
@@ -139,6 +138,10 @@ public class WrathOfTaboo extends SimpleGame
 	
 	public Node getBgRootNode() {
 		return bgRootNode;
+	}
+	
+	public Node getFgRootNode() {
+		return fgRootNode;
 	}
 	
 	@Override
