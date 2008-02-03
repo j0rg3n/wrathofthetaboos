@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jnlp spec="1.0+" codebase="http://64.251.10.242:6677/">
+	<information>
+		<title>Jealous Gods</title>
+		<vendor>Hokus Pokus</vendor>
+		<homepage href="http://code.google.com/p/wrathofthetaboos/" />
+		<description>Jealous Gods - A Nordic GameJam 2008</description>
+		<icon href="icon.jpg"/>
+		<icon kind="splash" href="splash.jpg"/>
+		<shortcut online="true">
+			<desktop/>
+			<menu submenu="Games"/>
+		</shortcut>
+		<!--offline-allowed /-->
+	</information>
+	<security>
+		<all-permissions />
+	</security>
+	<resources>
+		<j2se version="1.5+" initial-heap-size="64m" max-heap-size="256m" java-vm-args="-Xincgc"/>
+		<jar href="/jars/SCotkClient.jar"           download="eager" />
+		<jar href="/jars/deps/slf4j-jdk14-1.4.3.jar"           download="eager" />
+		<jar href="/jars/deps/mina-core-1.1.jar"           download="eager" />
+		<jar href="/jars/deps/sgs-client.jar"           download="eager" />
+		<jar href="/jars/deps/slf4j-api-1.4.3.jar"           download="eager" />
+		<jar href="/jars/deps/bsh-2.0b4.jar"           download="eager" />
+		<extension name="lwjgl"              href="http://64.251.10.242:6677/jars/deps/lwjgl.jnlp" />
+		<extension name="GamalocusInstaller" href="http://64.251.10.242:6677/jars/installer/gamalocus_installer.jnlp" />
+	</resources>
+	<application-desc main-class="net.gamalocus.cotwl2.client.ClientApplication">
+		<argument>http://64.251.10.242:6677/cotk_client_settings.xml</argument>
+	</application-desc>
+</jnlp>
