@@ -302,10 +302,14 @@ public class PlayingMode extends GameMode {
 	}
 
 	public void setEntryDone(boolean b) {
-		highscoreEntered = b;
-		
-		if (b && (board.getWinner() != null)) {
-			game.getHighscore().addHighscore(hofEntry.getText(), board.getLiving().size());
+		if (highscoreEntered != b) {
+			highscoreEntered = b;
+			
+			if (b && (board.getWinner() != null)) {
+				game.getHighscore().addHighscore(hofEntry.getText(), board.getLiving().size());
+			} else {
+				//game.getHighscore().addHighscore("ALL", 0);
+			}
 		}
 	}
 }

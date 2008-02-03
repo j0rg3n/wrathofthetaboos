@@ -13,9 +13,6 @@ public class HOF implements Serializable {
 	public List<Highscore> highscores = new ArrayList<Highscore>();
 	
 	public HOF() {
-		
-		addHighscore("H&P", 1);
-		
 	}
 
 	public Collection<Highscore> getHighscores() {

@@ -64,15 +64,27 @@ public class WrathOfTaboo extends SimpleGame
 	{
 		File hfFile = new File("highscore.dat");
 		if (hfFile.exists()) {
+			ObjectInputStream input = null;
 			try {
-				ObjectInputStream input = new ObjectInputStream(new FileInputStream(hfFile));
+				input = new ObjectInputStream(new FileInputStream(hfFile));
 				highscore = (HOF)input.readObject();
 			} catch (Exception e) {
 				// Fallback.
 				highscore = new HOF();
+			} finally {
+				if (input != null) {
+					try {
+						input.close();
+					} catch (IOException ioe) {
+					}
+				}
 			}
 		} else {
 			highscore = new HOF();
+		}
+		
+		if (highscore.getHighscores().size() == 0) {
+			highscore.addHighscore("H&P", 1);
 		}
 	
 		soundCenter = new SoundCenter(cam);
@@ -98,11 +110,19 @@ public class WrathOfTaboo extends SimpleGame
 
 	private void setMode(GameMode newMode) {
 
+		ObjectOutputStream output = null;
 		try {
 			File hfFile = new File("highscore.dat");
-			ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(hfFile));
+			output = new ObjectOutputStream(new FileOutputStream(hfFile));
 			output.writeObject(highscore);
 		} catch (Exception e) {
+		} finally {
+			if (output != null) {
+				try {
+					output.close();
+				} catch (IOException ioe) {
+				}
+			}
 		}
 
 		rootNode.updateRenderState();
@@ -195,6 +215,8 @@ public class WrathOfTaboo extends SimpleGame
         }
 
         if ( currentMode.isDone() ) {
+        	
+        	resetRenderPasses();
         	
         	rootNode.detachAllChildren();
         	bgRootNode.detachAllChildren();
