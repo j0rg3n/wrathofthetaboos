@@ -305,37 +305,17 @@ public class Board {
 
 			living.remove(p);
 			
-			Spatial obj = NodeUtils.loadNode("ressources/2d gfx/death3.jme");
-
-			System.out.println(obj.getClass());
+			ParticleMesh pm =(ParticleMesh) NodeUtils.loadNode("ressources/2d gfx/death3.jme");
+			Vector3f xyz = p.getGeometry().getLocalTranslation();
+			pm.setOriginOffset(new Vector3f(xyz.x*46,10,xyz.z*46));
 			
-			obj.getLocalTranslation().set(p.getGeometry().getLocalTranslation());
-			System.out.println(p.getGeometry().getWorldTranslation().x +"=="+ obj.getWorldTranslation().x);
-			System.out.println(p.getGeometry().getLocalTranslation().x +"=="+ obj.getLocalTranslation().x);
+			System.out.println(p.getGeometry().getLocalTranslation());
 			
+			p.getGeometry().getParent().attachChild(pm);
 
-			obj.getWorldTranslation().set(p.getGeometry().getWorldTranslation());
-			System.out.println(p.getGeometry().getWorldTranslation().x +"=="+ obj.getWorldTranslation().x);
-			System.out.println(p.getGeometry().getLocalTranslation().x +"=="+ obj.getLocalTranslation().x);
+			pm.forceRespawn();
 			
-			p.getGeometry().getParent().attachChild(obj);
-
-			if(obj instanceof Node)
-			{
-				Node n = (Node) obj;
-				if(n.getChildren() != null) {
-	                for (Spatial child : ((Node)obj).getChildren()) {
-	                    if (child instanceof ParticleGeometry) {
-	                        ((ParticleGeometry) child).forceRespawn();
-	                    }
-	                }
-				}
-			}
-			else
-			{
-				((ParticleMesh) obj).forceRespawn();
-			}
-			obj.updateRenderState();
+			pm.updateRenderState();
 
 			MeshEffectHelper.explodeNode((Node) p.getGeometry(), app.getCamera());
 		}
