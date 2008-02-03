@@ -1,0 +1,1 @@
+zip JealousGods.zip -r start.sh start.bat release/JealousGods.jar jme/lib/* ressources/2d\ gfx/*  ressources/3d\ gfx/*.jme
