@@ -20,32 +20,32 @@ public class TabooBar {
 
 	private static final String RES_PATH = "/ressources/2d gfx/";
 	
-	public static final int TABOO_BAR_HEIGHT = 171;
-	public static final int TABOO_BAR_WIDTH = 748;
-	public static final int TABOO_BAR_LEFT = 228;
-	public static final int TABOO_BAR_TOP = 57;
-	public static final int TABOO_BAR_ICON_SIZE = 57;
+	public static final int TABOO_BAR_HEIGHT = 128;
+	public static final int TABOO_BAR_WIDTH = 512;
+	public static final int TABOO_BAR_LEFT = 64;
+	public static final int TABOO_BAR_TOP = 16;
+	public static final int TABOO_BAR_ICON_SIZE = 64;
 
 	private static final int MESSAGE_WIDTH = 512;
 	private static final int MESSAGE_HEIGHT = 64;
 
 	static class Icon extends Node {
-		public SpriteQuad inactive, active, hover;
+		public SpriteQuad active, hover;
 		
 		enum Mode {
-			ACTIVE, INACTIVE, HOVER
+			INACTIVE, ACTIVE
 		}
 		
 		float x, y;
 		Mode mode;
 		
 		public Icon(String path) {
-			inactive = TextureUtil.getTransparentQuad("inactive", 
-					path + ".jpg", TABOO_BAR_ICON_SIZE, TABOO_BAR_ICON_SIZE); 
+			//inactive = TextureUtil.getTransparentQuad("inactive", 
+			//		path + ".png", TABOO_BAR_ICON_SIZE, TABOO_BAR_ICON_SIZE); 
 			active = TextureUtil.getTransparentQuad("active", 
-					path + "_default.jpg", TABOO_BAR_ICON_SIZE, TABOO_BAR_ICON_SIZE); 
+					path + "_default.png", TABOO_BAR_ICON_SIZE, TABOO_BAR_ICON_SIZE); 
 			hover = TextureUtil.getTransparentQuad("hover", 
-					path + "_hover.jpg", TABOO_BAR_ICON_SIZE, TABOO_BAR_ICON_SIZE);
+					path + "_hover.png", TABOO_BAR_ICON_SIZE, TABOO_BAR_ICON_SIZE);
 			
 			setMode(Mode.INACTIVE);
 		}
@@ -61,12 +61,9 @@ public class TabooBar {
 			
 			switch (mode) {
 			case INACTIVE:
-				attachChild(inactive);
-				break;
-			case ACTIVE:
 				attachChild(active);
 				break;
-			case HOVER:
+			case ACTIVE:
 				attachChild(hover);
 				break;
 			}
@@ -146,7 +143,7 @@ public class TabooBar {
 		
 		for (int i = 0; i < icons.length; ++i) {
 			
-			icons[i].setMode(TABOO_MAPPING[i] == taboo ? Mode.HOVER : Mode.INACTIVE);
+			icons[i].setMode(TABOO_MAPPING[i] == taboo ? Mode.ACTIVE : Mode.INACTIVE);
 			
 			if (TABOO_MAPPING[i] == taboo) {
 				setMessage(i);
