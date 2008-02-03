@@ -6,6 +6,7 @@ import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.utils.NodeUtils;
 import net.hokuspokus.wott.utils.TextureUtil;
 import com.jme.animation.SpatialTransformer;
+import com.jme.math.FastMath;
 import com.jme.scene.Controller;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
@@ -22,7 +23,6 @@ public class Player
 	
 	public enum PlayerColor
 	{
-		BLUE,
 		RED,
 		GREEN
 	}
@@ -48,13 +48,15 @@ public class Player
 			
 			if(type == PersonType.MAN)
 			{
-				r1 = (Node) NodeUtils.loadNode("ressources/3d gfx/negermand2.jme");
+				r1 = (Node) NodeUtils.loadNode("ressources/3d gfx/negermand_"+color.name().toLowerCase()+".jme");
 				r1.getLocalScale().set(0.22f, 0.22f, 0.22f);
+				r1.getLocalRotation().fromAngles(-FastMath.HALF_PI, FastMath.HALF_PI, 0); //
 			}
 			else
 			{
-				r1 = (Node) NodeUtils.loadNode("ressources/3d gfx/negerkvinde.jme");
+				r1 = (Node) NodeUtils.loadNode("ressources/3d gfx/negerkvinde_"+color.name().toLowerCase()+".jme");
 				r1.getLocalScale().set(0.22f, 0.22f, 0.22f);
+				r1.getLocalRotation().fromAngles(-FastMath.HALF_PI, FastMath.HALF_PI, 0); //
 			}
 				
 			SpatialTransformer kc;

@@ -87,7 +87,7 @@ public class Board {
 				//p.getGeometry().getLocalRotation().fromAngles(-FastMath.HALF_PI, 0, 0);
 			}
 			else {
-				p.getGeometry().getLocalRotation().fromAngles(-FastMath.HALF_PI, newVelocity.getAngle()/*-FastMath.HALF_PI*/, 0); //
+				p.getGeometry().getLocalRotation().fromAngles(-FastMath.HALF_PI, newVelocity.getAngle()+FastMath.HALF_PI, 0); //
 			}
 			p.setVelocity(newVelocity);
 		}
@@ -217,7 +217,6 @@ public class Board {
 		// Process each cell
 		List<Person> violators = new LinkedList<Person>();
 		for (Entry<Vector2f, List<Person>> e : cellBuckets.entrySet()) {
-
 			List<Person> persons = e.getValue();
 			boolean isViolator = false;
 			switch (taboo) {
@@ -282,8 +281,7 @@ public class Board {
 		Map<Vector2f, List<Person>> cellBuckets = new HashMap<Vector2f, List<Person>>();
 		for (Person p : living) {
 			
-			Vector2f cell = new Vector2f((int)(p.getPos().x + .5f), 
-					(int)(p.getPos().y + .5f));
+			Vector2f cell = new Vector2f((int)p.getPos().x,(int)p.getPos().y); // Basically we just floor
 			
 			List<Person> persons = cellBuckets.get(cell);
 			if (persons == null) {

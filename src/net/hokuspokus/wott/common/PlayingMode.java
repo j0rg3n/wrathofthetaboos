@@ -115,7 +115,7 @@ public class PlayingMode extends GameMode {
 		p1 = new Player(PlayerColor.RED, 
 				"/ressources/2d gfx/god_a_big.png",
 				"/ressources/2d gfx/god_a_small.png");
-		p2 = new Player(PlayerColor.BLUE,
+		p2 = new Player(PlayerColor.GREEN,
 				"/ressources/2d gfx/god_b_big.png",
 				"/ressources/2d gfx/god_b_small.png");
 		
