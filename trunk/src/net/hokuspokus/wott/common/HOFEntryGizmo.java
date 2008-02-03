@@ -95,6 +95,10 @@ public class HOFEntryGizmo extends Node {
 		marker.setLocalTranslation(maxLetterWidth * i, -letterHeight, 0);
 	}
 	
+	public int getActiveLetter() {
+		return activeLetterIndex;
+	}
+
 	public void rollActiveLetter(int offset) {
 		int currIndex = LETTERS.indexOf(text.charAt(activeLetterIndex));
 		currIndex += offset; 
@@ -105,6 +109,9 @@ public class HOFEntryGizmo extends Node {
 			currIndex -= LETTERS.length();
 		}
 
+		String left = activeLetterIndex > 0 ? text.substring(0, activeLetterIndex) : "";
+		String right = activeLetterIndex < text.length() - 1 ? text.substring(activeLetterIndex + 1) : "";
+		text = left + LETTERS.charAt(currIndex) + right;
 		createLetterAt(activeLetterIndex, LETTERS.charAt(currIndex));
 	}
 

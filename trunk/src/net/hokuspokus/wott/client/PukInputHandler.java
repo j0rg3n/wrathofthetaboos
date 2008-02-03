@@ -1,5 +1,6 @@
 package net.hokuspokus.wott.client;
 
+import net.hokuspokus.wott.common.HOFEntryGizmo;
 import net.hokuspokus.wott.common.Person;
 import net.hokuspokus.wott.common.Player;
 import net.hokuspokus.wott.common.PlayingMode;
@@ -67,26 +68,38 @@ public class PukInputHandler extends InputHandler
 		p2_keys.updatePuk(time, game, game.getPlayer(1));
 		
 		// Update inter-puk projection
-		_tmpPuckDiff.set(p1_keys.puk.pos).subtractLocal(p2_keys.puk.pos);
+		_tmpPuckDiff.set(p1_keys.puk.getPos()).subtractLocal(p2_keys.puk.getPos());
 		float repulsion = PlayerPuk.PUK_RADIUS * 2 - _tmpPuckDiff.length();
 		if(repulsion > 0)
 		{
 			_tmpPuckDiff.normalizeLocal().multLocal(repulsion);
-			p1_keys.puk.pos.addLocal(_tmpPuckDiff);
-			p2_keys.puk.pos.subtractLocal(_tmpPuckDiff);
+
+			p1_keys.puk.addRepulsionForce(_tmpPuckDiff);
+			_tmpPuckDiff.negateLocal();
+			p2_keys.puk.addRepulsionForce(_tmpPuckDiff);
 		}
 	}
 }
 
 
+/**
+ * Puk/Highscore control
+ * 
+ * @author steam
+ */
 class PlayerPuk
 {
 	Spatial puk;
 	public static final float PUK_RADIUS = 1.5f;
-	Vector2f pos = new Vector2f();
+	private Vector2f pos = new Vector2f();
+	PlayingMode game;
+	private static float xDelta = 0, yDelta = 0;
+	Player player;
 
 	public PlayerPuk(PlayingMode game, Player player, Vector2f pos)
 	{
+		this.player = player;
+		this.game = game;
 		this.pos.set(pos);
 		this.puk = new Node();
 		this.puk.getLocalRotation().fromAngles(FastMath.HALF_PI, 0, 0);
@@ -106,6 +119,79 @@ class PlayerPuk
 		*/
 		
 		game.getBoardNode().attachChild(puk);
+	}
+
+	public void addRepulsionForce(Vector2f puckDiff) {
+		
+		if (!game.isGameOver()) {
+			pos.addLocal(puckDiff);
+		} else {
+		}
+	}
+	
+	public void moveRelative(float x, float y) {
+		if (!game.isGameOver()) {
+			pos.addLocal(x, y);
+		} else {
+			yDelta += y;
+			xDelta += x;
+
+			if (game.getBoard().getWinner() == null) {
+				
+				// Enough movement goes back to the menu.
+				if ((FastMath.abs(yDelta) >= 2.0f) ||
+						(FastMath.abs(xDelta) >= 2.0f)) {
+					game.setEntryDone(true);
+				}
+		
+			} else if (player == game.getBoard().getWinner()){
+				
+				HOFEntryGizmo entry = game.getHOFEntry();
+				
+				if (FastMath.abs(yDelta) >= 1.0f) {
+					
+					entry.rollActiveLetter((int)Math.signum(yDelta));
+					yDelta = 0;
+					
+				} else if (FastMath.abs(xDelta) >= 2.0f) {
+					
+					if (xDelta > 0) {
+						if (entry.getActiveLetter() < 2) {
+							entry.setActiveLetter(entry.getActiveLetter() + 1);
+						} else {
+							game.setEntryDone(true);
+						}
+					} else {
+						if (entry.getActiveLetter() > 0) {
+							entry.setActiveLetter(entry.getActiveLetter() - 1);
+						} else {
+							//game.setEntryDone(true);
+						}
+					}
+					xDelta = 0;
+				}
+			}
+		}
+	}
+	
+	public Vector2f getPos() {
+		return pos;
+	}
+
+	public void setPos(Vector2f pos) {
+		this.pos = pos;
+	}
+
+	public void moveRelative(Vector2f v) {
+		moveRelative(v.x, v.y);
+	}
+
+	public void update() {
+		// Project puk into the board
+		pos.x = FastMath.clamp(pos.x, -PlayerPuk.PUK_RADIUS, game.getBoard().getWidth()+PlayerPuk.PUK_RADIUS);
+		pos.y = FastMath.clamp(pos.y, -PlayerPuk.PUK_RADIUS, game.getBoard().getHeight()+PlayerPuk.PUK_RADIUS);
+
+		puk.setLocalTranslation(pos.x, 0, pos.y);
 	}
 }
 
@@ -146,7 +232,7 @@ class PukKeyboardHandler extends InputHandler
 		{
 			if(logitech_controller.poll())
 			{
-				puk.pos.addLocal(
+				puk.moveRelative(
 						PUCK_SPEED*dt*logitech_controller.getComponents()[14].getPollData(),
 						PUCK_SPEED*dt*logitech_controller.getComponents()[15].getPollData());
 
@@ -168,16 +254,14 @@ class PukKeyboardHandler extends InputHandler
 				*/
 			}
 		}
-		// Project puk into the board
-		puk.pos.x = FastMath.clamp(puk.pos.x, -PlayerPuk.PUK_RADIUS, game.getBoard().getWidth()+PlayerPuk.PUK_RADIUS);
-		puk.pos.y = FastMath.clamp(puk.pos.y, -PlayerPuk.PUK_RADIUS, game.getBoard().getHeight()+PlayerPuk.PUK_RADIUS);
-		puk.puk.setLocalTranslation(puk.pos.x, 0, puk.pos.y);
+
+		puk.update();
 		
 		for(Person p1 : game.getBoard().getLiving())
 		{
 			if(p1.getOwner() == player)
 			{
-				_repulsionVector.set(p1.getPos()).subtractLocal(puk.pos);
+				_repulsionVector.set(p1.getPos()).subtractLocal(puk.getPos());
 				float repulsion = Person.ZONE + PlayerPuk.PUK_RADIUS - _repulsionVector.length();
 				if (repulsion > 0)
 				{
@@ -207,6 +291,7 @@ class DirectionalAction extends KeyInputAction
 
     public void performAction(InputActionEvent evt)
     {
-    	puk.pos.addLocal(tempVa.set(dir).multLocal(evt.getTime()));
+    	
+    	puk.moveRelative(tempVa.set(dir).multLocal(evt.getTime()));
     }
 }

@@ -19,7 +19,6 @@ public class IntroMode extends GameMode {
 
 	private static final int MAX_HIGHSCORE_LINES = 5;
 	private Text heading, blink;
-	private HOF hof;
 	private List<HighscoreDisplay> lines = new ArrayList<HighscoreDisplay>();
 
 	public IntroMode(WrathOfTaboo game) {
@@ -32,10 +31,7 @@ public class IntroMode extends GameMode {
 		blink = TextureUtil.createText("Insert coin", "(insert coin)");
 		rootNode.attachChild(blink);
 
-	
-		hof = new HOF();
-		
-		Iterator<Highscore> hi = hof.getHighscores().iterator();
+		Iterator<Highscore> hi = game.getHighscore().getHighscores().iterator();
 		for (int i = 0; (i < MAX_HIGHSCORE_LINES) && hi.hasNext(); ++i) {
 			Highscore highscore = hi.next();
 

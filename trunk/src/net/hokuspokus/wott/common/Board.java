@@ -1,6 +1,7 @@
 package net.hokuspokus.wott.common;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -290,7 +291,7 @@ public class Board {
 		return cellBuckets;
 	}
 
-	public Iterable<Person> getLiving()
+	public Collection<Person> getLiving()
 	{
 		return living;
 	}

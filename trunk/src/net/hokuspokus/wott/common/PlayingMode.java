@@ -61,7 +61,7 @@ public class PlayingMode extends GameMode {
 	/**
 	 * Force immediate game over
 	 */
-	private static final boolean FORCE_GAME_OVER = true;
+	private static final boolean FORCE_GAME_OVER = false;
 	
 	public PlayingMode(WrathOfTaboo game) {
 		
@@ -231,16 +231,17 @@ public class PlayingMode extends GameMode {
 			Player winner = board.getWinner();
 			if (winner != null) {
 				tabooBar.setWinner(winner.getColor());
+				
+				// Throw the hof entry gizmo into the mix.
+				hofEntry.setText("AAA");
+				hofEntry.setLocalTranslation(
+						(DisplaySystem.getDisplaySystem().getWidth() - hofEntry.getWidth()) * .5f, 
+						(DisplaySystem.getDisplaySystem().getHeight() - hofEntry.getHeight()) * .5f, 0);
+				game.getFgRootNode().attachChild(hofEntry);
+				
 			} else {
 				tabooBar.setNoWinner();
 			}
-        	
-        	// Throw the hof entry gizmo into the mix.
-			hofEntry.setText("AAA");
-			hofEntry.setLocalTranslation(
-					(DisplaySystem.getDisplaySystem().getWidth() - hofEntry.getWidth()) * .5f, 
-					(DisplaySystem.getDisplaySystem().getHeight() - hofEntry.getHeight()) * .5f, 0);
-			game.getFgRootNode().attachChild(hofEntry);
 		}
 		
 		if (!gameOver) {
@@ -279,6 +280,22 @@ public class PlayingMode extends GameMode {
 
 	@Override
 	public boolean isDone() {
-		return highscoreEntered ;
+		return highscoreEntered;
+	}
+
+	public boolean isGameOver() {
+		return gameOver;
+	}
+
+	public HOFEntryGizmo getHOFEntry() {
+		return hofEntry;
+	}
+
+	public void setEntryDone(boolean b) {
+		highscoreEntered = b;
+		
+		if (b && (board.getWinner() != null)) {
+			game.getHighscore().addHighscore(hofEntry.getText(), board.getLiving().size());
+		}
 	}
 }
