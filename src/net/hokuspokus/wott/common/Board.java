@@ -68,6 +68,18 @@ public class Board {
 					getTilePos(p.getPos().x, p.getPos().y)
 					.add(0, .05f + silliness , 0));
 			
+			// Let them be pushed away from border-lines
+			float borderFracX = Math.round(p.pos.x) - p.pos.x;
+			float borderFracY = Math.round(p.pos.y) - p.pos.y;
+			if(Math.abs(borderFracX) < 0.2f)
+			{
+				p.getVelocity().x -= borderFracX/10.0f;
+			}
+			if(Math.abs(borderFracY) < 0.2f)
+			{
+				p.getVelocity().y -= borderFracY/10.0f;
+			}
+			
 			// Reduce force...
 			Vector2f newVelocity = p.getVelocity().mult(Math.min(0.90f, (float) Math.pow(0.50f, p.getVelocity().length())));
 			if (newVelocity.length() < .01f) {
@@ -75,7 +87,7 @@ public class Board {
 				//p.getGeometry().getLocalRotation().fromAngles(-FastMath.HALF_PI, 0, 0);
 			}
 			else {
-				p.getGeometry().getLocalRotation().fromAngles(-FastMath.HALF_PI, newVelocity.getAngle()-FastMath.HALF_PI, 0); //
+				p.getGeometry().getLocalRotation().fromAngles(-FastMath.HALF_PI, newVelocity.getAngle()/*-FastMath.HALF_PI*/, 0); //
 			}
 			p.setVelocity(newVelocity);
 		}
@@ -290,6 +302,10 @@ public class Board {
 	}
 	
 	public void killViolators() {
+		if(violators.size() > 0)
+		{
+			app.getSoundCenter().playSound("ressources/sound/explode1.wav", null, false);
+		}
 		for (Person p : violators) {           
 
 			living.remove(p);
@@ -325,7 +341,6 @@ public class Board {
 			
 			//p.getGeometry().removeFromParent();
 			MeshEffectHelper.explodeNode((Node) p.getGeometry(), app.getCamera());
-			app.getSoundCenter().playSound("ressources/sound/explode1.wav", p.getGeometry(), false);
 		}
 	}
 

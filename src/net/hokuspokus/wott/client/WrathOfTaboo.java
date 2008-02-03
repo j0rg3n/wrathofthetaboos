@@ -67,7 +67,12 @@ public class WrathOfTaboo extends SimpleGame
         KeyBindingManager.getKeyBindingManager().set( START_GAME_BINDING, KeyInput.KEY_SPACE );
         
         // Put in drums
-        soundCenter.enqueueSound("ressources/sound/music_bongo_sting1.ogg");
+        soundCenter.enqueueSound(
+        		"ressources/sound/music_bongo_theme.ogg", 
+        		"ressources/sound/music_bongo_sting1.ogg", 
+        		"ressources/sound/music_bongo_sting2.ogg",
+        		"ressources/sound/music_bongo_sting3.ogg",
+        		"ressources/sound/music_bongo_sting4.ogg");
 	}
 
 	private void setMode(GameMode newMode) {
@@ -170,9 +175,17 @@ public class WrathOfTaboo extends SimpleGame
         // we must have sound
         soundCenter.updateSounds(cam);
         
-        
         // Switch game mode on death.
         currentMode.update();
+        
+        try
+		{
+			Thread.sleep(10);
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public static WrathOfTaboo getInstance()

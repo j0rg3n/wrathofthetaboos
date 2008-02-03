@@ -33,14 +33,17 @@ public class SoundCenter
         audio.getEar().trackPosition(cam);
 	}
 
-	public void enqueueSound(String music)
+	public void enqueueSound(String ... music)
 	{
 		// setup a music score for our demo
-		AudioTrack music1 = getMusic(getResource(music));
 		audio.getMusicQueue().setRepeatType(RepeatType.ALL);
 		audio.getMusicQueue().setCrossfadeinTime(2.5f);
 		audio.getMusicQueue().setCrossfadeoutTime(2.5f);
-		audio.getMusicQueue().addTrack(music1);
+		for(String m : music)
+		{
+			AudioTrack music1 = getMusic(getResource(m));
+			audio.getMusicQueue().addTrack(music1);
+		}
 		audio.getMusicQueue().play();
 	}
 
@@ -91,9 +94,10 @@ public class SoundCenter
 	
 	public void updateSounds(Camera cam)
 	{
+		audio.update();
         for (int x = trackers.size(); --x >= 0; ) {
             RangedAudioTracker t = trackers .get(x);
-            //t.checkTrackAudible(cam.getLocation());
+            t.checkTrackAudible(cam.getLocation());
         }
 	}
 
