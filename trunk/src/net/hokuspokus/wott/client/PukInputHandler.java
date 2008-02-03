@@ -45,8 +45,14 @@ public class PukInputHandler extends InputHandler
 		
 		// Setup either keyboard controller or Logitech-controller
 		Controller[] logitech_controllers = controllers.toArray(new Controller[0]);
-		p1_keys = new PukKeyboardHandler(game.getPlayer(0), game, KeyInput.KEY_UP, KeyInput.KEY_DOWN, KeyInput.KEY_LEFT, KeyInput.KEY_RIGHT, logitech_controllers.length > 0 ? logitech_controllers[0] : null, new Vector2f(0, game.getBoard().getHeight()/2));
-		p2_keys = new PukKeyboardHandler(game.getPlayer(1), game, KeyInput.KEY_W, KeyInput.KEY_S, KeyInput.KEY_A, KeyInput.KEY_D, logitech_controllers.length > 1 ? logitech_controllers[1] : null, new Vector2f(game.getBoard().getWidth(), game.getBoard().getHeight()/2));
+		p1_keys = new PukKeyboardHandler(game.getPlayer(0), game, 
+				KeyInput.KEY_UP, KeyInput.KEY_DOWN, KeyInput.KEY_LEFT, KeyInput.KEY_RIGHT, 
+				logitech_controllers.length > 0 ? logitech_controllers[0] : null, 
+				new Vector2f(0, game.getBoard().getHeight()/2));
+		p2_keys = new PukKeyboardHandler(game.getPlayer(1), game, 
+				KeyInput.KEY_W, KeyInput.KEY_S, KeyInput.KEY_A, KeyInput.KEY_D, 
+				logitech_controllers.length > 1 ? logitech_controllers[1] : null, 
+				new Vector2f(game.getBoard().getWidth(), game.getBoard().getHeight()/2));
 		addToAttachedHandlers(p1_keys);
 		addToAttachedHandlers(p2_keys);
 	}
@@ -220,15 +226,17 @@ class PukKeyboardHandler extends InputHandler
         
         if(logitech_controller == null || logitech_controller.getComponents().length < 16)
         {
-	        keyboard.set( "up"+up, up );
-	        keyboard.set( "down"+down, down );
-	        keyboard.set( "left"+left, left );
-	        keyboard.set( "right"+right, right );
+	        String playerName = player.getColor().name();
+	        
+			keyboard.set( "up"+playerName, up );
+	        keyboard.set( "down"+playerName, down );
+	        keyboard.set( "left"+playerName, left );
+	        keyboard.set( "right"+playerName, right );
 	
-	        addAction(new DirectionalAction(new Vector2f(  0,-10), puk), "up"+up, true);
-	        addAction(new DirectionalAction(new Vector2f(  0, 10), puk), "down"+down, true);
-	        addAction(new DirectionalAction(new Vector2f(-10,  0), puk), "left"+left, true);
-	        addAction(new DirectionalAction(new Vector2f( 10,  0), puk), "right"+right, true);
+	        addAction(new DirectionalAction(new Vector2f(  0,-10), puk), "up"+playerName, true);
+	        addAction(new DirectionalAction(new Vector2f(  0, 10), puk), "down"+playerName, true);
+	        addAction(new DirectionalAction(new Vector2f(-10,  0), puk), "left"+playerName, true);
+	        addAction(new DirectionalAction(new Vector2f( 10,  0), puk), "right"+playerName, true);
         }
         else
         {
