@@ -129,11 +129,19 @@ class PukKeyboardHandler extends InputHandler
 		{
 			if(logitech_controller.poll())
 			{
-				int c = 0;
 				puk.pos.addLocal(
 						15*dt*logitech_controller.getComponents()[14].getPollData(),
 						15*dt*logitech_controller.getComponents()[15].getPollData());
+
 				/*
+				if(logitech_controller.getComponents()[14].getPollData() != 0.0)
+				{
+					SoundCenter.getInstance().playSound("ressources/sound/slide"+(1+(Math.abs(FastMath.rand.nextInt())%7))+".wav", null, false);
+				}
+				*/
+				
+				/*
+				int c = 0;
 				for(Component c_sub : logitech_controller.getComponents())
 				{
 					if(c_sub.getPollData() != 0.0f)

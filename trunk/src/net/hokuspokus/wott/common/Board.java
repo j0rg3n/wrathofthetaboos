@@ -73,11 +73,11 @@ public class Board {
 			float borderFracY = Math.round(p.pos.y) - p.pos.y;
 			if(Math.abs(borderFracX) < 0.2f)
 			{
-				p.getVelocity().x -= borderFracX/10.0f;
+				p.getVelocity().x -= (0.2f-FastMath.abs(borderFracX)) * Math.signum(borderFracX) * 0.25f;
 			}
 			if(Math.abs(borderFracY) < 0.2f)
 			{
-				p.getVelocity().y -= borderFracY/10.0f;
+				p.getVelocity().y -= (0.2f-FastMath.abs(borderFracY)) * Math.signum(borderFracY) * 0.25f;
 			}
 			
 			// Reduce force...
@@ -300,7 +300,7 @@ public class Board {
 	public void killViolators() {
 		if(violators.size() > 0)
 		{
-			app.getSoundCenter().playSound("ressources/sound/explode1.wav", null, false);
+			app.getSoundCenter().playSound("ressources/sound/explode"+(1+(Math.abs(FastMath.rand.nextInt())%3))+".wav", null, false);
 		}
 		for (Person p : violators) {           
 

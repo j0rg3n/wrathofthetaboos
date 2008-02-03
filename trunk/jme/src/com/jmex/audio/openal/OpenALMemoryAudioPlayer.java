@@ -92,10 +92,11 @@ public class OpenALMemoryAudioPlayer extends MemoryAudioPlayer {
     @Override
     public void play() {
         synchronized (this) {
+        	long now = System.currentTimeMillis();
             if (isPaused) {
                 isPaused = false;
                 AL10.alSourcePlay(source.getId());
-                setStartTime(getStartTime()+System.currentTimeMillis()-getPauseTime());
+                setStartTime(getStartTime()+now-getPauseTime());
                 return;
             }
     
@@ -111,7 +112,7 @@ public class OpenALMemoryAudioPlayer extends MemoryAudioPlayer {
             
             AL10.alSourcei(source.getId(), AL10.AL_BUFFER, ((OpenALAudioBuffer)getBuffer()).getId());
             AL10.alSourcePlay(source.getId());
-            setStartTime(System.currentTimeMillis());
+            setStartTime(now);
         }
     }
     

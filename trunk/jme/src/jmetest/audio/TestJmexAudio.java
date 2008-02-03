@@ -103,14 +103,19 @@ public class TestJmexAudio extends SimpleGame {
         audio.getEar().trackOrientation(cam);
         audio.getEar().trackPosition(cam);
         
+        audio.setDopplerFactor(0);
+        
         // setup a music score for our demo
+        /*
         AudioTrack music1 = getMusic(TestJmexAudio.class.getResource("/jmetest/data/sound/test.ogg"));
         audio.getMusicQueue().setRepeatType(RepeatType.ALL);
         audio.getMusicQueue().setCrossfadeinTime(2.5f);
         audio.getMusicQueue().setCrossfadeoutTime(2.5f);
         audio.getMusicQueue().addTrack(music1);
         audio.getMusicQueue().play();
+        */
 
+        /*
         // setup positional sounds in our scene
         AudioTrack sfx1 = getSFX(TestJmexAudio.class.getResource("/jmetest/data/sound/CHAR_CRE_1.ogg"));
         RangedAudioTracker track1 = new RangedAudioTracker(sfx1, 25, 30);
@@ -118,6 +123,7 @@ public class TestJmexAudio extends SimpleGame {
         track1.setTrackIn3D(true);
         track1.setMaxVolume(0.35f);  // set volume on the tracker as it will control fade in, etc.
         trackers.add(track1);
+        */
         
         AudioTrack sfx2 = getSFX(TestJmexAudio.class.getResource("/jmetest/data/sound/Footsteps.wav"));
         RangedAudioTracker track2 = new RangedAudioTracker(sfx2, 25, 30);
