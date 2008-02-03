@@ -8,6 +8,7 @@ import com.jme.image.Texture;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
@@ -250,12 +251,36 @@ public class TextureUtil
 	}
 
 	public static Text createText(String name, String text) {
-		Text t = Text.createDefaultTextLabel(name);
+		
+		Text t = Text.createDefaultTextLabel(name, text);
 	    t.setCullMode( SceneElement.CULL_NEVER );
 	    t.setTextureCombineMode( TextureState.REPLACE );
 	    t.setLightCombineMode(LightState.OFF);
-	    t.print(text);
 	    return t;
+	}
+
+	public static Node createShadowText(String name, String text) {
+		
+		Node textNode = new Node();
+	    textNode.setCullMode( SceneElement.CULL_NEVER );
+	    textNode.setTextureCombineMode( TextureState.REPLACE );
+	    textNode.setLightCombineMode(LightState.OFF);
+		
+		Text t = Text.createDefaultTextLabel(name, text);
+
+		float offset = t.getHeight() * .1f;
+		
+	    Text shadow = Text.createDefaultTextLabel(name, text);
+	    TextureUtil.getInstance().setAlphaBlending(shadow);
+	    shadow.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+	    shadow.setTextColor(new ColorRGBA(0, 0, 0, .5f));
+	    shadow.setLocalTranslation(offset, -offset, 0);
+	    
+	    textNode.attachChild(shadow);
+	    textNode.attachChild(t);
+	    textNode.updateGeometricState(0, false);
+	    
+	    return textNode;
 	}
 
 	public static SpriteQuad getFullscreenQuad(String name, String path) {
