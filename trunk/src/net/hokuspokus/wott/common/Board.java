@@ -306,6 +306,8 @@ public class Board {
 			
 			Spatial obj = NodeUtils.loadNode("ressources/2d gfx/death3.jme");
 
+			System.out.println(obj.getClass());
+			
 			obj.getLocalTranslation().set(p.getGeometry().getLocalTranslation());
 			System.out.println(p.getGeometry().getWorldTranslation().x +"=="+ obj.getWorldTranslation().x);
 			System.out.println(p.getGeometry().getLocalTranslation().x +"=="+ obj.getLocalTranslation().x);
