@@ -66,7 +66,11 @@ public abstract class SimpleGame extends BaseSimpleGame {
 	
 
 	public SimpleGame() {
-        bgRenderPass = new RenderPass();
+        resetRenderPasses();
+	}
+
+	public void resetRenderPasses() {
+		bgRenderPass = new RenderPass();
         bgRenderPass.add(bgRootNode);
         
         fgRenderPass = new RenderPass();

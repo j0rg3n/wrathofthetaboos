@@ -1,5 +1,8 @@
 package net.hokuspokus.wott.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.hokuspokus.wott.common.HOFEntryGizmo;
 import net.hokuspokus.wott.common.Person;
 import net.hokuspokus.wott.common.Player;
@@ -32,8 +35,16 @@ public class PukInputHandler extends InputHandler
 	{
 		this.game = game;
 		
+		List<Controller> controllers = new ArrayList<Controller>();
+		for (Controller controller : ControllerEnvironment.getDefaultEnvironment().getControllers()) {
+			if (!controller.getName().equals("Keyboard") && 
+					!controller.getName().equals("Mouse")) {
+				controllers.add(controller);
+			}
+		}
+		
 		// Setup either keyboard controller or Logitech-controller
-		Controller[] logitech_controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
+		Controller[] logitech_controllers = controllers.toArray(new Controller[0]);
 		p1_keys = new PukKeyboardHandler(game.getPlayer(0), game, KeyInput.KEY_UP, KeyInput.KEY_DOWN, KeyInput.KEY_LEFT, KeyInput.KEY_RIGHT, logitech_controllers.length > 0 ? logitech_controllers[0] : null, new Vector2f(0, game.getBoard().getHeight()/2));
 		p2_keys = new PukKeyboardHandler(game.getPlayer(1), game, KeyInput.KEY_W, KeyInput.KEY_S, KeyInput.KEY_A, KeyInput.KEY_D, logitech_controllers.length > 1 ? logitech_controllers[1] : null, new Vector2f(game.getBoard().getWidth(), game.getBoard().getHeight()/2));
 		addToAttachedHandlers(p1_keys);
@@ -93,7 +104,7 @@ class PlayerPuk
 	public static final float PUK_RADIUS = 1.5f;
 	private Vector2f pos = new Vector2f();
 	PlayingMode game;
-	private static float xDelta = 0, yDelta = 0;
+	private float xDelta = 0, yDelta = 0;
 	Player player;
 
 	public PlayerPuk(PlayingMode game, Player player, Vector2f pos)
@@ -232,9 +243,19 @@ class PukKeyboardHandler extends InputHandler
 		{
 			if(logitech_controller.poll())
 			{
+				int xComponentIndex = 14;
+				int yComponentIndex = 15;
+				for (int i = 0; i < logitech_controller.getComponents().length; ++i) {
+					if (logitech_controller.getComponents()[i].getName().equals("X Axis")) {
+						xComponentIndex = i;
+					}
+					if (logitech_controller.getComponents()[i].getName().equals("Y Axis")) {
+						yComponentIndex = i;
+					}
+				}
 				puk.moveRelative(
-						PUCK_SPEED*dt*logitech_controller.getComponents()[14].getPollData(),
-						PUCK_SPEED*dt*logitech_controller.getComponents()[15].getPollData());
+						PUCK_SPEED*dt*logitech_controller.getComponents()[xComponentIndex].getPollData(),
+						PUCK_SPEED*dt*logitech_controller.getComponents()[yComponentIndex].getPollData());
 
 				/*
 				if(logitech_controller.getComponents()[14].getPollData() != 0.0)

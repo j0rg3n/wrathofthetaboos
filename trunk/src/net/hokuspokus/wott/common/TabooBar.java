@@ -28,6 +28,7 @@ public class TabooBar {
 
 	private static final int MESSAGE_WIDTH = 512;
 	private static final int MESSAGE_HEIGHT = 64;
+	private static final int BIG_MESSAGE_HEIGHT = 512;
 
 	static class Icon extends Node {
 		public SpriteQuad active, hover;
@@ -130,7 +131,7 @@ public class TabooBar {
 
 		for (int i = 0; i < IMAGE_FILENAMES.length; ++i) {
 			messages[i] = TextureUtil.getTransparentQuad("message" + i, RES_PATH + "text_" + IMAGE_FILENAMES[i] + ".png", 
-					MESSAGE_WIDTH, MESSAGE_HEIGHT);
+					MESSAGE_WIDTH, i < icons.length ? MESSAGE_HEIGHT : BIG_MESSAGE_HEIGHT);
 		}
 		
 		rootNode.attachChild(messageNode);
