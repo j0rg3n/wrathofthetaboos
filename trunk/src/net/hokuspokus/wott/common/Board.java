@@ -1,7 +1,5 @@
 package net.hokuspokus.wott.common;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,10 +21,8 @@ import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Box;
-import com.jme.util.export.binary.BinaryImporter;
-import com.jme.util.resource.ResourceLocatorTool;
-import com.jme.util.resource.SimpleResourceLocator;
 import com.jmex.effects.particles.ParticleGeometry;
+import com.jmex.effects.particles.ParticleMesh;
 
 public class Board {
 
@@ -308,12 +304,16 @@ public class Board {
 
 			living.remove(p);
 			
-        	//File file = new File();
-        	//SimpleResourceLocator locator = new SimpleResourceLocator(file.getParentFile().toURI());
-            //ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
-			Spatial obj = NodeUtils.loadNode("ressources/2d gfx/death3.jme"); //(Spatial) BinaryImporter.getInstance().load(file);
-			obj.setLocalScale(0.0100f);
+			Spatial obj = NodeUtils.loadNode("ressources/2d gfx/death3.jme");
+
 			obj.getLocalTranslation().set(p.getGeometry().getLocalTranslation());
+			System.out.println(p.getGeometry().getWorldTranslation().x +"=="+ obj.getWorldTranslation().x);
+			System.out.println(p.getGeometry().getLocalTranslation().x +"=="+ obj.getLocalTranslation().x);
+			
+
+			obj.getWorldTranslation().set(p.getGeometry().getWorldTranslation());
+			System.out.println(p.getGeometry().getWorldTranslation().x +"=="+ obj.getWorldTranslation().x);
+			System.out.println(p.getGeometry().getLocalTranslation().x +"=="+ obj.getLocalTranslation().x);
 			
 			p.getGeometry().getParent().attachChild(obj);
 
@@ -330,14 +330,10 @@ public class Board {
 			}
 			else
 			{
-				((ParticleGeometry) obj).forceRespawn();
+				((ParticleMesh) obj).forceRespawn();
 			}
-			//BOO: obj.setLocalScale(0.01f);
 			obj.updateRenderState();
 
-
-			
-			//p.getGeometry().removeFromParent();
 			MeshEffectHelper.explodeNode((Node) p.getGeometry(), app.getCamera());
 		}
 	}

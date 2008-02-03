@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Vector;
+import com.jme.animation.SpatialTransformer;
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
 import com.jme.bounding.BoundingVolume;
 import com.jme.bounding.OrientedBoundingBox;
+import com.jme.scene.Controller;
 import com.jme.scene.Geometry;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
@@ -379,6 +381,31 @@ public class NodeUtils
 				{
 					Spatial sc = (Spatial)o;
 					clearRenderState(sc, render_state_mode);
+				}
+			}
+		}
+	}
+	
+	public static void makeAllAnimationLoopRecursive(Spatial s)
+	{
+		if (s.getControllerCount() >= 1)
+		{
+			for (Controller c : s.getControllers())
+			{
+				SpatialTransformer kc = (SpatialTransformer) c;
+				System.out.println("Got Controller"+ kc);
+				kc.setSpeed(10);
+				kc.setRepeatType(Controller.RT_WRAP);
+			}
+		}
+		if((s.getType() & SceneElement.NODE) != 0)
+		{
+			Node node = (Node)s;
+			if(node.getChildren() != null)
+			{
+				for (Spatial s2 : node.getChildren() )
+				{
+					makeAllAnimationLoopRecursive(s2);
 				}
 			}
 		}

@@ -67,7 +67,7 @@ public class Player
 				r1.getLocalScale().set(0.22f, 0.22f, 0.22f);
 				r1.getLocalRotation().fromAngles(-FastMath.HALF_PI, FastMath.HALF_PI, 0); //
 			}
-				
+			
 			SpatialTransformer kc;
 			if (r1 != null && r1.getControllerCount() >= 1 && r1.getController(0) != null)
 			{
