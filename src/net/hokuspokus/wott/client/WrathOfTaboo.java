@@ -100,12 +100,7 @@ public class WrathOfTaboo extends SimpleGame
         
         // Put in drums
         soundCenter.enqueueSound(
-        		"ressources/sound/musica.ogg",
-        		"ressources/sound/music_bongo_theme.ogg", 
-        		"ressources/sound/music_bongo_sting1.ogg", 
-        		"ressources/sound/music_bongo_sting2.ogg",
-        		"ressources/sound/music_bongo_sting3.ogg",
-        		"ressources/sound/music_bongo_sting4.ogg");
+        		"ressources/sound/musica.ogg");
 	}
 
 	private void setMode(GameMode newMode) {

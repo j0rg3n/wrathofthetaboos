@@ -299,7 +299,7 @@ public class Board {
 	public void killViolators() {
 		if(violators.size() > 0)
 		{
-			app.getSoundCenter().playSound("ressources/sound/explode"+(1+(Math.abs(FastMath.rand.nextInt())%3))+".wav", null, false);
+			app.getSoundCenter().playSound("ressources/sound/explode"+(1+(Math.abs(FastMath.rand.nextInt())%3))+".ogg", null, false);
 		}
 		for (Person p : violators) {           
 
