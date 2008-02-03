@@ -55,7 +55,7 @@ public class WrathOfTaboo extends SimpleGame
 	public static void main(String[] args)
 	{
 		singleton = new WrathOfTaboo();
-		//singleton.setDialogBehaviour(ALWAYS_SHOW_PROPS_DIALOG, (URL)null);
+		singleton.setDialogBehaviour(ALWAYS_SHOW_PROPS_DIALOG, WrathOfTaboo.class.getClassLoader().getResource("ressources/2d gfx/splash.jpg"));
 		singleton.start();
 	}
 	
