@@ -60,8 +60,20 @@ import com.jme.util.geom.Debugger;
 public abstract class SimpleGame extends BaseSimpleGame {
 
 	protected Node bgRootNode = new Node();
+	protected Node fgRootNode = new Node();
+	private RenderPass bgRenderPass;
+	private RenderPass fgRenderPass;
 	
-    /**
+
+	public SimpleGame() {
+        bgRenderPass = new RenderPass();
+        bgRenderPass.add(bgRootNode);
+        
+        fgRenderPass = new RenderPass();
+        fgRenderPass.add(fgRootNode);
+	}
+	
+	/**
      * Called every frame to update scene information.
      * 
      * @param interpolation
@@ -92,10 +104,8 @@ public abstract class SimpleGame extends BaseSimpleGame {
         
         Renderer r = display.getRenderer();
         
-        RenderPass rp = new RenderPass();
-        bgRootNode.updateRenderState();
-        rp.add(bgRootNode);
-        rp.doRender(r);
+		bgRootNode.updateRenderState();
+        bgRenderPass.doRender(r);
 
         /** Draw the rootNode and all its children. */
         r.draw(rootNode);
@@ -106,6 +116,9 @@ public abstract class SimpleGame extends BaseSimpleGame {
         /** Draw the fps node to show the fancy information at the bottom. */
         r.draw(fpsNode);
         
+		fgRootNode.updateRenderState();
+        fgRenderPass.doRender(r);
+
         doDebug(r);
     }
 

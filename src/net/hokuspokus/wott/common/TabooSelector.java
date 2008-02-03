@@ -2,6 +2,9 @@ package net.hokuspokus.wott.common;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.hokuspokus.wott.utils.TextureUtil;
+
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
@@ -38,7 +41,7 @@ public class TabooSelector {
 		for (TABOO taboo : TABOO.values()) {
 			Text tabooText;
 			
-			tabooText = SuperDuperAssistants.createText( taboo.name() + " label", taboo.name() );
+			tabooText = TextureUtil.createText( taboo.name() + " label", taboo.name() );
 
 	        rootNode.attachChild(tabooText);
 			
@@ -46,7 +49,7 @@ public class TabooSelector {
 			taboos.add(d);
 		}
 		
-		marker = SuperDuperAssistants.createText("Taboo marker", ">>");
+		marker = TextureUtil.createText("Taboo marker", ">>");
 
         rootNode.attachChild(marker);
         

@@ -12,6 +12,7 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.SceneElement;
 import com.jme.scene.Spatial;
+import com.jme.scene.Text;
 import com.jme.scene.shape.Quad;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.LightState;
@@ -248,11 +249,20 @@ public class TextureUtil
 		foo.setRenderState(zState);
 	}
 
-	public static Quad getFullscreenQuad(String name, String path) {
+	public static Text createText(String name, String text) {
+		Text t = Text.createDefaultTextLabel(name);
+	    t.setCullMode( SceneElement.CULL_NEVER );
+	    t.setTextureCombineMode( TextureState.REPLACE );
+	    t.setLightCombineMode(LightState.OFF);
+	    t.print(text);
+	    return t;
+	}
+
+	public static SpriteQuad getFullscreenQuad(String name, String path) {
 		int sWidth = DisplaySystem.getDisplaySystem().getWidth();
 		int sHeight = DisplaySystem.getDisplaySystem().getHeight();
 		
-		Quad foo = new Quad(name, sWidth, sHeight);
+		SpriteQuad foo = new SpriteQuad(name, sWidth, sHeight);
 		foo.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 		foo.setLightCombineMode(LightState.OFF);
 		foo.setLocalTranslation(sWidth / 2.0f, sHeight / 2.0f, 0.0f);
@@ -263,8 +273,8 @@ public class TextureUtil
 		return foo;
 	}
 
-	public static Quad getQuad(String name, String path, int tWidth, int tHeight) {
-		Quad foo = new Quad(name, tWidth, tHeight);
+	public static SpriteQuad getQuad(String name, String path, int tWidth, int tHeight) {
+		SpriteQuad foo = new SpriteQuad(name, tWidth, tHeight);
 		foo.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 		foo.setLightCombineMode(LightState.OFF);
 		foo.setLocalRotation(new Quaternion(new float[]{ FastMath.PI, 0, 0 }));
@@ -274,8 +284,8 @@ public class TextureUtil
 		return foo;
 	}
 
-	public static Quad getTransparentQuad(String name, String path, int tWidth, int tHeight) {
-		Quad foo = TextureUtil.getQuad(name, path, tWidth, tHeight);
+	public static SpriteQuad getTransparentQuad(String name, String path, int tWidth, int tHeight) {
+		SpriteQuad foo = TextureUtil.getQuad(name, path, tWidth, tHeight);
 		TextureUtil.getInstance().setAlphaBlending(foo);
 		foo.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 		

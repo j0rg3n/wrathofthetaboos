@@ -6,6 +6,7 @@ import net.hokuspokus.wott.client.PukInputHandler;
 import net.hokuspokus.wott.client.WrathOfTaboo;
 import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.common.Player.PlayerColor;
+import net.hokuspokus.wott.utils.SpriteQuad;
 import net.hokuspokus.wott.utils.NodeUtils;
 import net.hokuspokus.wott.utils.TextureUtil;
 import com.jme.input.InputHandler;
@@ -15,6 +16,7 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Quad;
+import com.jme.system.DisplaySystem;
 import com.jme.scene.state.RenderState;
 
 public class PlayingMode extends GameMode {
@@ -27,13 +29,19 @@ public class PlayingMode extends GameMode {
 	private TabooSelector selector;
 	TurnTimer timer;
 	private PukInputHandler real_input;
-	Quad background;
+	SpriteQuad background;
 	boolean choosingTaboo;
 	
 	TabooBar tabooBar;
 	
+	/**
+	 * Set this to indicate that we're done.
+	 */
+	private boolean highscoreEntered = false;
+	
 	private static final int MANCOUNT = 15;
 	private static final int WOMANCOUNT = 15;
+	private static final boolean SHOW_TEXT_ONLY_TABOO_DISPLAY = false;
 	
 	public PlayingMode(WrathOfTaboo game) {
 		
@@ -41,11 +49,11 @@ public class PlayingMode extends GameMode {
 		
 		background = TextureUtil.getFullscreenQuad("bg", 
 				"/ressources/2d gfx/background.jpg");
-		
+		background.setLocalTranslation(0, DisplaySystem.getDisplaySystem().getHeight(), 0);
 		game.getBgRootNode().attachChild(background);
 		
 		tabooBar = new TabooBar();
-		game.getBgRootNode().attachChild(tabooBar.getRootNode());
+		game.getFgRootNode().attachChild(tabooBar.getRootNode());
 		
 		boardNode = new Node();
 		selectorNode = new Node();
@@ -106,7 +114,9 @@ public class PlayingMode extends GameMode {
 		selectorNode.updateGeometricState( 0.0f, true );
         selectorNode.updateRenderState();
         
-        rootNode.attachChild(selectorNode);
+        if (SHOW_TEXT_ONLY_TABOO_DISPLAY) {
+        	rootNode.attachChild(selectorNode);
+        }
 	}
 
 	private void createNewBoard()
@@ -119,10 +129,10 @@ public class PlayingMode extends GameMode {
 				"/ressources/2d gfx/god_b_big.png",
 				"/ressources/2d gfx/god_b_small.png");
 		
-		game.getBgRootNode().attachChild(p1.bigIcon);
-		game.getBgRootNode().attachChild(p2.bigIcon);
-		game.getBgRootNode().attachChild(p1.smallIcon);
-		game.getBgRootNode().attachChild(p2.smallIcon);
+		//game.getFgRootNode().attachChild(p1.bigIcon);
+		//game.getFgRootNode().attachChild(p2.bigIcon);
+		game.getFgRootNode().attachChild(p1.smallIcon);
+		game.getFgRootNode().attachChild(p2.smallIcon);
 		
 		boardNode.detachAllChildren();
 		
@@ -166,10 +176,12 @@ public class PlayingMode extends GameMode {
 
 		float t = (System.currentTimeMillis() % 1000) * 2.0f / 1000.0f * FastMath.PI;
 
-		p1.smallIcon.setLocalTranslation(game.getDisplay().getWidth() * 0.25f, 
-				game.getDisplay().getHeight() * (0.9f + FastMath.sin(t) * .01f), 0);
-		p2.smallIcon.setLocalTranslation(game.getDisplay().getWidth() * 0.75f, 
-				game.getDisplay().getHeight() * (0.9f + FastMath.cos(t) * .01f), 0);
+		p1.smallIcon.setLocalTranslation(game.getDisplay().getWidth() * 0.02f, 
+				game.getDisplay().getHeight() +
+				(.05f + FastMath.cos(t) * .05f) * Player.SMALL_ICON_SIZE, 0);
+		p2.smallIcon.setLocalTranslation(game.getDisplay().getWidth() * 0.98f - Player.SMALL_ICON_SIZE, 
+				game.getDisplay().getHeight() +
+				(.05f + FastMath.cos(t) * .05f) * Player.SMALL_ICON_SIZE, 0);
         
 		board.markViolators(selector.getCurrent());
 
@@ -191,6 +203,7 @@ public class PlayingMode extends GameMode {
 
 		// Draw taboo selector
 		selector.update();
+		tabooBar.setActiveTaboo(selector.getCurrent());
 		tabooBar.update();
 		
 		// Update timer
@@ -203,6 +216,6 @@ public class PlayingMode extends GameMode {
 
 	@Override
 	public boolean isDone() {
-		return board.isDone();
+		return highscoreEntered ;
 	}
 }
