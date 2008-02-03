@@ -201,13 +201,15 @@ public class Board {
 	public void addPiece(Person person) {
 
 		living.add(person);
-		
+
+		/* Not random like this
 		person.setPos(new Vector2f((int)(Math.random() * width),
 				(int)(Math.random() * height)));
 
 		float u = 0.1f;
 		person.setVelocity(new Vector2f((float)(Math.random() * 2 * u - u), 
 				(float)(Math.random() * 2 * u - u)));
+		*/
 	}
 	
 	public List<Person> getTabooViolators(TabooSelector.TABOO taboo) {

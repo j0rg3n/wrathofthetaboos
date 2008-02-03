@@ -121,7 +121,7 @@ public class PlayingMode extends GameMode {
 
 	private void createNewBoard()
 	{
-		board = new Board(10, 10, game);
+		board = new Board(15, 8, game);
 		p1 = new Player(PlayerColor.RED, 
 				"/ressources/2d gfx/god_a_big.png",
 				"/ressources/2d gfx/god_a_small.png");
@@ -155,13 +155,26 @@ public class PlayingMode extends GameMode {
 				if (Board.SHOW_CELL_MEMBERSHIP) 
 					boardNode.attachChild(person.getCellPointerGeometry());
 				
+				// place the person
+				float x10th = (board.getWidth()/10f);
+				if(person.owner == p1)
+				{
+					person.pos.x = x10th + FastMath.rand.nextFloat()*x10th*2;
+					person.pos.y = board.getHeight()*FastMath.rand.nextFloat();
+				}
+				else
+				{
+					person.pos.x = x10th*7 + FastMath.rand.nextFloat()*x10th*2;
+					person.pos.y = board.getHeight()*FastMath.rand.nextFloat();
+				}
+				
 				board.addPiece(person);
 			}
 		}
 		
 		for(int y = 0; y < board.getHeight(); y++)
 		{
-			for(int x = 0; x < board.getHeight(); x++)
+			for(int x = 0; x < board.getWidth(); x++)
 			{
 				boardNode.attachChild(board.getTile(x, y));
 			}
