@@ -7,4 +7,5 @@ zip JealousGods.zip -r \
 	ressources/3d\ gfx/*.JPG \
 	ressources/sound/*.wav \
 	ressources/sound/*.ogg \
+	design/releaseprocedure/projectname/project_JealousGod.txt \
 	press/press.jpg
