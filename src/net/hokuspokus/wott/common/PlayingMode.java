@@ -55,9 +55,10 @@ public class PlayingMode extends GameMode {
 	 * Set this to indicate that the game is over.
 	 */
 	private boolean gameOver = false;
+	private long switchTime;
 	
-	private static final int MANCOUNT = 15;
-	private static final int WOMANCOUNT = 15;
+	private static final int MANCOUNT = 10;
+	private static final int WOMANCOUNT = 10;
 	private static final boolean SHOW_TEXT_ONLY_TABOO_DISPLAY = false;
 	
 	/**
@@ -248,9 +249,10 @@ public class PlayingMode extends GameMode {
 						(DisplaySystem.getDisplaySystem().getWidth() - hofEntry.getWidth()) * .5f, 
 						(DisplaySystem.getDisplaySystem().getHeight() - hofEntry.getHeight()) * .5f, 0);
 				game.getFgRootNode().attachChild(hofEntry);
-				
+				switchTime = System.currentTimeMillis()+600000; // 10 minutes to type your name
 			} else {
 				tabooBar.setNoWinner();
+				switchTime = System.currentTimeMillis()+2500; // auto-swith in 2.5 seconds
 			}
 		}
 		
@@ -266,22 +268,21 @@ public class PlayingMode extends GameMode {
 
 	        tabooBar.setActiveTaboo(selector.getCurrent());
 	        
+			// Upate game-logic
+			board.update();
+
+			// Draw taboo selector
+			selector.update();
+			
+			// Update timer
+			timer.update();
+			
         } else {
 
         	// nothing for now.
         	hofEntry.update();
         }
-        
-
-		// Upate game-logic
-		board.update();
-
-		// Draw taboo selector
-		selector.update();
 		tabooBar.update();
-		
-		// Update timer
-		timer.update();
 	}
 
 	public Board getBoard() {
@@ -290,7 +291,9 @@ public class PlayingMode extends GameMode {
 
 	@Override
 	public boolean isDone() {
-		return highscoreEntered;
+		if(highscoreEntered)
+			return true;
+		return isGameOver() && System.currentTimeMillis() > switchTime;
 	}
 
 	public boolean isGameOver() {

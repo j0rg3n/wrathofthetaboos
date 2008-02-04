@@ -330,18 +330,25 @@ public class Board {
 			return true;
 		} 
 		
-		return getWinner() != null;
+		try
+		{
+			return getWinner() != null;
+		}
+		catch(RuntimeException e)
+		{
+			return false;
+		}
 	}
 
 	public Player getWinner() {
 		if (living.isEmpty()) {
-			throw new NoSuchElementException("Noone left alive.");
+			return null; // No winner
 		}
 		
 		Player prevPlayer =  living.get(0).getOwner();
 		for (Person p : living) {
 			if (prevPlayer != p.getOwner()) {
-				return null;
+				throw new RuntimeException("You shall not ask for a winner when there is still people from both populations left on the board.");
 			}
 		}
 		
