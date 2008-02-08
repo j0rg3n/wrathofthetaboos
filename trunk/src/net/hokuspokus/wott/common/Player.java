@@ -7,12 +7,17 @@ import net.hokuspokus.wott.utils.NodeUtils;
 import net.hokuspokus.wott.utils.TextureUtil;
 import com.jme.animation.SpatialTransformer;
 import com.jme.math.FastMath;
+import com.jme.renderer.Renderer;
 import com.jme.scene.Controller;
 import com.jme.scene.Node;
+import com.jme.scene.SceneElement;
 import com.jme.scene.Spatial;
+import com.jme.scene.Text;
 import com.jme.scene.shape.Arrow;
 import com.jme.scene.shape.Quad;
+import com.jme.scene.state.LightState;
 import com.jme.scene.state.RenderState;
+import com.jme.scene.state.TextureState;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jme.util.resource.ResourceLocatorTool;
 
@@ -28,6 +33,8 @@ public class Player
 	public static final int BIG_ICON_SIZE = 300;
 	private static final boolean USE_PLACEHOLDER = false;
 	
+	public int points = 0;
+	
 	public enum PlayerColor
 	{
 		RED,
@@ -35,6 +42,7 @@ public class Player
 	}
 	
 	public SpriteQuad bigIcon, smallIcon;
+	public Text pointText;
 	
 	private PlayerColor color;
 	
@@ -44,6 +52,11 @@ public class Player
 				BIG_ICON_SIZE, BIG_ICON_SIZE);
 		this.smallIcon = TextureUtil.getTransparentQuad("icon", smallIconPath, 
 				SMALL_ICON_SIZE, SMALL_ICON_SIZE);
+		pointText = Text.createDefaultTextLabel( " - points - " );
+		pointText.setCullMode( SceneElement.CULL_NEVER );
+		pointText.setTextureCombineMode( TextureState.REPLACE );
+		pointText.setLightCombineMode(LightState.OFF);
+		pointText.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 	}
 	
 	public Node createNode(PersonType type)

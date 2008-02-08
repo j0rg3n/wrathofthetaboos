@@ -23,11 +23,11 @@ public class TabooSelector {
 	}
 	
 	List<TabooDisplay> taboos = new ArrayList<TabooDisplay>();
-	int current;
 	Vector3f pos = new Vector3f();
 	
 	Text marker;
 	Node rootNode;
+	private TABOO current_taboo = TABOO.MIX;
 	
 	public Node getRootNode() {
 		return rootNode;
@@ -37,7 +37,6 @@ public class TabooSelector {
 		
 		rootNode = new Node();
 				
-		current = 0;
 		for (TABOO taboo : TABOO.values()) {
 			Text tabooText;
 			
@@ -66,16 +65,22 @@ public class TabooSelector {
 		this.taboos = taboos;
 	}
 
-	public int getCurrentIndex() {
-		return current;
-	}
-	
 	public TABOO getCurrent() {
-		return taboos.get(current).getTaboo();
+		return current_taboo ;
 	}
 
-	public void setCurrent(int current) {
-		this.current = current;
+	public void nextTaboo(Board board) {
+    	int max=0;
+    	for(TABOO taboo : TABOO.values())
+    	{
+    		int violator_count = board.getTabooViolators(taboo).size();
+    		if(violator_count > max 
+    				|| violator_count == max && taboo != this.current_taboo)
+    		{
+    			max = violator_count;
+    			this.current_taboo = taboo;
+    		}
+    	}
 	}
 	
 	public void setPos(float x, float y, float z) {
@@ -91,7 +96,7 @@ public class TabooSelector {
 			
 			d.getGeometry().setLocalTranslation(marker.getWidth(), -y, 0.0f);
 			
-			if (i == current) {
+			if (TABOO.values()[i] == current_taboo) {
 				marker.setLocalTranslation(0.0f, -y, 0.0f);
 			}
 
@@ -99,6 +104,7 @@ public class TabooSelector {
 		}
 	}
 
+	/*
 	public void next() {
 
 		++current;
@@ -106,6 +112,7 @@ public class TabooSelector {
 			current = 0;
 		}
 	}
+	*/
 
 	public float getHeight() {
 		return marker.getHeight() * taboos.size();

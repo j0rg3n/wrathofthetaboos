@@ -39,6 +39,7 @@ public class Board {
 	private int width;
 	private int height;
 	private WrathOfTaboo app;
+	public int turn = 1; 
 
 	public Board(int width, int height, WrathOfTaboo app)
 	{
@@ -296,7 +297,7 @@ public class Board {
 		return living;
 	}
 	
-	public void killViolators() {
+	public void killViolatorsAndIncreaseTurn() {
 		if(violators.size() > 0)
 		{
 			app.getSoundCenter().playSound("ressources/sound/explode"+(1+(Math.abs(FastMath.rand.nextInt())%3))+".ogg", null, false);
@@ -319,6 +320,18 @@ public class Board {
 
 			MeshEffectHelper.explodeNode((Node) p.getGeometry(), app.getCamera());
 		}
+		turn++;
+	}
+	
+	public int getPoints(Player player)
+	{
+		int points = 0;
+		for(Person p : violators)
+		{
+			if(p.owner != player)
+				points += turn;
+		}
+		return points;
 	}
 
 	public int getRoundTime() {

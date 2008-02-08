@@ -10,6 +10,7 @@ import net.hokuspokus.wott.client.PukInputHandler;
 import net.hokuspokus.wott.client.WrathOfTaboo;
 import net.hokuspokus.wott.common.Person.PersonType;
 import net.hokuspokus.wott.common.Player.PlayerColor;
+import net.hokuspokus.wott.common.TabooSelector.TABOO;
 import net.hokuspokus.wott.utils.SpriteQuad;
 import net.hokuspokus.wott.utils.NodeUtils;
 import net.hokuspokus.wott.utils.TextureUtil;
@@ -20,6 +21,7 @@ import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
+import com.jme.renderer.Renderer;
 import com.jme.scene.CameraNode;
 import com.jme.scene.Controller;
 import com.jme.scene.Node;
@@ -56,6 +58,7 @@ public class PlayingMode extends GameMode {
 	 */
 	private boolean gameOver = false;
 	private long switchTime;
+	private Player winner;
 	
 	private static final int MANCOUNT = 10;
 	private static final int WOMANCOUNT = 10;
@@ -92,7 +95,7 @@ public class PlayingMode extends GameMode {
 
 		hofEntry = new HOFEntryGizmo();
 		
-		timer = new TurnTimer();
+		timer = new TurnTimer(game);
         rootNode.attachChild(timer.getRootNode());
 
 		// Make sure the camera starts in position
@@ -146,7 +149,7 @@ public class PlayingMode extends GameMode {
 		selector = new TabooSelector();
 		selectorNode = selector.getRootNode();
 		
-		selectorNode.setLocalTranslation(0, (game.getDisplay().getHeight() + selector.getHeight()) / 2.0f, 0);
+		selectorNode.setLocalTranslation(0, (game.getDisplay().getHeight() - selector.getHeight()) / 2.0f, 0);
 		
 		selectorNode.updateGeometricState( 0.0f, true );
         selectorNode.updateRenderState();
@@ -154,6 +157,7 @@ public class PlayingMode extends GameMode {
         if (SHOW_TEXT_ONLY_TABOO_DISPLAY) {
         	rootNode.attachChild(selectorNode);
         }
+        selector.nextTaboo(board);
 	}
 
 	private void createNewBoard()
@@ -169,7 +173,9 @@ public class PlayingMode extends GameMode {
 		//game.getFgRootNode().attachChild(p1.bigIcon);
 		//game.getFgRootNode().attachChild(p2.bigIcon);
 		game.getFgRootNode().attachChild(p1.smallIcon);
+		game.getFgRootNode().attachChild(p1.pointText);
 		game.getFgRootNode().attachChild(p2.smallIcon);
+		game.getFgRootNode().attachChild(p2.pointText);
 		
 		boardNode.detachAllChildren();
 		
@@ -229,9 +235,13 @@ public class PlayingMode extends GameMode {
 		p1.smallIcon.setLocalTranslation(game.getDisplay().getWidth() * 0.02f, 
 				game.getDisplay().getHeight() +
 				(.05f + FastMath.cos(t) * .05f) * Player.SMALL_ICON_SIZE, 0);
+		p1.pointText.getLocalTranslation().set(p1.smallIcon.getLocalTranslation()).addLocal(0,-Player.SMALL_ICON_SIZE,0);
+		p1.pointText.updateWorldVectors();
 		p2.smallIcon.setLocalTranslation(game.getDisplay().getWidth() * 0.98f - Player.SMALL_ICON_SIZE, 
 				game.getDisplay().getHeight() +
 				(.05f + FastMath.cos(t) * .05f) * Player.SMALL_ICON_SIZE, 0);
+		p2.pointText.getLocalTranslation().set(p2.smallIcon.getLocalTranslation()).addLocal(0,-Player.SMALL_ICON_SIZE,0);
+		p2.pointText.updateWorldVectors();
         
 		board.markViolators(selector.getCurrent());
 
@@ -239,7 +249,7 @@ public class PlayingMode extends GameMode {
 		if ((FORCE_GAME_OVER || board.isDone()) && !gameOver) {
 			gameOver = true;
 
-			Player winner = board.getWinner();
+			winner = board.getWinner();
 			if (winner != null) {
 				tabooBar.setWinner(winner.getColor());
 				
@@ -260,13 +270,21 @@ public class PlayingMode extends GameMode {
 		
 	        if ( timer.isTimeOut()) {
 	        	
-	        	selector.next();
-	        	timer.reset(board.getRoundTime());
+	        	p1.points += board.getPoints(p1);
+	        	p2.points += board.getPoints(p2);
+	        	board.killViolatorsAndIncreaseTurn();
 	        	
-	        	board.killViolators();
+	        	if(!board.isDone())
+	        	{
+		        	timer.reset(board.getRoundTime());
+		        	selector.nextTaboo(board);
+	        	}
+	        	
+	        	p1.pointText.print(""+p1.points);
+	        	p2.pointText.print(""+p2.points);
 	        }
-
 	        tabooBar.setActiveTaboo(selector.getCurrent());
+
 	        
 			// Upate game-logic
 			board.update();
@@ -309,7 +327,7 @@ public class PlayingMode extends GameMode {
 			highscoreEntered = b;
 			
 			if (b && (board.getWinner() != null)) {
-				game.getHighscore().addHighscore(hofEntry.getText(), board.getLiving().size());
+				game.getHighscore().addHighscore(hofEntry.getText(), winner.points);
 			} else {
 				//game.getHighscore().addHighscore("ALL", 0);
 			}
