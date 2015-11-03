@@ -1,0 +1,1 @@
+This project will be a strategy game by invoking taboos.
